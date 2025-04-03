@@ -1,78 +1,595 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <title>Your Name | Portfolio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Link to CSS file -->
-    <link rel="stylesheet" href="styles.css">
-    <!-- Font Awesome for icons (optional) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-</head>
-<body>
+    <title>Vatsal Patel | Research Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'LucideIcons';
+            src: url(https://cdn.jsdelivr.net/npm/lucide-static@latest/font/Lucide.ttf) format('truetype');
+        }
+        .lucide {
+            font-family: 'LucideIcons';
+            font-size: 1.25rem; /* Adjust size as needed */
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* Custom scrollbar for aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* Section fade-in animation */
+        .section-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Add subtle background pattern */
+        body {
+           /* background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+            background-size: 16px 16px; */
+             background-color: #f9fafb; /* Light gray background */
+        }
+        /* Style for project/cert cards */
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); /* shadow-lg */
+        }
+        /* Navbar fixed styling */
+        #navbar.scrolled {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        /* Mobile menu active state */
+        #mobile-menu.hidden {
+             display: none;
+        }
 
-    <!-- Navigation Bar -->
-    <nav id="navbar">
-        <div class="nav-logo">Your Name</div>
-        <ul class="nav-links">
-            <li><a href="#home" class="nav-item">Home</a></li>
-            <li><a href="#projects" class="nav-item">Projects</a></li>
-            <li><a href="#about" class="nav-item">About</a></li>
-            <li><a href="#contact" class="nav-item">Contact</a></li>
-        </ul>
-        <!-- Hamburger Menu for Mobile (optional) -->
-        <div class="hamburger-menu">
-            <i class="fas fa-bars"></i>
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: '#0071e3', // Example primary color (Apple blue)
+              secondary: '#1d1d1f', // Example secondary color (Apple dark gray)
+              accent: '#6e6e73', // Example accent color (Apple gray)
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="font-sans bg-gray-50 text-secondary leading-relaxed">
+
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-3">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <a href="#hero" class="text-2xl font-bold text-secondary hover:text-primary transition">Vatsal Patel</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#about" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition">About</a>
+                        <a href="#skills" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition">Skills</a>
+                        <a href="#experience" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition">Experience</a>
+                        <a href="#projects" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition">Projects</a>
+                        <a href="#research" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition">Research</a>
+                        <a href="#certifications" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition">Certifications</a>
+                        <a href="#education" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition">Education</a>
+                        <a href="#contact" class="text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg rounded-b-lg">
+                <a href="#about" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium transition">About</a>
+                <a href="#skills" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium transition">Skills</a>
+                <a href="#experience" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium transition">Experience</a>
+                <a href="#projects" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium transition">Projects</a>
+                <a href="#research" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium transition">Research</a>
+                <a href="#certifications" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium transition">Certifications</a>
+                <a href="#education" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium transition">Education</a>
+                <a href="#contact" class="text-gray-700 hover:text-primary block px-3 py-2 rounded-md text-base font-medium transition">Contact</a>
+            </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="section hero">
-        <div class="hero-content">
-            <h1>Welcome to My Portfolio</h1>
-            <p>I'm a <span class="highlight">[Your Profession]</span> specializing in <span class="highlight">[Your Specialization]</span></p>
-            <a href="#projects" class="btn">View My Work</a>
+    <section id="hero" class="min-h-screen flex items-center justify-center text-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 px-4 pt-24 pb-12">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-secondary mb-4 leading-tight">
+                Vatsal Patel
+            </h1>
+            <p class="text-xl md:text-2xl text-primary font-semibold mb-6">
+                Research Engineer | AI & Machine Learning Specialist
+            </p>
+            <p class="text-lg md:text-xl text-accent max-w-2xl mx-auto mb-8">
+                Leveraging a strong mathematical foundation and extensive experience in bioinformatics to build cutting-edge AI solutions, driving innovation in biomedical research since 2020.
+            </p>
+            <div class="flex justify-center space-x-4">
+                 <a href="#projects" class="inline-block bg-primary text-white font-medium py-3 px-8 rounded-lg shadow-md hover:bg-blue-700 transition duration-300">
+                    View Projects
+                 </a>
+                 <a href="#contact" class="inline-block bg-gray-200 text-secondary font-medium py-3 px-8 rounded-lg shadow-sm hover:bg-gray-300 transition duration-300">
+                    Get In Touch
+                 </a>
+            </div>
+             </div>
+    </section>
+
+    <section id="about" class="py-20 md:py-28 bg-white section-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-secondary mb-12">About Me</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <div class="md:col-span-1 flex justify-center">
+                    <img src="https://placehold.co/300x300/E2E8F0/4A5568?text=Vatsal+Patel" alt="Vatsal Patel" class="rounded-full shadow-lg w-48 h-48 md:w-64 md:h-64 object-cover">
+                </div>
+                <div class="md:col-span-2 text-lg text-accent space-y-4">
+                    <p>
+                        I am a dedicated <strong class="text-secondary">Research Engineer</strong> with a deep passion for applying Machine Learning and Artificial Intelligence to solve complex real-world problems, particularly within the biomedical domain. My journey into AI began in <strong class="text-secondary">2020</strong>, driven by a fascination with data-driven discovery, which I pursued alongside my <strong class="text-secondary">Bachelor's degree in Mathematics</strong> from St. Xavier's College, Mumbai. This strong quantitative background provides a robust foundation for my work in ML.
+                    </p>
+                    <p>
+                        For <strong class="text-secondary">3.5 years (Sep 2021 - Mar 2025)</strong>, I contributed significantly at the <strong class="text-secondary">National Institute of Biomedical Genomics (NIBMG)</strong>, initially as a Senior Project Consultant and later as a Bioinformatics Research Engineer. My role focused on integrating advanced ML techniques, including <strong class="text-secondary">Deep Learning (TensorFlow, PyTorch)</strong> and <strong class="text-secondary">Graph Neural Networks</strong>, into cancer genomics research.
+                    </p>
+                    <p>
+                        I thrive on tackling challenging projects, from developing patent-pending models for patient risk stratification using pathology images (<strong class="text-secondary">PIONEER</strong>) to creating novel multi-omics integration methods with Graph Attention Networks. I am also the creator of the <strong class="text-secondary">Machine Learning Copilot Agent</strong>, an AI tool designed to automate ML workflows.
+                    </p>
+                     <p>
+                        My goal is to continue pushing the boundaries of AI and contribute to impactful research and technological advancements.
+                     </p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section projects">
-        <h2>My Projects</h2>
-        <div class="projects-grid">
-            <!-- Existing project items -->
+    <section id="skills" class="py-20 md:py-28 bg-gray-100 section-hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-secondary mb-16">Technical Expertise</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 text-center">
+                <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xea45;</span> <h3 class="text-lg font-semibold text-secondary">Python</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xea45;</span> <h3 class="text-lg font-semibold text-secondary">TensorFlow</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xea45;</span> <h3 class="text-lg font-semibold text-secondary">PyTorch</h3>
+                     <p class="text-sm text-accent">(inc. Geometric)</p>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe422;</span> <h3 class="text-lg font-semibold text-secondary">Graph Neural Networks</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe915;</span> <h3 class="text-lg font-semibold text-secondary">Deep Learning</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xea45;</span> <h3 class="text-lg font-semibold text-secondary">Scikit-learn</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe9c2;</span> <h3 class="text-lg font-semibold text-secondary">Pandas</h3>
+                </div>
+                <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe03f;</span> <h3 class="text-lg font-semibold text-secondary">Unix/Linux</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe86f;</span> <h3 class="text-lg font-semibold text-secondary">Hugging Face</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe74e;</span> <h3 class="text-lg font-semibold text-secondary">Docker/Singularity</h3>
+                </div>
+                <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xea45;</span> <h3 class="text-lg font-semibold text-secondary">GPU Training</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe915;</span> <h3 class="text-lg font-semibold text-secondary">Langchain</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe915;</span> <h3 class="text-lg font-semibold text-secondary">LlamaIndex</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe415;</span> <h3 class="text-lg font-semibold text-secondary">Bioinformatics</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe217;</span> <h3 class="text-lg font-semibold text-secondary">Vision Transformers</h3>
+                </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe217;</span> <h3 class="text-lg font-semibold text-secondary">CLIP</h3>
+                 </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe915;</span> <h3 class="text-lg font-semibold text-secondary">LLMs (GPT, Llama)</h3>
+                 </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe1f3;</span> <h3 class="text-lg font-semibold text-secondary">Google Cloud</h3>
+                 </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe915;</span> <h3 class="text-lg font-semibold text-secondary">Multiple Instance Learning</h3>
+                 </div>
+                 <div class="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition">
+                     <span class="lucide text-primary text-4xl mb-3">&#xe94a;</span> <h3 class="text-lg font-semibold text-secondary">Mathematics</h3>
+                     <p class="text-sm text-accent">(Foundation)</p>
+                 </div>
+            </div>
         </div>
     </section>
 
-
-    <!-- About Section -->
-    <section id="about" class="section about">
-        <h2>About Me</h2>
-        <p>[Your bio goes here...]</p>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section contact">
-        <h2>Contact Me</h2>
-        <form id="contact-form" action="#" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" placeholder="Your Message" required></textarea>
-            <button type="submit" class="btn">Send Message</button>
-        </form>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Your Name. All rights reserved.</p>
-        <!-- Social Media Icons (optional) -->
-        <div class="social-media">
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-            <a href="#"><i class="fab fa-github"></i></a>
-            <!-- Add more icons as needed -->
+    <section id="experience" class="py-20 md:py-28 bg-white section-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-secondary mb-16">Professional Experience</h2>
+            <div class="bg-gray-50 p-8 rounded-xl shadow-md border border-gray-200">
+                <div class="flex flex-col md:flex-row justify-between md:items-center mb-4">
+                    <h3 class="text-2xl font-semibold text-primary mb-2 md:mb-0">Bioinformatics Research Engineer</h3>
+                    <span class="text-accent font-medium">Sep 2021 – Mar 2025 (3.5 Years)</span>
+                </div>
+                <p class="text-lg font-medium text-secondary mb-4">National Institute of Biomedical Genomics (NIBMG), Kalyani, India</p>
+                <div class="text-accent space-y-3 text-base md:text-lg">
+                     <p>Contributed to the National Supercomputing Mission (NSM) Platform for Genomics and Drug Discovery.</p>
+                     <p><strong class="text-secondary">Key Responsibilities:</strong></p>
+                     <ul class="list-disc list-inside space-y-2 pl-4">
+                        <li>Implemented novel Machine Learning solutions for complex cancer genomics research problems.</li>
+                        <li>Tracked and presented key findings from ML publications in genomics & pathology to the research team.</li>
+                        <li>Developed and deployed scalable GPU pipelines for feature extraction using open-source foundation models (e.g., Pathology Vision Models).</li>
+                        <li>Led independent research initiatives, notably applying Graph Neural Networks for Multi-Omics integration.</li>
+                     </ul>
+                     <p><strong class="text-secondary">Key Achievements:</strong></p>
+                     <ul class="list-disc list-inside space-y-2 pl-4">
+                        <li>Developed <strong class="text-secondary">PIONEER</strong>: A pathology-immune-omics model predicting high-risk HNSCC patients from WSI with AUC > 0.80. <strong class="text-secondary">(Patent Pending)</strong></li>
+                        <li>Created a <strong class="text-secondary">Graph Attention Autoencoder</strong> for multi-omics risk stratification (AUC ~0.98), presented at Helmholtz AI Conference, Germany.</li>
+                        <li>Bridged communication between technical and non-technical team members, explaining complex ML concepts effectively.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
+    </section>
+
+    <section id="projects" class="py-20 md:py-28 bg-gray-100 section-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-secondary mb-16">Featured Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div class="card flex flex-col">
+                    <img src="https://placehold.co/600x400/0071E3/FFFFFF?text=ML+Copilot+Agent" alt="ML Copilot Agent" class="w-full h-48 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-secondary mb-2">Machine Learning Copilot Agent</h3>
+                        <p class="text-accent text-sm mb-1 font-medium">© 2024 Vatsal Patel. All rights reserved.</p>
+                        <p class="text-accent mb-4 flex-grow">An AI-driven agent (GPT-4o + LlamaIndex) automating ML classification workflows via natural language commands and real-time code execution.</p>
+                        <div class="mt-auto space-y-2">
+                            <a href="https://github.com/VatsalPatel18/ml-copilot-agent.git" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">GitHub <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                            <a href="https://pypi.org/project/ml-copilot-agent/" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">PyPI Package <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                            <a href="https://ml-copilot-agent.readthedocs.io/en/latest/" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">Documentation <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="card flex flex-col">
+                     <img src="https://placehold.co/600x400/1D1D1F/FFFFFF?text=PIONEER+Project" alt="PIONEER Project" class="w-full h-48 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-secondary mb-2">PIONEER: Pathology-Immune-Omics Alignment</h3>
+                         <p class="text-accent text-sm mb-1 font-medium">Patent Pending</p>
+                        <p class="text-accent mb-4 flex-grow">Novel vision foundation model aligning immune-multi-omics features with histopathology images (WSI) to predict high-risk HNSCC patients (AUC > 0.80). Low-cost precision oncology approach.</p>
+                        <div class="mt-auto space-y-2">
+                             <p class="text-sm text-accent font-medium">Role: ML Engineer (Equal Contribution)</p>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="card flex flex-col">
+                     <img src="https://placehold.co/600x400/6E6E73/FFFFFF?text=Graph+Attention+AE" alt="Graph Attention Autoencoder" class="w-full h-48 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-secondary mb-2">Graph Attention Autoencoder for Multi-Omics</h3>
+                         <p class="text-accent text-sm mb-1 font-medium">Presented: Helmholtz AI Conf. 2023</p>
+                        <p class="text-accent mb-4 flex-grow">Integrated multi-omics data (gene expression, mutations, CNA, methylation) using GATs for risk stratification (AUC ~0.98) and biomarker identification in HNSCC.</p>
+                        <div class="mt-auto space-y-2">
+                            <a href="https://huggingface.co/spaces/VatsalPatel18/GraphAttentionAutoencoder-MultiOmics" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">Hugging Face Space <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                             <a href="https://github.com/VatsalPatel18/GraphAttentionAutoencoder-MultiOmics" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">GitHub <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="card flex flex-col">
+                     <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=MedDiscover+RAG" alt="MedDiscover RAG-LLM" class="w-full h-48 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-secondary mb-2">MedDiscover: RAG-LLM for Biomedicine</h3>
+                        <p class="text-accent mb-4 flex-grow">Portable Retrieval-Augmented Generation system using LLMs (MedCPT/GPT-4o) for biomedical knowledge extraction from user-defined literature, demonstrated for metabolomics research. Includes GUI.</p>
+                        <div class="mt-auto space-y-2">
+                             <p class="text-sm text-accent font-medium">M.Sc. Thesis Project (Grade: 1.0)</p>
+                            </div>
+                    </div>
+                </div>
+
+                 <div class="card flex flex-col">
+                     <img src="https://placehold.co/600x400/F59E0B/FFFFFF?text=Weather+Chatbot" alt="Weather Chatbot Phi3" class="w-full h-48 object-cover">
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-semibold text-secondary mb-2">Weather Chatbot (Phi-3 Mini)</h3>
+                        <p class="text-accent mb-4 flex-grow">LLM agent (Phi-3-mini via Llama CPP) executing real-time OpenWeather API calls via Langchain, with a Gradio chat interface.</p>
+                        <div class="mt-auto space-y-2">
+                             <a href="https://github.com/VatsalPatel18/Weather-Chatbot-phi3.git" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">GitHub <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                             <a href="https://pypi.org/project/weather-chatbot-phi3/" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">PyPI Package <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                             <a href="https://hub.docker.com/r/vatsalpatel18/weather-chatbot-phi3" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">Docker Hub <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                             <a href="https://huggingface.co/spaces/VatsalPatel18/weather-chatbot-phi3" target="_blank" rel="noopener noreferrer" class="block text-sm text-primary hover:underline">Hugging Face Space <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+     <section id="research" class="py-20 md:py-28 bg-white section-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-secondary mb-16">Publications & Preprints</h2>
+            <div class="space-y-8">
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <p class="text-lg font-medium text-secondary mb-1">An ensemble machine learning-based performance evaluation identifies top In-Silico pathogenicity prediction methods that best classify driver mutations in cancer.</p>
+                    <p class="text-accent text-sm">Jan 2025 (Contributing Author)</p>
+                    </div>
+                 <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <p class="text-lg font-medium text-secondary mb-1">Multi-faceted dysregulated immune response for COVID-19 infection explaining clinical heterogeneity.</p>
+                    <p class="text-accent text-sm">Dec 2023 (Contributing Author)</p>
+                    </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <p class="text-lg font-medium text-secondary mb-1">Deep Learning Model to automate the process of mapping cancer cells to cancer cell lines and cancer types from Single Cell RNA-Seq Pan Cancer Data.</p>
+                    <p class="text-accent text-sm">Aug 2021 (First Author)</p>
+                    </div>
+                 <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <p class="text-lg font-medium text-secondary mb-1">Convergence of Gradient Descent after Homeomorphic Transformation.</p>
+                    <p class="text-accent text-sm">June 2021 (First Author)</p>
+                     </div>
+                 <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <p class="text-lg font-medium text-secondary mb-1">Graph Attention Networks for Biomedical Insights: MultiOmics Integration for Risk Stratification and Biomarker Identification.</p>
+                    <p class="text-accent text-sm">In Academic Review / Preprint (First Author)</p>
+                     <a href="https://doi.org/10.5281/zenodo.14357409" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline text-sm">View on Zenodo <span class="lucide text-xs align-middle">&#xe1c6;</span></a>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                     <p class="text-lg font-medium text-secondary mb-1">Leveraging Retrieval-Augmented Generation with Large Language Models (RAG-LLMs) for Biomedical Knowledge Extraction.</p>
+                     <p class="text-accent text-sm">In Preparation (First Author)</p>
+                     </div>
+                 <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+                     <p class="text-lg font-medium text-secondary mb-1">Machine Learning Copilot Agent.</p>
+                     <p class="text-accent text-sm">In Preparation (First Author)</p>
+                     </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="certifications" class="py-20 md:py-28 bg-gray-100 section-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-secondary mb-4">Certifications & Specializations</h2>
+             <p class="text-center text-accent mb-16">Building expertise since 2020</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card">
+                    <img src="https://placehold.co/600x300/0071E3/FFFFFF?text=TensorFlow+Developer" alt="TensorFlow Developer Certificate" class="w-full h-40 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-secondary mb-2">DeepLearning.AI TensorFlow Developer</h3>
+                        <p class="text-accent text-sm mb-1">Professional Certificate (4 Courses)</p>
+                        <p class="text-accent text-sm mb-4 font-medium">Issued: July 2020</p>
+                        <a href="https://coursera.org/verify/professional-cert/F4RVGGKYRMN" target="_blank" rel="noopener noreferrer" class="inline-block bg-primary/10 text-primary text-sm font-medium py-2 px-4 rounded-md hover:bg-primary/20 transition">
+                            Verify Certificate <span class="lucide text-xs align-middle">&#xe1c6;</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://placehold.co/600x300/34A853/FFFFFF?text=ML+on+Google+Cloud" alt="Machine Learning on Google Cloud Certificate" class="w-full h-40 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-secondary mb-2">Machine Learning with TensorFlow on Google Cloud</h3>
+                        <p class="text-accent text-sm mb-1">Specialization (5 Courses)</p>
+                        <p class="text-accent text-sm mb-4 font-medium">Issued: July 2020</p>
+                        <a href="https://coursera.org/verify/specialization/86T9YGQDCEPX" target="_blank" rel="noopener noreferrer" class="inline-block bg-primary/10 text-primary text-sm font-medium py-2 px-4 rounded-md hover:bg-primary/20 transition">
+                             Verify Certificate <span class="lucide text-xs align-middle">&#xe1c6;</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://placehold.co/600x300/1D1D1F/FFFFFF?text=Math+for+ML" alt="Mathematics for Machine Learning Certificate" class="w-full h-40 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-secondary mb-2">Mathematics for Machine Learning</h3>
+                        <p class="text-accent text-sm mb-1">Specialization (3 Courses - Imperial College London)</p>
+                        <p class="text-accent text-sm mb-4 font-medium">Issued: Sep 2020</p>
+                        <a href="https://coursera.org/verify/specialization/4FY6HTFLGHUD" target="_blank" rel="noopener noreferrer" class="inline-block bg-primary/10 text-primary text-sm font-medium py-2 px-4 rounded-md hover:bg-primary/20 transition">
+                            Verify Certificate <span class="lucide text-xs align-middle">&#xe1c6;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="py-20 md:py-28 bg-white section-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-secondary mb-16">Academic Background</h2>
+            <div class="relative pl-8 border-l-2 border-gray-200">
+                 <div class="mb-10 ml-4">
+                     <div class="absolute w-4 h-4 bg-primary rounded-full mt-1.5 -left-[9px] border border-white"></div>
+                     <time class="mb-1 text-sm font-normal leading-none text-accent">Mar 2023 - Feb 2025</time>
+                     <h3 class="text-xl font-semibold text-secondary">M.Sc. Artificial Intelligence</h3>
+                     <p class="text-base font-normal text-accent">IU International University of Applied Sciences, Berlin, Germany</p>
+                     <p class="text-sm text-accent">Grade: 1.9 / 4.0 (German System)</p>
+                     <p class="text-sm text-accent mt-1">Thesis Grade: 1.0 (RAG-LLMs for Metabolomics)</p>
+                 </div>
+                 <div class="mb-10 ml-4">
+                     <div class="absolute w-4 h-4 bg-primary rounded-full mt-1.5 -left-[9px] border border-white"></div>
+                     <time class="mb-1 text-sm font-normal leading-none text-accent">2018 - 2021</time>
+                     <h3 class="text-xl font-semibold text-secondary">B.Sc. Mathematics</h3>
+                     <p class="text-base font-normal text-accent">St. Xavier's College, Mumbai, India</p>
+                     <p class="text-sm text-accent">CGPA: 9.31 / 10.0</p>
+                 </div>
+                 <div class="mb-10 ml-4">
+                     <div class="absolute w-4 h-4 bg-primary rounded-full mt-1.5 -left-[9px] border border-white"></div>
+                     <time class="mb-1 text-sm font-normal leading-none text-accent">2015 - 2017</time>
+                     <h3 class="text-xl font-semibold text-secondary">Class XII (GSHSEB)</h3>
+                     <p class="text-base font-normal text-accent">St. Joseph E.T High School, Valsad, India</p>
+                     <p class="text-sm text-accent">Percentage: 80%</p>
+                 </div>
+                 <div class="ml-4">
+                     <div class="absolute w-4 h-4 bg-primary rounded-full mt-1.5 -left-[9px] border border-white"></div>
+                     <time class="mb-1 text-sm font-normal leading-none text-accent">2014 - 2015</time>
+                     <h3 class="text-xl font-semibold text-secondary">Class XI (GSEB)</h3>
+                     <p class="text-base font-normal text-accent">St. Joseph E.T High School, Valsad, India</p>
+                     <p class="text-sm text-accent">Percentage: 80%</p>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 md:py-28 bg-gray-100 section-hidden">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-6">Get In Touch</h2>
+            <p class="text-lg text-accent mb-10">
+                I'm always open to discussing new projects, research collaborations, or opportunities. Feel free to reach out!
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8 text-lg">
+                <a href="mailto:vatsal1804@gmail.com" class="flex items-center text-secondary hover:text-primary transition group">
+                     <span class="lucide mr-2 group-hover:text-primary transition">&#xe176;</span> vatsal1804@gmail.com
+                </a>
+                <a href="tel:+919978146918" class="flex items-center text-secondary hover:text-primary transition group">
+                     <span class="lucide mr-2 group-hover:text-primary transition">&#xe3b9;</span> +91 9978 146 918
+                </a>
+                <a href="https://github.com/VatsalPatel18" target="_blank" rel="noopener noreferrer" class="flex items-center text-secondary hover:text-primary transition group">
+                     <span class="lucide mr-2 group-hover:text-primary transition">&#xe25a;</span> GitHub Profile
+                </a>
+                 </div>
+             </div>
+    </section>
+
+    <footer class="bg-secondary text-gray-400 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm">&copy; <span id="current-year"></span> Vatsal Patel. All Rights Reserved.</p>
+             <p class="text-xs mt-2">Website developed with assistance from AI.</p>
+             </div>
     </footer>
 
-    <!-- Link to JavaScript file -->
-    <script src="script.js"></script>
+    <script>
+        // --- Navbar Scroll Effect ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const openIcon = mobileMenuButton.querySelector('svg.block');
+        const closeIcon = mobileMenuButton.querySelector('svg.hidden');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('hidden');
+            openIcon.classList.toggle('hidden');
+            openIcon.classList.toggle('block');
+            closeIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('block');
+        });
+
+        // Close mobile menu when a link is clicked
+        const mobileNavLinks = mobileMenu.querySelectorAll('a');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                 if (mobileMenuButton.getAttribute('aria-expanded') === 'true') {
+                    mobileMenuButton.click(); // Simulate click to close
+                 }
+            });
+        });
+
+
+        // --- Smooth Scrolling for Internal Links (redundant with scroll-smooth class, but good fallback) ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // Check if the link is just '#' (top of page) or has a target
+                const targetId = this.getAttribute('href');
+                if (targetId.length > 1) {
+                     const targetElement = document.querySelector(targetId);
+                     if (targetElement) {
+                        e.preventDefault();
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                     }
+                } else if (targetId === '#') { // Handle link to top of page
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+                // Allow default behavior for external links or links handled by mobile menu closure
+            });
+        });
+
+        // --- Section Fade-in Animation on Scroll ---
+        const sections = document.querySelectorAll('.section-hidden');
+        const observerOptions = {
+            root: null, // relative to the viewport
+            threshold: 0.1, // trigger when 10% of the element is visible
+            // rootMargin: '0px 0px -50px 0px' // Optional: adjust trigger point
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('section-visible');
+                    // Optional: Stop observing once visible to save resources
+                    // observer.unobserve(entry.target);
+                } else {
+                     // Optional: Remove class if you want fade-out effect when scrolling up
+                     // entry.target.classList.remove('section-visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // --- Update Footer Year ---
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    </script>
+
 </body>
 </html>
