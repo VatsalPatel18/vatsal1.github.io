@@ -54,12 +54,12 @@
     /* Individual node styling */
     #floating-nodes img {
       position: absolute; /* Position controlled by JS */
-      width: 60px; /* Slightly smaller for better visibility */
-      height: 60px;
+      /* width/height set by JS */
       object-fit: cover;
       border-radius: 9999px; /* Circular */
       opacity: 0.6; /* Slightly more opaque */
-      will-change: transform; /* Optimize for animation */
+      will-change: transform, width, height; /* Optimize for animation and size changes */
+      transition: width 0.2s ease-out, height 0.2s ease-out; /* Smooth size transition */
       /* Removed top, left, and animation properties - handled by JS */
     }
 
@@ -542,28 +542,18 @@
         'images/graph_slide1_complete_project.png',
         'images/graph_slide2_omics_feature.png',
         'images/graph_slide3_node_features.png',
-        'images/graph_slide4_result.png',
-        'images/graph_slide5_final_result.png',
         'images/histo_slide1_wsi.png',
-        'images/histo_slide2_hypothesis.png',
         'images/histo_slide3_methodology.png',
         'images/histo_slide4_results.png',
         'images/me_presenting_poster.png',
         'images/me_presenting_slide.png',
         'images/mlcopilot_slide1_agent.jpg',
-        'images/mlcopilot_slide2_functionC.jpeg',
-        'images/mlcopilot_slide3_codeEx.png',
-        'images/mlcopilot_slide3.5_workflow.jpeg',
-        'images/mlcopilot_slide4_envent.png',
         'images/mlcopilot_slide5_overall.jpg',
-        'images/Resume.png',
         'images/specialization_1.jpg',
         'images/specialization_2.jpg',
         'images/specialization_3.jpg',
         'images/thesis_slide_0_MedDiscover.png',
-        'images/thesis_slide_1_hypothesis.png',
         'images/thesis_slide_2_RAGvLLM.png',
-        'images/thesis_slide_3_methodology_commplete.png',
         'images/thesis_slide_4_final_results.png',
         'images/thesis_slide_5_results_metrics.png'
     ];
@@ -582,8 +572,8 @@
 
         const containerWidth = window.innerWidth;
         const containerHeight = window.innerHeight;
-        const nodeSize = 60; // Match CSS width/height
-        const maxInitialSpeed = 1; // Max pixels per frame
+        const nodeSize = 180; // Match CSS width/height
+        const maxInitialSpeed = 0.5; // Max pixels per frame
 
         nodeImageSources.forEach(src => {
             const img = document.createElement('img');
