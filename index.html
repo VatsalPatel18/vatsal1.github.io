@@ -38,11 +38,11 @@
         .hover-target:hover { text-decoration-color: rgba(0, 113, 227, 1); }
         #about-hover-images img { position: absolute; top: 0; left: 0; width: 100%; height: auto; max-height: 300px; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out; pointer-events: none; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); background-color: white; }
         #about-hover-images img.visible { opacity: 1; }
-        /* Project Modal Styles */
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; padding: 1rem; /* Add padding for smaller screens */ }
+        /* Project Panel Styles (formerly Modal) */
+        .modal-overlay { position: fixed; top: 0; right: 0; bottom: 0; width: 50%; background-color: #ffffff; z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; box-shadow: -4px 0 8px rgba(0,0,0,0.1); overflow-y: auto; }
         .modal-overlay.visible { opacity: 1; visibility: visible; }
-        .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem; max-width: 90%; max-height: 90vh; width: 72rem; /* Increased width for two columns */ overflow-y: auto; position: relative; transform: scale(0.95); transition: transform 0.3s ease; }
-        .modal-overlay.visible .modal-content { transform: scale(1); }
+        .modal-content { background-color: white; padding: 2rem; border-radius: 0.75rem 0 0 0.75rem; width: 100%; height: 100%; box-sizing: border-box; position: relative; }
+        .modal-overlay.visible .modal-content { }
         .modal-close-button { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6e6e73; z-index: 20; /* Ensure button is above content */ }
         .modal-close-button:hover { color: #1d1d1f; }
         /* Slider Button CSS */
@@ -51,7 +51,31 @@
         #slider-container button:hover { opacity: 1; }
         /* Ensure slider image doesn't overflow its container */
         #slider-image { display: block; /* Fix potential inline spacing issues */ }
-
+        
+        /* Floating Graph Node Images */
+        @keyframes floatZoom {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            50% { transform: translate(0, -10px) scale(1.2); opacity: 1; }
+        }
+        #floating-nodes img {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            animation: floatZoom 6s ease-in-out infinite;
+            opacity: 0.8;
+        }
+        #floating-nodes img:nth-child(1) { top: 0%; left: 10%; animation-delay: 0s; }
+        #floating-nodes img:nth-child(2) { top: 20%; left: 80%; animation-delay: 2s; }
+        #floating-nodes img:nth-child(3) { top: 60%; left: 20%; animation-delay: 4s; }
+        #floating-nodes img:nth-child(4) { top: 80%; left: 70%; animation-delay: 3s; }
+        #floating-nodes img:nth-child(5) { top: 40%; left: 50%; animation-delay: 1s; }
+        /* About Me Images Container */
+        #about-hover-images { position: relative; width: 100%; height: 100%; }
+        #about-hover-images img { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 100%; max-height: 100%; object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out; pointer-events: none; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); background-color: white; }
+        #about-hover-images img.visible { opacity: 1; pointer-events: auto; }
+        #hover-placeholder { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #9CA3AF; font-style: italic; pointer-events: none; }
     </style>
     <script>
       tailwind.config = {
@@ -70,7 +94,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex-shrink-0">
-                    <a href="#hero" class="text-2xl font-bold text-secondary hover:text-primary transition">Vatsal Patel</a>
+                    <div class="relative inline-block">
+                        <a href="#hero" class="text-2xl font-bold text-secondary hover:text-primary transition relative z-10">Vatsal Patel</a>
+                        <div id="floating-nodes" class="absolute inset-0 pointer-events-none"></div>
+                    </div>
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
@@ -288,48 +315,41 @@
         </div>
     </footer>
 
+    <!-- Project Details Panel -->
     <div id="project-modal" class="modal-overlay">
         <div class="modal-content">
-            {/* Close button remains */}
+            <!-- Close Button -->
             <button id="modal-close" class="modal-close-button" aria-label="Close modal">
-                <span class="lucide">&#xea13;</span> {/* x icon */}
+                <span class="lucide">&#xea13;</span>
             </button>
-
-            {/* Grid for two columns */}
+            <!-- Two-Column Layout -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-
-                {/* Left Column: Title, Description, Links */}
-                <div class="flex flex-col h-full"> {/* Use flex to push links down */}
+                <!-- Left Column: Title, Description, Links -->
+                <div class="flex flex-col h-full">
                     <h3 id="modal-title" class="text-2xl lg:text-3xl font-semibold text-secondary mb-4">Project Title</h3>
-                    <div class="flex-grow overflow-y-auto pr-2"> {/* Allow description to scroll if needed */}
-                         <p id="modal-description" class="text-accent text-base lg:text-lg mb-6">Project description goes here...</p>
+                    <div class="flex-grow overflow-y-auto pr-2">
+                        <p id="modal-description" class="text-accent text-base lg:text-lg mb-6">Project description goes here...</p>
                     </div>
-                    <div id="modal-links" class="mt-auto pt-4 border-t border-gray-200 space-y-2"> {/* Push links to bottom */}
+                    <div id="modal-links" class="mt-auto pt-4 border-t border-gray-200 space-y-2">
                         <h4 class="text-lg font-semibold text-secondary mb-2">Links</h4>
-                        {/* Links will be added here by JS */}
+                        <!-- Links populated by JS -->
                     </div>
                 </div>
-
-                {/* Right Column: Slider */}
+                <!-- Right Column: Image Slider -->
                 <div class="relative w-full md:h-[calc(90vh-4rem)] max-h-[70vh] flex items-center justify-center bg-gray-100 rounded-lg overflow-hidden">
-                    {/* Slider Container */}
                     <div id="slider-container" class="relative w-full h-full flex items-center justify-center">
-                        {/* Previous Button */}
                         <button id="prev-slide" class="absolute left-2 md:left-4 p-2 bg-white/70 hover:bg-white rounded-full shadow transition z-10" aria-label="Previous slide">
-                            <span class="lucide text-xl text-secondary">&#xe14a;</span> {/* chevron-left */}
+                            <span class="lucide text-xl text-secondary">&#xe14a;</span>
                         </button>
-                        {/* Image Display */}
                         <img id="slider-image" src="" alt="Project slide" class="max-w-full max-h-full object-contain rounded-lg"/>
-                        {/* Next Button */}
                         <button id="next-slide" class="absolute right-2 md:right-4 p-2 bg-white/70 hover:bg-white rounded-full shadow transition z-10" aria-label="Next slide">
-                             <span class="lucide text-xl text-secondary">&#xe14d;</span> {/* chevron-right */}
+                            <span class="lucide text-xl text-secondary">&#xe14d;</span>
                         </button>
                     </div>
                 </div>
-
-            </div> {/* End grid */}
-        </div> {/* End modal-content */}
-    </div> {/* End project-modal */}
+            </div>
+        </div>
+    </div>
 
 
     <script>
@@ -521,6 +541,26 @@
         // --- Update Footer Year ---
         document.getElementById('current-year').textContent = new Date().getFullYear();
 
+    </script>
+    <script>
+      // Floating graph node images around site title
+      document.addEventListener('DOMContentLoaded', function() {
+        const floatingContainer = document.getElementById('floating-nodes');
+        if (!floatingContainer) return;
+        const nodeImages = [
+          'images/specialization_1.jpg',
+          'images/specialization_2.jpg',
+          'images/specialization_3.jpg',
+          'images/me_presenting_poster.png',
+          'images/mlcopilot_slide5_overall.jpg'
+        ];
+        nodeImages.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = 'Floating node';
+          floatingContainer.appendChild(img);
+        });
+      });
     </script>
 
 </body>
