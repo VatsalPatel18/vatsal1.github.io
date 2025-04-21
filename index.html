@@ -69,7 +69,7 @@
     /* Hover effect for About section */
     .hover-target { cursor:pointer; text-decoration:underline; text-decoration-color:rgba(0,113,227,.5); text-decoration-thickness:2px; text-underline-offset:3px; transition:text-decoration-color .3s; }
     .hover-target:hover { text-decoration-color:rgba(0,113,227,1); }
-    #about-hover-images { position:relative; width:100%; height:100%; min-height:300px; }
+    #about-hover-images { position:relative; width:100%; height:400px; min-width:450px; }
     #about-hover-images img { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); max-width:100%; max-height:100%; object-fit:contain; opacity:0; transition:opacity .5s ease-in-out; pointer-events:none; border-radius:.5rem; box-shadow:0 4px 6px rgba(0,0,0,.1); background:white; }
     #about-hover-images img.visible { opacity:1; pointer-events:auto; }
     #hover-placeholder { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#9CA3AF; font-style:italic; }
@@ -177,15 +177,15 @@
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
       <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">About Me</h2>
       <div class="grid grid-cols-1 md:grid-cols-10 gap-8 items-start">
-        <div class="md:col-span-6 text-accent space-y-4 text-lg">
+        <div class="md:col-span-5 text-accent space-y-4 text-lg">
           <div class="md:hidden flex justify-center mb-8">
             <img src="https://placehold.co/300x300/E2E8F0/4A5568?text=Vatsal+Patel"
                  alt="Vatsal Patel" class="rounded-full w-48 h-48 shadow-lg object-cover">
           </div>
           <p>
-            I am a dedicated <strong class="text-secondary">Research Engineer</strong> with a deep passion for applying Machine Learning and Artificial Intelligence to solve complex real-world problems, particularly within the biomedical domain. My journey into AI began in
-            <strong class="text-secondary hover-target" data-hover-target="ai-journey-image">2020</strong>, driven by a fascination with data-driven discovery, which I pursued
-            alongside my <strong class="text-secondary hover-target" data-hover-target="math-degree-image">Bachelor’s degree in Mathematics</strong> from St. Xavier's College, Mumbai. This strong quantitative background provides a robust foundation for my work in ML.
+            I am a dedicated <strong class="text-secondary hover-target" data-hover-target="poster-image">Research Engineer</strong> with a deep passion for applying Machine Learning and Artificial Intelligence to solve complex real-world problems, particularly within the biomedical domain. My journey into AI began in
+            <strong class="text-secondary hover-target" data-hover-target="specialization1-image">2020</strong>, driven by a fascination with data-driven discovery, which I pursued
+            alongside my <strong class="text-secondary hover-target" data-hover-target="bachelors-image">Bachelor’s degree in Mathematics</strong> from St. Xavier's College, Mumbai. This strong quantitative background provides a robust foundation for my work in ML.
           </p>
           <p>
             For <strong class="text-secondary">3.5 years (Sep 2021 - Mar 2025)</strong>, I contributed significantly at the
@@ -201,20 +201,21 @@
           <p>My goal is to continue pushing the boundaries of AI and contribute to impactful research and technological advancements.</p>
         </div>
 
-        <div class="md:col-span-4 relative mt-8 md:mt-0">
+        <div class="md:col-span-5 relative mt-8 md:mt-0">
           <div class="hidden md:flex justify-center mb-8 relative -mt-16 opacity-50">
             <img src="https://placehold.co/300x300/E2E8F0/4A5568?text=Vatsal+Patel"
                  alt="Vatsal Patel" class="rounded-full w-48 h-48 shadow-lg object-cover">
           </div>
           <div id="about-hover-images" class="absolute inset-0 flex items-center justify-center p-4">
-             <img id="math-degree-image" src="images/me_presenting_poster.png" alt="Mathematics Degree Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/me_presenting_poster.png')">
-            <img id="ai-journey-image" src="images/me_presenting_slide.png" alt="AI Journey Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/me_presenting_slide.png')">
+            <img id="poster-image" src="images/me_presenting_poster.png" alt="Research Engineer Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/me_presenting_poster.png')">
+            <img id="specialization1-image" src="images/specialization_1.jpg" alt="2020 Specialization Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/specialization_1.jpg')">
+            <img id="bachelors-image" src="images/bachelors_degree_certificate.jpg" alt="Bachelor’s Degree Certificate" onerror="this.style.display='none'; console.error('Failed to load: images/bachelors_degree_certificate.jpg')">
             <img id="nibmg-image" src="https://placehold.co/400x300/1D1D1F/FFFFFF?text=NIBMG+Experience" alt="NIBMG Experience">
-            <img id="deep-learning-image" src="https://placehold.co/400x300/F59E0B/FFFFFF?text=Deep+Learning+Focus" alt="Deep Learning Highlight">
+            <img id="deep-learning-image" src="images/specialization_3.jpg" alt="Deep Learning Specialization Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/specialization_3.jpg')">
             <img id="gnn-image" src="images/graph_slide1_complete_project.png" alt="GNN Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/graph_slide1_complete_project.png')">
             <img id="pioneer-image" src="images/histo_slide1_wsi.png" alt="PIONEER Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/histo_slide1_wsi.png')">
-            <img id="gat-image" src="images/graph_slide4_result.png" alt="GAT Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/graph_slide4_result.png')">
-            <img id="copilot-image" src="images/mlcopilot_slide5_overall.jpg" alt="Copilot Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/mlcopilot_slide5_overall.jpg')">
+            <img id="gat-image" src="images/me_presenting_slide.png" alt="Presented in Hamburg Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/me_presenting_slide.png')">
+            <img id="copilot-image" src="images/mlcopilot_slide3_codeEx.png" alt="ML Copilot Code Example Highlight" onerror="this.style.display='none'; console.error('Failed to load: images/mlcopilot_slide3_codeEx.png')">
             <p id="hover-placeholder">Hover underlined text to see visuals.</p>
           </div>
         </div>
@@ -385,7 +386,7 @@
           <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Certifications & Specializations</h2>
            <p class="text-center text-accent mb-16">Building expertise since 2020</p>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div class="card"><img src="https://placehold.co/600x300/0071E3/FFFFFF?text=TensorFlow+Developer" alt="TensorFlow Developer Certificate" class="w-full h-40 object-cover"><div class="p-6"><h3 class="text-xl font-semibold text-secondary mb-2">DeepLearning.AI TensorFlow Developer</h3><p class="text-accent text-sm mb-1">Professional Certificate (4 Courses)</p><p class="text-accent text-sm mb-4 font-medium">Issued: July 2020</p><a href="https://coursera.org/verify/professional-cert/F4RVGGKYRMN" target="_blank" rel="noopener noreferrer" class="inline-block bg-primary/10 text-primary text-sm font-medium py-2 px-4 rounded-md hover:bg-primary/20 transition">Verify Certificate <span class="lucide text-xs">&#xe1c6;</span></a></div></div>
+              <div class="card"><img src="https://placehold.co/600x300/0071E3/FFFFFF?text=TensorFlow+Developer" alt="TensorFlow Developer Certificate" class="w-full h-40 object-cover"><div class="p-6"><h3 class="text-xl font-semibold text-secondary mb-2">DeepLearning.AI TensorFlow Developer</h3><p class="text-accent text-sm mb-1">Professional Certificate (4 Courses)</p><p class="text-accent text-sm mb-4 font-medium">Issued: July 2020</p><a href="https://coursera.org/verify/professional-cert/F4RVGGKYRMN6" target="_blank" rel="noopener noreferrer" class="inline-block bg-primary/10 text-primary text-sm font-medium py-2 px-4 rounded-md hover:bg-primary/20 transition">Verify Certificate <span class="lucide text-xs">&#xe1c6;</span></a></div></div>
               <div class="card"><img src="https://placehold.co/600x300/34A853/FFFFFF?text=ML+on+Google+Cloud" alt="Machine Learning on Google Cloud Certificate" class="w-full h-40 object-cover"><div class="p-6"><h3 class="text-xl font-semibold text-secondary mb-2">Machine Learning with TensorFlow on Google Cloud</h3><p class="text-accent text-sm mb-1">Specialization (5 Courses)</p><p class="text-accent text-sm mb-4 font-medium">Issued: July 2020</p><a href="https://coursera.org/verify/specialization/86T9YGQDCEPX" target="_blank" rel="noopener noreferrer" class="inline-block bg-primary/10 text-primary text-sm font-medium py-2 px-4 rounded-md hover:bg-primary/20 transition">Verify Certificate <span class="lucide text-xs align-middle">&#xe1c6;</span></a></div></div>
               <div class="card"><img src="https://placehold.co/600x300/1D1D1F/FFFFFF?text=Math+for+ML" alt="Mathematics for Machine Learning Certificate" class="w-full h-40 object-cover"><div class="p-6"><h3 class="text-xl font-semibold text-secondary mb-2">Mathematics for Machine Learning</h3><p class="text-accent text-sm mb-1">Specialization (3 Courses - Imperial College London)</p><p class="text-accent text-sm mb-4 font-medium">Issued: Sep 2020</p><a href="https://coursera.org/verify/specialization/4FY6HTFLGHUD" target="_blank" rel="noopener noreferrer" class="inline-block bg-primary/10 text-primary text-sm font-medium py-2 px-4 rounded-md hover:bg-primary/20 transition">Verify Certificate <span class="lucide text-xs align-middle">&#xe1c6;</span></a></div></div>
           </div>
