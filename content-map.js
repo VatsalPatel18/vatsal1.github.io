@@ -60,6 +60,92 @@ window.CONTENT_MAP = {
     }
   },
 
+  socialFeed: {
+    note:
+      "Backend-only source of truth for LinkedIn feed metadata. UI can consume this map later without editing hardcoded HTML first.",
+    indexV2CurrentHardcoded: [
+      {
+        slot: "post_1_whx",
+        url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_whx-worldhealthexpodubai-arabhealth-activity-7428195692906459136-bo9I",
+        status: "already_correct"
+      },
+      {
+        slot: "post_2_aura",
+        url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_aura-llm-privacy-activity-7395029142831599616-e_lO",
+        status: "present_in_index_v2"
+      },
+      {
+        slot: "post_3_pelliscope_old",
+        url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_pelliscope-dermatologyai-healthtech-activity-7407028143110254592-A1_G",
+        status: "present_in_index_v2_but_superseded"
+      }
+    ],
+    linkedInPosts: [
+      {
+        id: "whx_live_preview_2026",
+        title: "WHX Dubai Live Preview",
+        author: "Vatsal Patel",
+        url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_whx-worldhealthexpodubai-arabhealth-activity-7428195692906459136-bo9I",
+        summary:
+          "Live deployment preview of Derma AI at WHX Dubai with focus on real-world clinical workflow behavior.",
+        media: [
+          "images/whx_expo26/image1_expo.jpg",
+          "images/whx_expo26/image2_expo.jpg",
+          "images/whx_expo26/image4_expo.jpg",
+          "images/whx_expo26/image5_expo.jpg"
+        ],
+        tags: ["#WHXDubai", "#ClinicalAI", "#HealthTech"]
+      },
+      {
+        id: "aura_anti_cloud_launch",
+        title: "Meet AURA: The Anti-Cloud AI",
+        author: "Vatsal Patel / HawkFranklin Research",
+        url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_aura-llm-privacy-activity-7395029142831599616-e_lO",
+        summary:
+          "Privacy-first local LLM inference on Android via LiteRT with zero data egress positioning.",
+        media: ["assets/media/videos/aura_mobile-video.mp4", "assets/media/icons/aura_icon.png"],
+        tags: ["#LocalLLM", "#Privacy", "#LiteRT", "#OnDeviceAI"]
+      },
+      {
+        id: "oncogemma_official_post",
+        title: "OncoGemma Official LinkedIn Post",
+        author: "Vatsal Patel",
+        url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_pathologyai-oncology-digitalhealth-activity-7400016851470237696-g9tJ?utm_source=share&utm_medium=member_desktop&rcm=ACoAACJppBcBYGcCM4jD4mdwm52pKD2dAIL-sU0",
+        summary:
+          "Pathology AI / oncology product positioning update for OncoGemma.",
+        media: ["assets/media/videos/oncogemma-demo1_crop.mp4", "assets/media/icons/oncogemma_logo_only.png"],
+        tags: ["#PathologyAI", "#Oncology", "#DigitalHealth"]
+      },
+      {
+        id: "pelliscope_official_post",
+        title: "PelliScope Official LinkedIn Post",
+        author: "Vatsal Patel",
+        url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_digitalhealth-aihealthcare-pharmamarketing-activity-7399682830387294208-tL7P?utm_source=share&utm_medium=member_desktop&rcm=ACoAACJppBcBYGcCM4jD4mdwm52pKD2dAIL-sU0",
+        summary:
+          "Official PelliScope post on digital health and AI healthcare positioning.",
+        media: ["assets/media/videos/pelliscope_preview.mp4", "assets/media/icons/pelliscope.png"],
+        tags: ["#DigitalHealth", "#AIHealthcare", "#PharmaMarketing"]
+      },
+      {
+        id: "peer_review_service_post",
+        title: "Peer Review Contribution",
+        author: "Vatsal Patel",
+        url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_peerreview-scientificcommunity-researchintegrity-activity-7407060637798797313-R7cW?utm_source=share&utm_medium=member_desktop&rcm=ACoAACJppBcBYGcCM4jD4mdwm52pKD2dAIL-sU0",
+        summaryShort:
+          "Reviewed manuscripts for a 4.8 IF journal in biomedical signal processing and applied AI.",
+        media: ["images/certificate_reviewing_papers.jpeg"],
+        tags: ["#PeerReview", "#ScientificCommunity", "#ResearchIntegrity", "#AIinHealthcare"]
+      }
+    ],
+    recommendedIndexV2Order: [
+      "whx_live_preview_2026",
+      "aura_anti_cloud_launch",
+      "oncogemma_official_post",
+      "pelliscope_official_post",
+      "peer_review_service_post"
+    ]
+  },
+
   projects: {
     existingPages: [
       {
@@ -414,7 +500,12 @@ window.CONTENT_MAP = {
           "Pre-consultation triage designed to reduce clinician fatigue."
         ],
         links: [
-          { label: "Official Website", url: "https://www.pelliscope.in", type: "website" }
+          { label: "Official Website", url: "https://www.pelliscope.in", type: "website" },
+          {
+            label: "Official LinkedIn Post",
+            url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_digitalhealth-aihealthcare-pharmamarketing-activity-7399682830387294208-tL7P?utm_source=share&utm_medium=member_desktop&rcm=ACoAACJppBcBYGcCM4jD4mdwm52pKD2dAIL-sU0",
+            type: "linkedin_post"
+          }
         ],
         media: {
           icon: "assets/media/icons/pelliscope.png",
@@ -469,6 +560,11 @@ window.CONTENT_MAP = {
             label: "Related GitHub",
             url: "https://github.com/VatsalPatel18/GraphAttentionAutoencoder-MultiOmics",
             type: "code"
+          },
+          {
+            label: "Official LinkedIn Post",
+            url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_pathologyai-oncology-digitalhealth-activity-7400016851470237696-g9tJ?utm_source=share&utm_medium=member_desktop&rcm=ACoAACJppBcBYGcCM4jD4mdwm52pKD2dAIL-sU0",
+            type: "linkedin_post"
           }
         ],
         media: {
@@ -691,6 +787,13 @@ window.CONTENT_MAP = {
                 title: "Helmholtz AI Conference 2023 presentation-linked work",
                 media: ["images/me_presenting_poster.png"],
                 link: "https://doi.org/10.5281/zenodo.14357409"
+              },
+              {
+                title: "Peer review contribution (very short note)",
+                media: ["images/certificate_reviewing_papers.jpeg"],
+                note: "Reviewed manuscripts for a 4.8 IF journal in biomedical signal processing and applied AI.",
+                link:
+                  "https://www.linkedin.com/posts/vatsal-patel-95b429141_peerreview-scientificcommunity-researchintegrity-activity-7407060637798797313-R7cW?utm_source=share&utm_medium=member_desktop&rcm=ACoAACJppBcBYGcCM4jD4mdwm52pKD2dAIL-sU0"
               }
             ]
           }

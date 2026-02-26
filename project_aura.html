@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA | Privacy-First Local AI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        body {
+            background: #030712;
+            color: #f3f4f6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-nav {
+            background: rgba(3, 7, 18, 0.72);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+        }
+
+        .hero-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+        }
+
+        .panel {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.7), rgba(15, 23, 42, 0.8));
+            border: 1px solid rgba(129, 140, 248, 0.18);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .phone-shell {
+            width: 300px;
+            height: 610px;
+            border-radius: 2.3rem;
+            border: 2px solid rgba(99, 102, 241, 0.4);
+            background: #020617;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.65);
+        }
+
+        .phone-shell::before {
+            content: "";
+            position: absolute;
+            top: 0.55rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92px;
+            height: 10px;
+            border-radius: 999px;
+            background: #000;
+            z-index: 2;
+        }
+
+        .phone-shell video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #000;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-indigo-500/30 selection:text-white">
+
+    <nav class="fixed top-0 w-full z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index_v2.html" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
+                <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-sm font-medium">Back to Portfolio</span>
+            </a>
+            <div class="text-white font-semibold tracking-tight text-lg flex items-center gap-2">
+                <img src="assets/media/icons/aura_icon.png" alt="AURA icon" class="w-6 h-6 object-contain">
+                AURA
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen pt-24 pb-20 flex items-center overflow-hidden">
+        <div class="hero-glow w-[460px] h-[460px] bg-indigo-600/25 top-[-120px] left-[-120px]"></div>
+        <div class="hero-glow w-[420px] h-[420px] bg-violet-600/20 bottom-[-140px] right-[-80px]"></div>
+
+        <div class="max-w-7xl mx-auto px-6 w-full grid lg:grid-cols-2 gap-12 items-center relative z-10">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-400/30 text-indigo-300 text-xs font-semibold uppercase tracking-wider mb-6">
+                    <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                    Flagship Product
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
+                    Stop renting intelligence.<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-violet-400">Own it locally.</span>
+                </h1>
+                <p class="text-xl text-gray-300 leading-relaxed mb-8 max-w-2xl">
+                    AURA runs 1B-class LLMs natively on Android with LiteRT. No cloud dependency, no query telemetry,
+                    and no transfer of sensitive user intent to external model providers.
+                </p>
+                <div class="flex flex-wrap gap-3 text-sm">
+                    <span class="px-3 py-1 rounded-full border border-indigo-400/30 text-indigo-200 bg-indigo-500/10">#LocalLLM</span>
+                    <span class="px-3 py-1 rounded-full border border-indigo-400/30 text-indigo-200 bg-indigo-500/10">#MedicalPrivacy</span>
+                    <span class="px-3 py-1 rounded-full border border-indigo-400/30 text-indigo-200 bg-indigo-500/10">#LiteRT</span>
+                    <span class="px-3 py-1 rounded-full border border-indigo-400/30 text-indigo-200 bg-indigo-500/10">#OnDeviceAI</span>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="phone-shell">
+                    <video controls autoplay loop muted playsinline preload="metadata">
+                        <source src="assets/media/videos/aura_mobile-video.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="panel rounded-2xl p-6">
+                    <h3 class="font-bold text-white mb-2">Zero Data Egress</h3>
+                    <p class="text-sm text-gray-300">Prompts stay on-device. No token stream leaves the phone.</p>
+                </div>
+                <div class="panel rounded-2xl p-6">
+                    <h3 class="font-bold text-white mb-2">Healthcare Safe</h3>
+                    <p class="text-sm text-gray-300">Sensitive medical queries can be asked without profiling risk.</p>
+                </div>
+                <div class="panel rounded-2xl p-6">
+                    <h3 class="font-bold text-white mb-2">Big-Tech Blindspot</h3>
+                    <p class="text-sm text-gray-300">No OpenAI, Google, or Anthropic telemetry from AURA sessions.</p>
+                </div>
+                <div class="panel rounded-2xl p-6">
+                    <h3 class="font-bold text-white mb-2">Raw Local Inference</h3>
+                    <p class="text-sm text-gray-300">1B-class reasoning on Android microprocessors via LiteRT.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 border-t border-white/10 bg-black/20">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Why We Built AURA</h2>
+            <div class="space-y-5 text-gray-300 leading-relaxed">
+                <p>
+                    Two years ago, running this class of model on a phone looked unrealistic. Today it is practical and,
+                    for sensitive workflows, necessary.
+                </p>
+                <p>
+                    Cloud AI systems are powerful, but they create long-term digital footprints. AURA was designed to
+                    remove that dependency for privacy-critical use cases.
+                </p>
+                <p>
+                    Health, legal, and personal intent data should remain with the user. AURA keeps inference local and
+                    supports decentralized AI as a product principle, not a marketing tagline.
+                </p>
+                <p class="text-indigo-300 font-medium">
+                    Repo and Play Store publication are in active test-phase pipeline.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 bg-black py-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <p class="text-gray-500 text-sm">AURA by HawkFranklin Research | Portfolio page by Vatsal Patel</p>
+            <a href="index_v2.html" class="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors">
+                Return to Portfolio
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>

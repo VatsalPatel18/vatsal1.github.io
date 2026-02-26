@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Genomics | MultiOmics Graph Attention</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        purple: {
+                            400: '#c084fc',
+                            500: '#a855f7',
+                            900: '#581c87',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(20, 15, 30, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at top right, rgba(88, 28, 135, 0.3), transparent 50%),
+                radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.1), transparent 50%);
+        }
+
+        /* Auto-slider transitions */
+        .slide {
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+            position: absolute;
+            inset: 0;
+            transform: scale(1.05);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #e879f9, #a855f7);
+        }
+    </style>
+</head>
+
+<body class="selection:bg-purple-500/30 selection:text-white">
+
+    <div class="hero-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-nav">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index_v2.html"
+                class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
+                <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-sm font-medium">Back to Portfolio</span>
+            </a>
+            <div class="text-purple-400 font-semibold tracking-tight text-lg flex items-center gap-2">
+                <i class="fa-solid fa-dna"></i> Cancer Genomics
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dual-Pane Content -->
+    <main class="min-h-screen pt-24 pb-12 flex items-center">
+        <div
+            class="max-w-[1600px] w-full mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            <!-- LEFT PANE: Information & Links -->
+            <div class="space-y-8 z-10 relative">
+
+                <!-- Decorative Element -->
+                <div
+                    class="absolute -left-20 -top-20 w-64 h-64 bg-purple-600/20 rounded-full blur-[100px] pointer-events-none">
+                </div>
+
+                <div>
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-xs text-purple-300 font-bold uppercase tracking-widest mb-6">
+                        <i class="fa-solid fa-microscope"></i> MultiOmics Research
+                    </div>
+
+                    <h1
+                        class="text-4xl md:text-5xl xl:text-6xl font-extrabold tracking-tighter text-white mb-6 leading-tight">
+                        Graph Attention <br> <span class="text-gradient">Autoencoders</span>
+                    </h1>
+
+                    <p class="text-lg md:text-xl text-gray-300 font-light leading-relaxed mb-6">
+                        Integrating high-dimensional oncology data modalities from TCGA—including genomics,
+                        transcriptomics, and epigenomics—into a unified latent space for nuanced cancer biomarker
+                        extraction and risk stratification.
+                    </p>
+                </div>
+
+                <!-- Bento-style info block -->
+                <div class="glass-card rounded-2xl p-6 md:p-8 space-y-6">
+                    <h3 class="text-white font-bold text-xl border-b border-purple-500/20 pb-4">Key Focus Areas</h3>
+
+                    <ul class="space-y-4 text-gray-300 font-light text-sm md:text-base">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-purple-400 mt-1"></i>
+                            <span><strong>HNSCC Risk Prediction:</strong> Immunomethylomic Tuning of Pathology to Text
+                                Models to accurately forecast Head and Neck Squamous Cell Carcinoma.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-purple-400 mt-1"></i>
+                            <span><strong>Multiomic Integration:</strong> Translating raw TCGA sequencing data into
+                                spatial graphs for Attention Networks to capture structural biological
+                                connections.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Links Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                    <a href="https://huggingface.co/spaces/VatsalPatel18/GraphAttentionAutoencoder-MultiOmics"
+                        target="_blank"
+                        class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-face-smiling-hands text-2xl text-yellow-500"></i>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">HuggingFace Space</h4>
+                                <p class="text-gray-400 text-xs">Interactive Demo</p>
+                            </div>
+                        </div>
+                        <i
+                            class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-white transition-colors"></i>
+                    </a>
+
+                    <a href="#"
+                        class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-brands fa-github text-2xl text-white"></i>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">GitHub Repository</h4>
+                                <p class="text-gray-400 text-xs">Source Code</p>
+                            </div>
+                        </div>
+                        <i
+                            class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-white transition-colors"></i>
+                    </a>
+
+                    <a href="#"
+                        class="group relative overflow-hidden rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition-colors flex items-center justify-between sm:col-span-2">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-file-pdf text-2xl text-red-500"></i>
+                            <div>
+                                <h4 class="text-white font-bold text-sm">Research Publication</h4>
+                                <p class="text-gray-400 text-xs">Read the full methodology and metrics</p>
+                            </div>
+                        </div>
+                        <i
+                            class="fa-solid fa-arrow-up-right-from-square text-gray-500 group-hover:text-white transition-colors"></i>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- RIGHT PANE: Auto Image Slider -->
+            <div
+                class="relative w-full aspect-[4/3] lg:aspect-square xl:aspect-[4/3] rounded-[2rem] overflow-hidden glass-card p-2 md:p-4 group shadow-[0_0_50px_rgba(168,85,247,0.15)]">
+
+                <!-- Inner mask for border radius -->
+                <div class="w-full h-full relative rounded-xl overflow-hidden bg-black/50 border border-white/5">
+
+                    <!-- Slides Container -->
+                    <div id="slides-container" class="w-full h-full relative">
+                        <div class="slide active">
+                            <img src="images/graph_slide1_complete_project.png"
+                                class="w-full h-full object-cover md:object-contain" alt="Complete Project Flow">
+                        </div>
+                        <div class="slide">
+                            <img src="images/graph_slide2_omics_feature.png"
+                                class="w-full h-full object-cover md:object-contain" alt="Omics Features">
+                        </div>
+                        <div class="slide">
+                            <img src="images/graph_slide3_node_features.png"
+                                class="w-full h-full object-cover md:object-contain" alt="Node Features">
+                        </div>
+                        <div class="slide">
+                            <img src="images/graph_slide4_result.png"
+                                class="w-full h-full object-cover md:object-contain" alt="Attention Result">
+                        </div>
+                        <div class="slide">
+                            <img src="images/graph_slide5_final_result.png"
+                                class="w-full h-full object-cover md:object-contain" alt="Final Integration Result">
+                        </div>
+                    </div>
+
+                    <!-- Slide Controls/Progress Overlay -->
+                    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+                        <div class="dot w-2 h-2 rounded-full bg-white transition-all duration-300"></div>
+                        <div class="dot w-2 h-2 rounded-full bg-white/30 transition-all duration-300"></div>
+                        <div class="dot w-2 h-2 rounded-full bg-white/30 transition-all duration-300"></div>
+                        <div class="dot w-2 h-2 rounded-full bg-white/30 transition-all duration-300"></div>
+                        <div class="dot w-2 h-2 rounded-full bg-white/30 transition-all duration-300"></div>
+                    </div>
+
+                    <div
+                        class="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-xs text-purple-300 font-bold tracking-widest uppercase flex items-center gap-2">
+                        <div class="w-1.5 h-1.5 rounded-full bg-purple-500 animate-pulse"></div> Live View
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Simple Auto-Slider Logic
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        function nextSlide() {
+            // Remove active class from current
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.replace('bg-white', 'bg-white/30');
+
+            // Increment
+            currentSlide = (currentSlide + 1) % totalSlides;
+
+            // Add active class to new
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.replace('bg-white/30', 'bg-white');
+        }
+
+        // Set interval for slider (every 4 seconds)
+        let slideInterval = setInterval(nextSlide, 4000);
+
+        // Optional: pause on hover
+        const sliderContainer = document.getElementById('slides-container');
+        sliderContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        sliderContainer.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(nextSlide, 4000);
+        });
+
+    </script>
+</body>
+
+</html>
