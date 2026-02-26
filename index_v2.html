@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vatsal Patel | Principle Research Engineer</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter for that clean Apple look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        apple: {
+                            dark: '#000000',
+                            gray: '#1d1d1f',
+                            lightGray: '#f5f5f7',
+                            blue: '#2997ff',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Hide scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        /* Glassmorphism effects */
+        .glass {
+            background: rgba(29, 29, 31, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(40, 40, 42, 1) 0%, rgba(20, 20, 22, 1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glow effects */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Interactive tags */
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .skill-tag:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Floating Glass Bubbles */
+        .floating-bubbles {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -30vh;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) scale(0.8) rotate(0deg);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            85% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-130vh) translateX(50px) scale(1.2) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        .whx-grid-carousel {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-rows: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(11, 12, 15, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .whx-grid-cell {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.9rem;
+        }
+
+        .whx-grid-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .whx-grid-photo.whx-fade-out {
+            opacity: 0;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-apple-blue selection:text-white relative">
+
+    <!-- Ambient Background Glows -->
+    <div class="glow-orb w-[500px] h-[500px] bg-blue-900 top-[-100px] left-[-100px]"></div>
+    <div class="glow-orb w-[400px] h-[400px] bg-purple-900 bottom-[-100px] right-[-100px]"></div>
+
+    <!-- Floating Glass Bubbles -->
+    <div class="floating-bubbles">
+        <div class="bubble"
+            style="width: 120px; height: 120px; left: 10%; animation-duration: 22s; animation-delay: 0s;"></div>
+        <div class="bubble" style="width: 80px; height: 80px; left: 25%; animation-duration: 16s; animation-delay: 5s;">
+        </div>
+        <div class="bubble"
+            style="width: 200px; height: 200px; left: 45%; animation-duration: 28s; animation-delay: 2s;"></div>
+        <div class="bubble"
+            style="width: 150px; height: 150px; left: 70%; animation-duration: 24s; animation-delay: 8s;"></div>
+        <div class="bubble" style="width: 90px; height: 90px; left: 85%; animation-duration: 19s; animation-delay: 1s;">
+        </div>
+        <div class="bubble"
+            style="width: 250px; height: 250px; left: 55%; animation-duration: 32s; animation-delay: 12s;"></div>
+        <div class="bubble" style="width: 60px; height: 60px; left: 35%; animation-duration: 14s; animation-delay: 9s;">
+        </div>
+    </div>
+
+    <div class="max-w-[1600px] mx-auto min-h-screen flex flex-col lg:flex-row relative">
+
+        <!-- ========================================== -->
+        <!-- LEFT PANEL: STATIC / STICKY INFO           -->
+        <!-- ========================================== -->
+        <aside
+            class="w-full lg:w-[40%] xl:w-[35%] lg:h-screen lg:sticky top-0 p-6 md:p-12 flex flex-col justify-between z-10">
+
+            <div class="glass p-8 rounded-3xl h-full flex flex-col justify-between relative overflow-hidden">
+                <!-- Inner ambient glow -->
+                <div class="absolute top-0 right-0 w-32 h-32 bg-apple-blue rounded-full blur-[80px] opacity-20"></div>
+
+                <div>
+                    <div
+                        class="w-24 h-24 rounded-2xl bg-gray-800 flex items-center justify-center overflow-hidden mb-8 border border-white/10 shadow-xl relative inline-block">
+                        <img src="images/Vatsal_Patel.jpg" alt="Vatsal Patel"
+                            class="absolute inset-0 w-full h-full object-cover"
+                            onerror="this.src='https://ui-avatars.com/api/?name=Vatsal+Patel&background=2997ff&color=fff'">
+                    </div>
+
+                    <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-2">Vatsal Patel</h1>
+                    <h2 class="text-xl text-gray-400 font-medium mb-6">Principle Research Engineer <br> <span
+                            class="text-gradient bg-gradient-to-r from-blue-400 to-emerald-400">HawkFranklin
+                            Research</span></h2>
+
+                    <p class="text-gray-300 leading-relaxed mb-6 font-light">
+                        Developing Hands-on AI for Healthcare & Scientific Research. Bridging the gap between
+                        cutting-edge computational power and real-world clinical workflows.
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <span class="skill-tag">AI Agents & MCP</span>
+                        <span class="skill-tag">Graph Attention Networks</span>
+                        <span class="skill-tag">Transformers</span>
+                        <span class="skill-tag">Clinical Foundation Models</span>
+                        <span class="skill-tag">ACLIS</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <a href="#feed"
+                            class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all">
+                                <i class="fa-solid fa-bolt text-sm"></i>
+                            </div>
+                            <span class="font-medium">Latest Updates</span>
+                        </a>
+                        <a href="#projects"
+                            class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-apple-blue group-hover:text-white transition-all">
+                                <i class="fa-solid fa-arrow-right text-sm"></i>
+                            </div>
+                            <span class="font-medium">View Portfolio</span>
+                        </a>
+                        <a href="#experience"
+                            class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                                <i class="fa-solid fa-graduation-cap text-sm"></i>
+                            </div>
+                            <span class="font-medium">Journey & Education</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mt-12 pt-8 border-t border-white/10 flex gap-4">
+                    <a href="https://www.linkedin.com/in/vatsalpatel18/" target="_blank"
+                        class="w-12 h-12 rounded-full glass flex items-center justify-center text-xl hover:bg-white hover:text-black transition-all">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/VatsalPatel18" target="_blank"
+                        class="w-12 h-12 rounded-full glass flex items-center justify-center text-xl hover:bg-white hover:text-black transition-all">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="mailto:vatsal1804@gmail.com"
+                        class="w-12 h-12 rounded-full glass flex items-center justify-center text-xl hover:bg-white hover:text-black transition-all">
+                        <i class="fa-solid fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ========================================== -->
+        <!-- RIGHT PANEL: DYNAMIC SCROLLING CONTENT     -->
+        <!-- ========================================== -->
+        <main class="w-full lg:w-[60%] xl:w-[65%] p-6 md:p-12 pb-32 space-y-24">
+
+            <!-- SECTION: DYNAMIC FEED (LinkedIn Concept) -->
+            <section id="feed" class="space-y-8 mt-12 lg:mt-0">
+                <div class="reveal">
+                    <h3 class="text-sm font-bold tracking-widest text-gray-500 uppercase mb-2">Live Updates</h3>
+                    <h2 class="text-3xl font-bold">Latest from LinkedIn</h2>
+                </div>
+
+                <!-- Feed Post 1 -->
+                <a href="https://www.linkedin.com/posts/vatsal-patel-95b429141_whx-worldhealthexpodubai-arabhealth-activity-7428195692906459136-bo9I"
+                    target="_blank"
+                    class="block glass-card rounded-[2rem] p-6 md:p-8 reveal hover:border-blue-500/50 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden relative">
+                                <img src="images/me_presenting_poster.png" alt="Profile"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg leading-tight">Vatsal Patel</h4>
+                                <p class="text-xs text-gray-400">Principle Research Engineer | AI in healthcare</p>
+                            </div>
+                        </div>
+                        <i class="fa-brands fa-linkedin text-blue-500 text-2xl opacity-80"></i>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed mb-6 font-light">
+                        Real-world deployment is where technology and perception truly get tested.<br><br>
+                        At WHX Dubai, our team at HawkFranklin Research conducted live previews of <strong>Derma
+                            AI</strong>, a comprehensive dermatological skin lesion detection platform we developed in
+                        collaboration with Oracle Health and EHSUAE.<br><br>
+                        Seeing the system perform seamlessly under live, unscripted conditions was a surreal and proud
+                        moment. We designed Derma AI to bridge the gap between patient anxiety and clinical efficiency
+                        using multi-instance learning (MIL) models for detailed differential diagnosis.
+                    </p>
+                    <div class="w-full h-64 rounded-2xl mb-6 overflow-hidden relative whx-grid-carousel">
+                        <div class="whx-grid-cell">
+                            <img class="whx-grid-photo" src="images/whx_expo26/image1_expo.jpg" alt="WHX Dubai showcase image 1">
+                        </div>
+                        <div class="whx-grid-cell">
+                            <img class="whx-grid-photo" src="images/whx_expo26/image2_expo.jpg" alt="WHX Dubai showcase image 2">
+                        </div>
+                        <div class="whx-grid-cell">
+                            <img class="whx-grid-photo" src="images/whx_expo26/image4_expo.jpg" alt="WHX Dubai showcase image 3">
+                        </div>
+                        <div class="whx-grid-cell">
+                            <img class="whx-grid-photo" src="images/whx_expo26/image5_expo.jpg" alt="WHX Dubai showcase image 4">
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Feed Post 2 -->
+                <a href="https://www.linkedin.com/posts/vatsal-patel-95b429141_aura-llm-privacy-activity-7395029142831599616-e_lO"
+                    target="_blank"
+                    class="block glass-card rounded-[2rem] p-6 md:p-8 reveal hover:border-emerald-500/50 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden relative">
+                                <img src="images/me_presenting_poster.png" alt="Profile"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg leading-tight">Vatsal Patel</h4>
+                                <p class="text-xs text-gray-400">Principle Research Engineer | AI in healthcare</p>
+                            </div>
+                        </div>
+                        <i class="fa-brands fa-linkedin text-blue-500 text-2xl opacity-80"></i>
+                    </div>
+                    <div class="bg-blue-900/20 border border-blue-500/20 rounded-xl p-4 mb-6">
+                        <span class="text-blue-400 text-sm font-bold tracking-wider uppercase"><i
+                                class="fa-solid fa-mobile-screen-button mr-2"></i>Product Launch</span>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed font-light mb-6">
+                        Stop renting intelligence. Own it locally.<br><br>
+                        Two years ago, running a 1B+ parameter LLM on a phone was a fantasy. Today, it’s working code.
+                        I’m excited to share <strong>AURA</strong>, our first open-source app from HawkFranklin
+                        Research.<br><br>
+                        We are using LiteRT to run heavy models like DeepSeek R1 and Gemma 3 directly on Android
+                        microprocessors. Your query remains private. No data sent to OpenAI/Google/Anthropic. Total
+                        offline capability.
+                    </p>
+                </a>
+
+                <!-- Feed Post 3 -->
+                <a href="https://www.linkedin.com/posts/vatsal-patel-95b429141_pelliscope-dermatologyai-healthtech-activity-7407028143110254592-A1_G"
+                    target="_blank"
+                    class="block glass-card rounded-[2rem] p-6 md:p-8 reveal hover:border-red-500/50 transition-colors">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden relative">
+                                <img src="images/me_presenting_poster.png" alt="Profile"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg leading-tight">Vatsal Patel</h4>
+                                <p class="text-xs text-gray-400">Principle Research Engineer | AI in healthcare</p>
+                            </div>
+                        </div>
+                        <i class="fa-brands fa-linkedin text-blue-500 text-2xl opacity-80"></i>
+                    </div>
+                    <p class="text-gray-300 leading-relaxed font-light mb-6">
+                        For the past year, I've been deeply involved in building the next generation of cancer
+                        diagnostic tools. Developing <strong>OncoGemma</strong>, our Advanced Pathology Workstation, has
+                        been uniquely challenging.<br><br>
+                        OncoGemma integrates high-resolution Whole Slide Imaging (WSI) with multimodal AI... structured
+                        around:<br>
+                        1. Diagnosis: Cancer Subtype Prediction<br>
+                        2. Prognosis: Mutational Biomarker Identification (Paired with my proprietary Graph Attention
+                        Autoencoder for risk stratification)
+                    </p>
+                </a>
+            </section>
+
+
+            <!-- SECTION: TIMELINE -->
+            <section id="experience" class="space-y-8">
+                <div class="reveal">
+                    <h3 class="text-sm font-bold tracking-widest text-gray-500 uppercase mb-2">The Journey</h3>
+                    <h2 class="text-3xl font-bold">Experience & Education</h2>
+                </div>
+
+                <div
+                    class="relative pl-8 md:pl-0 space-y-12 before:absolute before:inset-0 before:ml-10 md:before:mx-auto before:-translate-x-px md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-white/20 before:to-transparent">
+
+                    <!-- Role: HawkFranklin / Masters -->
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active reveal">
+                        <div
+                            class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-black bg-emerald-500 absolute left-0 md:left-1/2 -translate-x-1/2 shadow shadow-emerald-500/50 z-10 transition-transform group-hover:scale-110">
+                            <i class="fa-solid fa-bolt text-white text-xs"></i>
+                        </div>
+                        <div
+                            class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] glass-card p-6 md:p-8 rounded-2xl ml-auto md:ml-0 md:mr-auto">
+                            <span class="text-emerald-400 font-bold text-xs tracking-wider uppercase">May 2025 -
+                                Present</span>
+                            <h3 class="text-xl font-bold text-white mt-2">Principal Research Engineer</h3>
+                            <p class="text-gray-300 text-sm mt-1 font-medium italic">HawkFranklin Research</p>
+                            <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">Developing end-to-end
+                                machine learning and AI projects for computational biology. Created an Agent-based
+                                framework for privacy-preserving model training.</p>
+
+                            <hr class="border-white/10 my-4">
+
+                            <span class="text-blue-400 font-bold text-xs tracking-wider uppercase">Mar 2023 - Feb
+                                2025</span>
+                            <h3 class="text-lg font-bold text-white mt-2">M.Sc. Artificial Intelligence</h3>
+                            <p class="text-gray-300 text-sm mt-1 font-medium italic">IU International University of
+                                Applied Sciences</p>
+                            <p class="text-gray-400 text-sm mt-2 font-light">Graduated with a GPA of 1.8 (German scale).
+                                Focus on advanced ML, deep learning, and biomedical applications.</p>
+                        </div>
+                    </div>
+
+                    <!-- Role: First Job -->
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active reveal">
+                        <div
+                            class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-black bg-blue-500 absolute left-0 md:left-1/2 -translate-x-1/2 shadow shadow-blue-500/50 z-10 transition-transform group-hover:scale-110">
+                            <i class="fa-solid fa-briefcase text-white text-xs"></i>
+                        </div>
+                        <div
+                            class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] glass-card p-6 md:p-8 rounded-2xl ml-auto">
+                            <span class="text-blue-400 font-bold text-xs tracking-wider uppercase">Sep 2021 - Mar
+                                2025</span>
+                            <h3 class="text-xl font-bold text-white mt-2">Machine Learning Analyst</h3>
+                            <p class="text-gray-300 text-sm mt-1 font-medium italic">BRIC-National Institute of
+                                Biomedical Genomics</p>
+                            <p class="text-gray-400 text-sm mt-4 font-light leading-relaxed">
+                                My foundational First Job experience where I designed deep learning frameworks.
+                                Developed automated DL pipelines on GPUs, Convolutional Autoencoders for Histopathology,
+                                and Graph Attention Networks for Biomarker Identification.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Bachelors -->
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active reveal">
+                        <div
+                            class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-black bg-gray-500 absolute left-0 md:left-1/2 -translate-x-1/2 z-10 transition-transform group-hover:scale-110">
+                            <i class="fa-solid fa-book-open text-white text-xs"></i>
+                        </div>
+                        <div
+                            class="w-[calc(100%-4rem)] md:w-[calc(50%-3rem)] glass-card p-6 md:p-8 rounded-2xl ml-auto md:ml-0 md:mr-auto">
+                            <span class="text-gray-400 font-bold text-xs tracking-wider uppercase">Jun 2018 - May
+                                2021</span>
+                            <h3 class="text-xl font-bold text-white mt-2">B.Sc. Mathematics</h3>
+                            <p class="text-gray-300 text-sm mt-1 font-medium italic">St. Xavier's College</p>
+                            <p class="text-gray-400 text-sm mt-4 font-light">Grade: 9.3/10. Major in Mathematics with a
+                                Minor in Physics. Established the analytical and rigorous problem-solving foundation
+                                necessary for advanced algorithm development.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- SECTION: KEY HIGHLIGHTS (Bento Box Style) -->
+            <section id="highlights" class="space-y-8">
+                <div class="reveal">
+                    <h3 class="text-sm font-bold tracking-widest text-gray-500 uppercase mb-2">Specializations</h3>
+                    <h2 class="text-3xl font-bold">Research & Certifications</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Cancer Genomics -->
+                    <div class="glass-card rounded-[2rem] p-8 md:col-span-2 relative overflow-hidden reveal group">
+                        <div class="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-black opacity-80 z-0"></div>
+                        <img src="images/histo_slide1_wsi.png"
+                            class="absolute right-0 top-0 h-full w-1/2 object-cover opacity-20 mix-blend-screen group-hover:opacity-40 transition-opacity duration-700"
+                            alt="Cancer Genomics">
+
+                        <div class="relative z-10 md:w-2/3">
+                            <div
+                                class="w-14 h-14 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-2xl mb-6 border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.4)]">
+                                <i class="fa-solid fa-dna"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold mb-3">Cancer Genomics Works</h3>
+                            <p class="text-gray-300 leading-relaxed font-light mb-4">
+                                Deep Learning models applied strictly to oncology. Key focus areas include
+                                <strong>Immunomethylomic Tuning of Pathology</strong> to Text Models for HNSCC Risk
+                                Prediction, and utilizing <strong>Graph Attention Networks</strong> to integrate diverse
+                                multiomic data types from TCGA for biomarker extraction.
+                            </p>
+                            <a href="https://huggingface.co/spaces/VatsalPatel18/GraphAttentionAutoencoder-MultiOmics"
+                                target="_blank"
+                                class="inline-flex items-center gap-2 mt-4 px-6 py-2.5 rounded-full bg-white/10 hover:bg-white hover:text-black transition-all font-medium text-sm group-hover:bg-purple-500 group-hover:text-white group-hover:border-transparent border border-white/20">
+                                <span>View HuggingFace Space</span> <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- TF Cert -->
+                    <div
+                        class="glass-card rounded-[2rem] p-8 reveal group flex flex-col justify-between relative overflow-hidden">
+                        <div
+                            class="absolute -right-10 -bottom-10 opacity-10 blur-sm transform scale-150 rotate-12 transition group-hover:scale-110">
+                            <i class="fa-brands fa-google text-[10rem] text-orange-500"></i>
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-500 flex items-center justify-center text-2xl mb-6 border border-orange-500/30">
+                                <i class="fa-solid fa-network-wired"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Deep Learning & TF Certification</h3>
+                            <p class="text-gray-400 text-sm font-light mt-4">
+                                <strong>DeepLearning.AI TensorFlow Developer.</strong> Official verification in
+                                building, training, and deploying scalable neural networks for complex visions and
+                                signal data.
+                            </p>
+                        </div>
+                        <div class="mt-8 relative z-10 flex items-center justify-between">
+                            <span
+                                class="px-3 py-1 bg-orange-500/10 border border-orange-500/20 text-orange-400 rounded-full text-xs font-bold uppercase tracking-wider">Verified
+                                Credential</span>
+
+                            <button onclick="openCertModal('Placeholder_Cert.png')"
+                                class="text-orange-400 hover:text-white text-sm font-medium transition-colors flex items-center gap-2">
+                                View Image <i class="fa-solid fa-expand text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Research Papers -->
+                    <div
+                        class="glass-card rounded-[2rem] p-8 reveal group flex flex-col justify-between relative overflow-hidden">
+                        <div
+                            class="absolute -right-4 -top-4 opacity-10 blur-sm transform transition group-hover:scale-110">
+                            <i class="fa-solid fa-file-contract text-[8rem] text-blue-500"></i>
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-2xl mb-6 border border-blue-500/30">
+                                <i class="fa-solid fa-file-signature"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-2">Research Papers</h3>
+                            <ul class="text-gray-400 text-sm font-light mt-4 space-y-3">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-check text-emerald-400 mt-1 text-xs"></i>
+                                    <span>Top In-Silico pathogenicity prediction methods (BioData Mining, Jan
+                                        2025)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-check text-emerald-400 mt-1 text-xs"></i>
+                                    <span>Dysregulated immune response for COVID-19 (Cytokine, Dec 2023)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+
+            <!-- SECTION: HAWKFRANKLIN PROJECTS -->
+            <section id="projects" class="space-y-8">
+                <div class="reveal">
+                    <h3 class="text-sm font-bold tracking-widest text-gray-500 uppercase mb-2">Company Portfolio & Tools
+                    </h3>
+                    <h2 class="text-3xl font-bold text-gradient bg-gradient-to-r from-blue-400 to-emerald-400">
+                        HawkFranklin & Flagship Projects</h2>
+                    <p class="text-gray-400 mt-2 font-light">As part of HawkFranklin Research, my work extends into
+                        comprehensive company ecosystems and open-source intelligence.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Project Link 1: OncoGemma -->
+                    <a href="project_oncogemma.html"
+                        class="glass-card rounded-[2rem] p-8 flex flex-col justify-between group reveal h-full relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/60 z-10 group-hover:bg-black/70 transition-colors"></div>
+                        <video autoplay loop muted playsinline
+                            class="absolute inset-x-0 bottom-0 min-w-full opacity-30 z-0 pointer-events-none group-hover:opacity-50 transition-opacity">
+                            <source src="assets/media/videos/oncogemma-demo1_crop.mp4" type="video/mp4">
+                        </video>
+                        <div class="relative z-20">
+                            <div
+                                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-900 to-black border border-purple-800 flex items-center justify-center text-purple-400 text-2xl mb-6 shadow-[0_0_20px_rgba(168,85,247,0.2)] group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                                <img src="assets/media/icons/oncogemma_logo_only.png" alt="OncoGemma logo"
+                                    class="w-10 h-10 object-contain">
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">OncoGemma</h3>
+                            <p class="text-gray-300 font-light text-sm">Advanced Pathology Workstation integrating
+                                high-resolution WSI with multimodal AI for cancer subtype prediction.</p>
+                        </div>
+                        <div
+                            class="mt-8 flex justify-end text-purple-400 group-hover:text-white transition-colors relative z-20">
+                            <span
+                                class="mr-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">View
+                                Project</span>
+                            <i class="fa-solid fa-arrow-right -rotate-45 text-xl"></i>
+                        </div>
+                    </a>
+
+                    <!-- Project Link 2: PelliScope -->
+                    <a href="project_pelliscope.html"
+                        class="glass-card rounded-[2rem] p-8 flex flex-col justify-between group reveal h-full relative overflow-hidden">
+                        <div class="absolute inset-0 bg-black/40 z-10 group-hover:bg-black/60 transition-colors"></div>
+                        <video autoplay loop muted playsinline
+                            class="absolute inset-0 w-full h-full object-cover opacity-30 z-0 pointer-events-none group-hover:opacity-50 transition-opacity">
+                            <source src="assets/media/videos/pelliscope-mobile-ad1.mp4" type="video/mp4">
+                        </video>
+                        <div class="relative z-20">
+                            <div
+                                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-900 to-black border border-emerald-800 flex items-center justify-center text-emerald-400 text-2xl mb-6 shadow-[0_0_20px_rgba(52,211,153,0.2)] group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                                <img src="assets/media/icons/pelliscope.png" alt="PelliScope logo"
+                                    class="w-10 h-10 object-contain">
+                            </div>
+                            <h3 class="text-2xl font-bold text-white mb-2">PelliScope</h3>
+                            <p class="text-gray-300 font-light text-sm">Dermatology AI. Pre-consultation workflows
+                                powered by differential diagnostics with an AUC ≈ 0.863. Focus on GCC & US Telemedicine.
+                            </p>
+                        </div>
+                        <div
+                            class="mt-8 flex justify-end text-emerald-400 group-hover:text-white transition-colors relative z-20">
+                            <span
+                                class="mr-2 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">View
+                                Project</span>
+                            <i class="fa-solid fa-arrow-right -rotate-45 text-xl"></i>
+                        </div>
+                    </a>
+
+                    <!-- MedDiscover -->
+                    <a href="project_meddiscover.html"
+                        class="glass-card rounded-[2rem] p-8 flex flex-col justify-between group reveal h-full border-t border-blue-500/20 relative overflow-hidden">
+                        <div class="relative z-20">
+                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-blue-400 transition-colors">
+                                MedDiscover RAG</h3>
+                            <p class="text-gray-400 font-light text-sm mb-4">An AI-powered RAG tool for biomedical
+                                researchers to query PubMed using MedCPT GPU embeddings and LLMs.</p>
+                            <span
+                                class="text-xs bg-blue-900/30 text-blue-300 px-3 py-1 rounded-full border border-blue-500/30">HuggingFace
+                                / Github</span>
+                        </div>
+                        <div
+                            class="absolute bottom-6 right-8 text-blue-500 opacity-0 group-hover:opacity-100 transition-all transform translate-y-4 group-hover:translate-y-0 z-20">
+                            <i class="fa-solid fa-arrow-right text-xl"></i>
+                        </div>
+                    </a>
+
+                    <!-- ML Copilot -->
+                    <div
+                        class="glass-card rounded-[2rem] p-8 flex flex-col justify-between group reveal h-full border-t border-purple-500/20">
+                        <div>
+                            <h3 class="text-xl font-bold text-white mb-2">ML Copilot Agent</h3>
+                            <p class="text-gray-400 font-light text-sm mb-4">Interactive machine learning assistant
+                                streamlining data preprocessing, training, and evaluation via LLM command-line
+                                interface.</p>
+                            <span
+                                class="text-xs bg-purple-900/30 text-purple-300 px-3 py-1 rounded-full border border-purple-500/30">LangChain
+                                / PyPI</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div id="certModal"
+        class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/90 backdrop-blur-sm transition-opacity opacity-0">
+        <div
+            class="relative max-w-5xl w-full h-[80vh] bg-gray-900 rounded-2xl border border-white/20 p-2 shadow-2xl flex flex-col transition-transform scale-95 origin-center">
+
+            <div class="flex justify-between items-center px-4 py-3 border-b border-white/10 mb-4">
+                <h3 class="text-white font-semibold">Official Credential</h3>
+                <button onclick="closeCertModal()"
+                    class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-500/50 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex-grow flex items-center justify-center overflow-hidden relative">
+                <!-- Fallback to placehold.co if the image is missing -->
+                <img id="certImage" src="" alt="Certificate" class="max-w-full max-h-full object-contain rounded-lg"
+                    onerror="this.src='https://placehold.co/800x600/1D1D1F/FFFFFF?text=Placeholder+Certificate';">
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Scroll Animation & Modal Script -->
+    <script>
+        // Modal Logic
+        const modal = document.getElementById('certModal');
+        const modalImage = document.getElementById('certImage');
+        const modalInner = modal.querySelector('div');
+
+        function openCertModal(imageSrc) {
+            modalImage.src = 'images/' + imageSrc; // Assuming images are in the images folder
+            modal.classList.remove('hidden');
+            // Small delay to allow display flex to apply before transitioning opacity
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalInner.classList.remove('scale-95');
+                modalInner.classList.add('scale-100');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeCertModal() {
+            modal.classList.add('opacity-0');
+            modalInner.classList.remove('scale-100');
+            modalInner.classList.add('scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto'; // Restore scrolling
+            }, 300); // match transition duration
+        }
+
+        // Close on clicking outside the image
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeCertModal();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeCertModal();
+            }
+        });
+
+        // Scroll Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: stop observing once revealed
+                        // observer.unobserve(entry.target); 
+                    }
+                });
+            }, {
+                threshold: 0.1, // Trigger when 10% of element is visible
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+
+            const whxGridSources = [
+                'images/whx_expo26/image1_expo.jpg',
+                'images/whx_expo26/image2_expo.jpg',
+                'images/whx_expo26/image4_expo.jpg',
+                'images/whx_expo26/image5_expo.jpg'
+            ];
+            const whxGridPhotos = Array.from(document.querySelectorAll('.whx-grid-photo'));
+            let whxOffset = 0;
+
+            if (whxGridPhotos.length === 4) {
+                setInterval(() => {
+                    whxGridPhotos.forEach((img) => img.classList.add('whx-fade-out'));
+
+                    setTimeout(() => {
+                        whxOffset = (whxOffset + 1) % whxGridSources.length;
+                        whxGridPhotos.forEach((img, index) => {
+                            img.src = whxGridSources[(whxOffset + index) % whxGridSources.length];
+                            img.classList.remove('whx-fade-out');
+                        });
+                    }, 300);
+                }, 3200);
+            }
+        });
+    </script>
+</body>
+
+</html>

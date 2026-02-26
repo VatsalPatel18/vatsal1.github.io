@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedDiscover | RAG Pipeline</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 30, 32, 1) 0%, rgba(15, 15, 17, 1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-bg-container {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, rgba(30, 58, 138, 0.2) 0%, rgba(0, 0, 0, 1) 70%);
+        }
+
+        .grid-pattern {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        .text-gradient-blue {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #60a5fa, #3b82f6);
+        }
+    </style>
+</head>
+
+<body class="selection:bg-blue-500/30 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index_v2.html"
+                class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
+                <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-sm font-medium">Back to Portfolio</span>
+            </a>
+            <div class="text-white font-semibold tracking-tight text-lg flex items-center gap-2">
+                <i class="fa-solid fa-database text-blue-500"></i> MedDiscover RAG
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[70vh] flex items-center justify-center pt-20 overflow-hidden">
+        <div class="hero-bg-container">
+            <div class="absolute inset-0 grid-pattern"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 text-center z-10 relative">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-sm text-blue-400 mb-8 backdrop-blur-md">
+                <i class="fa-brands fa-github"></i> Open Source
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-6">
+                Query PubMed <br> <span class="text-gradient-blue">Like an Expert.</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto font-light tracking-tight mb-10">
+                An AI-powered Retrieval-Augmented Generation (RAG) tool for biomedical researchers.
+            </p>
+
+        </div>
+    </section>
+
+    <!-- Details Section -->
+    <section class="py-24 relative z-10 bg-black">
+        <div class="max-w-5xl mx-auto px-6">
+
+            <div class="glass-card p-10 md:p-14 rounded-3xl relative overflow-hidden">
+                <!-- Decorative glow -->
+                <div class="absolute -top-32 -right-32 w-64 h-64 bg-blue-500/20 rounded-full blur-[100px]"></div>
+
+                <h2 class="text-3xl font-bold text-white mb-6">The Architecture</h2>
+                <p class="text-gray-300 font-light leading-relaxed text-lg mb-8">
+                    General LLMs hallucinate badly when asked nuanced medical questions. MedDiscover solves this by
+                    strictly grounding answers in heavily-cited PubMed literature.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+                        <div class="text-blue-400 mb-4 text-xl"><i class="fa-solid fa-layer-group"></i></div>
+                        <h3 class="font-bold text-white mb-2">MedCPT Embeddings</h3>
+                        <p class="text-gray-400 text-sm">We use specialized, domain-trained encoders rather than generic
+                            OpenAI ADA models to vectorize text.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+                        <div class="text-blue-400 mb-4 text-xl"><i class="fa-solid fa-server"></i></div>
+                        <h3 class="font-bold text-white mb-2">Vector Search</h3>
+                        <p class="text-gray-400 text-sm">Fast retrieval of the top-k most relevant literature passages
+                            based on semantic cosine similarity.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+                        <div class="text-blue-400 mb-4 text-xl"><i class="fa-solid fa-robot"></i></div>
+                        <h3 class="font-bold text-white mb-2">Synthesis</h3>
+                        <p class="text-gray-400 text-sm">The LLM synthesizes an answer referencing *only* the retrieved
+                            context, preventing hallucinated citations.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black pt-12 pb-8 mt-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+            <p class="text-gray-500 text-sm mb-4">A project by HawkFranklin Research | Architecture by Vatsal Patel</p>
+            <a href="index_v2.html" class="text-blue-500 hover:text-blue-400 text-sm font-medium transition-colors">
+                Return to Portfolio
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>

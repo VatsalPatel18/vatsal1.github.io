@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PelliScope | Dermatology AI</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-nav {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 30, 32, 1) 0%, rgba(15, 15, 17, 1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-video-container {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            opacity: 0.4;
+            mix-blend-mode: screen;
+            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        }
+
+        .text-gradient-emerald {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #34d399, #059669);
+        }
+
+        .product-mark {
+            width: 1.5rem;
+            height: 1.5rem;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-emerald-500/30 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index_v2.html"
+                class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
+                <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-sm font-medium">Back to Portfolio</span>
+            </a>
+            <div class="text-white font-semibold tracking-tight text-lg flex items-center gap-2">
+                <img src="assets/media/icons/pelliscope.png" alt="PelliScope logo" class="product-mark">
+                PelliScope
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="hero-video-container">
+            <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                <source src="assets/media/videos/pelliscope_preview.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="max-w-4xl mx-auto px-6 text-center z-10 relative">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-sm text-emerald-400 mb-8 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Deployment Ready (AUC 0.863)
+            </div>
+
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter text-white mb-6">
+                Dermatology AI. <br> <span class="text-gradient-emerald">Redefined.</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto font-light tracking-tight mb-10">
+                A clinically-validated, multi-instance learning platform built to mimic real-world dermatologist
+                workflows.
+            </p>
+
+            <a href="https://www.pelliscope.in" target="_blank"
+                class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-emerald-500 text-black font-semibold hover:bg-emerald-400 hover:scale-105 transition-all shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                Visit Official Website <i class="fa-solid fa-arrow-up-right-from-square text-sm"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Details Section -->
+    <section class="py-24 relative z-10 bg-black">
+        <div class="max-w-6xl mx-auto px-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <!-- Stat 1 -->
+                <div class="glass-card p-8 rounded-3xl text-center">
+                    <div class="text-4xl font-bold text-emerald-400 mb-2">450+</div>
+                    <div class="text-gray-400 text-sm uppercase tracking-wider font-semibold">Real Clinical Cases</div>
+                    <div class="text-gray-500 text-xs mt-2">Validated Dataset</div>
+                </div>
+                <!-- Stat 2 -->
+                <div class="glass-card p-8 rounded-3xl text-center">
+                    <div class="text-4xl font-bold text-emerald-400 mb-2">0.863</div>
+                    <div class="text-gray-400 text-sm uppercase tracking-wider font-semibold">Top-1 AUC</div>
+                    <div class="text-gray-500 text-xs mt-2">Diagnostic Accuracy</div>
+                </div>
+                <!-- Stat 3 -->
+                <div class="glass-card p-8 rounded-3xl text-center">
+                    <div class="text-4xl font-bold text-emerald-400 mb-2">1-3</div>
+                    <div class="text-gray-400 text-sm uppercase tracking-wider font-semibold">Images Per Case</div>
+                    <div class="text-gray-500 text-xs mt-2">Multi-Instance Learning</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-white tracking-tight">How Clinicians Actually Work
+                    </h2>
+                    <p class="text-gray-300 font-light leading-relaxed text-lg">
+                        Standard AI models expect a single, perfectly framed image. But in real tele-dermatology,
+                        patients submit multiple photos of varying quality, angles, and lighting.
+                    </p>
+                    <p class="text-gray-300 font-light leading-relaxed text-lg">
+                        <strong>PelliScope solves this.</strong> We implemented an <span
+                            class="text-emerald-400 font-semibold">Attention-Based Multi-Instance Learning (MIL)</span>
+                        architecture. The neural network learns to "look" at all 3 photos simultaneously, paying the
+                        highest attention to the clearest diagnostic features—exactly how a human doctor evaluates a
+                        case.
+                    </p>
+
+                    <ul class="space-y-4 mt-8">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span class="text-gray-300">Outperforms generic LLMs (GPT-4V, Gemini Pro) in specialized
+                                differential diagnosis.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span class="text-gray-300">Designed specifically for GCC and US Telemedicine
+                                workflows.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-emerald-500 mt-1"></i>
+                            <span class="text-gray-300">Pre-consultation triage to reduce clinician fatigue.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div
+                    class="relative rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl glass-card aspect-[9/16] max-w-sm mx-auto">
+                    <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                        <source src="assets/media/videos/pelliscope-mobile-ad1.mp4" type="video/mp4">
+                    </video>
+                    <!-- Phone Frame Overlay Mockup -->
+                    <div class="absolute inset-0 pointer-events-none border-[12px] border-black rounded-[2rem]"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black pt-12 pb-8 mt-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col items-center">
+            <p class="text-gray-500 text-sm mb-4">A project by HawkFranklin Research | Architecture by Vatsal Patel</p>
+            <a href="index_v2.html"
+                class="text-emerald-500 hover:text-emerald-400 text-sm font-medium transition-colors">
+                Return to Portfolio
+            </a>
+        </div>
+    </footer>
+
+</body>
+
+</html>
