@@ -5,7 +5,7 @@ window.CONTENT_MAP = {
     purpose:
       "Single source of truth for portfolio content, detail-page routing, and legacy slide/floating-node image reuse.",
     sourceFiles: [
-      "index_v2.html",
+      "index.html",
       "project_pelliscope.html",
       "project_oncogemma.html",
       "project_meddiscover.html",
@@ -17,43 +17,43 @@ window.CONTENT_MAP = {
     indexV2Cards: {
       cancerGenomicsWorks: {
         currentBehavior: "Static card + external HuggingFace link only",
-        currentPage: "index_v2.html#highlights",
+        currentPage: "index.html#highlights",
         proposedPage: "project_cancer_genomics.html",
         status: "needs_new_page"
       },
       tfCertification: {
         currentBehavior: "Modal trigger with placeholder image id",
-        currentPage: "index_v2.html#highlights",
+        currentPage: "index.html#highlights",
         proposedPage: "certification_tensorflow_developer.html",
         status: "needs_real_media_and_page"
       },
       researchPapers: {
         currentBehavior: "Static list in highlight card",
-        currentPage: "index_v2.html#highlights",
+        currentPage: "index.html#highlights",
         proposedPage: "research_publications.html",
         status: "needs_new_page"
       },
       oncogemma: {
         currentBehavior: "Linked to dedicated page",
-        currentPage: "index_v2.html#projects",
+        currentPage: "index.html#projects",
         proposedPage: "project_oncogemma.html",
         status: "already_exists"
       },
       pelliscope: {
         currentBehavior: "Linked to dedicated page",
-        currentPage: "index_v2.html#projects",
+        currentPage: "index.html#projects",
         proposedPage: "project_pelliscope.html",
         status: "already_exists"
       },
       meddiscover: {
         currentBehavior: "Linked to dedicated page",
-        currentPage: "index_v2.html#projects",
+        currentPage: "index.html#projects",
         proposedPage: "project_meddiscover.html",
         status: "already_exists"
       },
       mlCopilotAgent: {
         currentBehavior: "Card only, no dedicated page link",
-        currentPage: "index_v2.html#projects",
+        currentPage: "index.html#projects",
         proposedPage: "project_ml_copilot.html",
         status: "needs_new_page"
       }
@@ -72,12 +72,12 @@ window.CONTENT_MAP = {
       {
         slot: "post_2_aura",
         url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_aura-llm-privacy-activity-7395029142831599616-e_lO",
-        status: "present_in_index_v2"
+        status: "present_in_index"
       },
       {
         slot: "post_3_pelliscope_old",
         url: "https://www.linkedin.com/posts/vatsal-patel-95b429141_pelliscope-dermatologyai-healthtech-activity-7407028143110254592-A1_G",
-        status: "present_in_index_v2_but_superseded"
+        status: "present_in_index_but_superseded"
       }
     ],
     linkedInPosts: [
@@ -278,7 +278,7 @@ window.CONTENT_MAP = {
       ],
       recommendedTargets: [
         "project_ml_copilot.html (new)",
-        "index_v2.html (card click -> detail page)"
+        "index.html (card click -> detail page)"
       ]
     },
     legacy_pioneer: {
@@ -324,7 +324,7 @@ window.CONTENT_MAP = {
       ],
       recommendedTargets: [
         "project_meddiscover.html (new gallery section)",
-        "index_v2.html (card click -> detail page)"
+        "index.html (card click -> detail page)"
       ]
     },
     legacy_weatherbot: {
@@ -363,13 +363,13 @@ window.CONTENT_MAP = {
       "images/thesis_slide_5_results_metrics.png"
     ],
     recommendedUse: [
-      "index_v2 hero/background floating image nodes",
+      "index hero/background floating image nodes",
       "optional reduced set per subpage to match project theme"
     ]
   },
 
   repurposePlanByPage: {
-    "index_v2.html": {
+    "index.html": {
       cards: {
         cancerGenomicsWorks: {
           deckIds: ["legacy_pioneer", "legacy_gat"],
@@ -418,11 +418,11 @@ window.CONTENT_MAP = {
   pageContent: {
     usageGuidance: {
       renderModel:
-        "Use this section to power independent pages and/or expandable sections inside index_v2. Each content entry is self-contained.",
+        "Use this section to power independent pages and/or expandable sections inside index.html. Each content entry is self-contained.",
       sliderModel:
         "For slide-deck behavior, read entry.slider.deckIds -> resolve images from legacyDecks -> support next/prev navigation.",
       recommendedRenderTargets: [
-        "index_v2.html (card click -> detail page)",
+        "index.html (card click -> detail page)",
         "project_pelliscope.html (enhanced with gallery/papers/conference)",
         "project_oncogemma.html (enhanced with gallery/papers/conference)",
         "project_meddiscover.html (enhanced with thesis gallery)"
@@ -430,7 +430,7 @@ window.CONTENT_MAP = {
     },
 
     indexV2Bindings: {
-      page: "index_v2.html",
+      page: "index.html",
       cards: [
         {
           selectorHint: "Cancer Genomics Works highlight card",
@@ -828,8 +828,8 @@ window.CONTENT_MAP = {
       "images/bachelors_degree_certificate.jpg"
     ],
     placeholdersStillLive: [
-      "index_v2 LinkedIn post media uses placehold.co",
-      "index_v2 certification uses placeholder cert source",
+      "index LinkedIn post media uses placehold.co",
+      "index certification uses placeholder cert source",
       "index.html certification thumbnails use placehold.co",
       "index.html weatherbot deck is placeholder-only"
     ],
