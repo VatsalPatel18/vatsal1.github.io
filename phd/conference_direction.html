@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhD Meeting - Conference Selection & Pilot Paper Ideas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            /* PALETTE: Deep Violet & Vibrant Lime */
+            --theme-bg: #f5f3ff;
+            /* Light violet bg */
+            --theme-dark: #2e1065;
+            /* Violet 950 */
+            --theme-primary: #7c3aed;
+            /* Violet 600 */
+            --theme-secondary: #4c1d95;
+            /* Violet 900 */
+
+            /* Accent */
+            --theme-accent: #84cc16;
+            /* Lime 500 */
+            --theme-accent-light: #ecfccb;
+            /* Lime 100 */
+
+            /* Semantic */
+            --theme-text: #334155;
+            --theme-text-light: #64748b;
+        }
+
+        body {
+            background-color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* The Slide Container */
+        .deck-container {
+            width: 1240px;
+            height: 800px;
+            background: #ffffff;
+            box-shadow: 0 40px 80px -20px rgba(46, 16, 101, 0.25);
+            border-radius: 32px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Individual Slide Styling */
+        .slide {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-out;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-panel {
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #94a3b8 #e2e8f0;
+        }
+
+        .scroll-panel::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .scroll-panel::-webkit-scrollbar-track {
+            background: #e2e8f0;
+            border-radius: 999px;
+        }
+
+        .scroll-panel::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 999px;
+        }
+
+        /* Header */
+        .slide-header {
+            background: white;
+            padding: 2rem 3rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 110px;
+            flex-shrink: 0;
+        }
+
+        .header-badge {
+            background: var(--theme-bg);
+            color: var(--theme-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: 1px solid #ddd6fe;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: absolute;
+            bottom: 32px;
+            right: 40px;
+            display: flex;
+            gap: 16px;
+            z-index: 50;
+        }
+
+        .nav-btn {
+            background: var(--theme-dark);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(46, 16, 101, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: var(--theme-primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #cbd5e1;
+            color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .slide-dots {
+            position: absolute;
+            bottom: 48px;
+            left: 50px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: var(--theme-accent);
+            width: 32px;
+            border-radius: 100px;
+        }
+
+        /* Custom Components */
+        .card-box {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .accent-block {
+            background: linear-gradient(135deg, var(--theme-dark) 0%, var(--theme-primary) 100%);
+            color: white;
+        }
+
+        .stat-bar-bg {
+            background: #f1f5f9;
+            border-radius: 99px;
+            height: 8px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            background: var(--theme-accent);
+            height: 100%;
+            border-radius: 99px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="deck-container">
+
+        <!-- ========================== -->
+        <!-- SLIDE 1: MEETING OPENER -->
+        <!-- ========================== -->
+        <div class="slide active" id="slide-1">
+            <div class="slide-header">
+                <div>
+                    <h1 class="font-display text-3xl font-bold text-slate-800">Conference Selection & Paper Ideas</h1>
+                    <p class="text-slate-500 mt-1">Discussion for Today's Meeting</p>
+                </div>
+                <div class="header-badge">
+                    <i class="fa-solid fa-calendar-days mr-2"></i> April 14, 2026
+                </div>
+            </div>
+
+            <main class="flex-grow p-12 flex items-center gap-12 bg-[#fbfbfe]">
+                <!-- Left: Meeting Frame -->
+                <div class="w-1/2 pr-8">
+                    <div class="mb-8">
+                        <span class="text-[var(--theme-primary)] font-bold tracking-widest text-xs uppercase">Today's
+                            Objective</span>
+                        <h2 class="font-display text-4xl font-bold text-[var(--theme-dark)] mt-2 leading-tight">
+                            Select a realistic <br> <span class="text-[var(--theme-accent)]">first conference path</span>
+                        </h2>
+                    </div>
+                    <p class="text-slate-600 text-lg leading-relaxed mb-8">
+                        This meeting is centered on two linked decisions: which conference is the best first target,
+                        and what kind of <strong>small independent pilot paper</strong> we can realistically complete
+                        as a two-person effort and later extend into the PhD agenda.
+                    </p>
+
+                    <div class="bg-white border-l-4 border-[var(--theme-accent)] p-6 shadow-sm rounded-r-xl">
+                        <div class="flex items-center gap-4">
+                            <div class="bg-[var(--theme-accent-light)] p-3 rounded-full text-[var(--theme-secondary)]">
+                                <i class="fa-solid fa-clipboard-list"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">Soft Agenda Note</h4>
+                                <p class="text-sm text-slate-500">Conference selection first, then preliminary work
+                                    paper ideas that can support benchmarking, reliability, and clinical usefulness.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Meeting Snapshot -->
+                <div class="w-1/2 relative">
+                    <div class="accent-block rounded-3xl p-10 relative overflow-hidden shadow-2xl">
+                        <i class="fa-solid fa-compass absolute -bottom-10 -right-10 text-[12rem] text-white opacity-10"></i>
+                        <h3 class="font-display text-2xl font-bold mb-6">Decision Frame</h3>
+
+                        <div class="space-y-6 relative z-10">
+                            <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+                                <div class="flex justify-between text-sm mb-2 font-semibold text-white/90">
+                                    <span>Admission Requirement</span>
+                                    <span>1 conference publication</span>
+                                </div>
+                                <div class="w-full bg-white/20 h-2 rounded-full">
+                                    <div class="bg-[var(--theme-accent)] h-2 rounded-full" style="width: 100%"></div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+                                <div class="flex justify-between text-sm mb-2 font-semibold text-white/90">
+                                    <span>Preferred Shape</span>
+                                    <span>Small pilot paper</span>
+                                </div>
+                                <div class="w-full bg-white/20 h-2 rounded-full">
+                                    <div class="bg-orange-400 h-2 rounded-full" style="width: 86%"></div>
+                                </div>
+                            </div>
+
+                            <div class="bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/20">
+                                <div class="flex justify-between text-sm mb-2 font-semibold text-white/90">
+                                    <span>Primary Thesis Anchor</span>
+                                    <span>Benchmarking</span>
+                                </div>
+                                <div class="w-full bg-white/20 h-2 rounded-full">
+                                    <div class="bg-cyan-300 h-2 rounded-full" style="width: 78%"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4 mt-8">
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold text-[var(--theme-accent)]">5</div>
+                                    <div class="text-xs text-white/70 uppercase">Target Venues</div>
+                                </div>
+                                <div class="w-px bg-white/20"></div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold text-[var(--theme-accent)]">1</div>
+                                    <div class="text-xs text-white/70 uppercase">Primary Submission</div>
+                                </div>
+                                <div class="w-px bg-white/20"></div>
+                                <div class="text-center">
+                                    <div class="text-3xl font-bold text-[var(--theme-accent)]">2</div>
+                                    <div class="text-xs text-white/70 uppercase">Discussion Tracks</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ========================== -->
+        <!-- SLIDE 2: CONFERENCE SELECTION -->
+        <!-- ========================== -->
+        <div class="slide" id="slide-2">
+            <div class="slide-header">
+                <div>
+                    <h1 class="font-display text-3xl font-bold text-slate-800">Conference Selection</h1>
+                    <p class="text-slate-500 mt-1">Acceptance Rate, Submission Timing, and Paper Relevance</p>
+                </div>
+                <div class="header-badge bg-cyan-50 text-cyan-700 border-cyan-200">
+                    <i class="fa-solid fa-table mr-2"></i> Working Shortlist
+                </div>
+            </div>
+
+            <main class="flex-grow p-10 bg-[#f8fafc] flex flex-col min-h-0">
+                <div class="flex items-start justify-between gap-8 mb-6">
+                    <p class="text-slate-600 max-w-3xl text-sm leading-relaxed">
+                        Immediate objective: choose a first conference target that is realistic for a
+                        <strong>small independent pilot paper</strong> on benchmarking, reliability, quantization, or
+                        clinically useful multimodal / healthcare LLM behavior.
+                    </p>
+                    <div class="bg-white border border-slate-200 rounded-2xl px-4 py-3 shadow-sm min-w-[250px]">
+                        <div class="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-bold mb-1">Current
+                            read</div>
+                        <div class="text-sm font-semibold text-slate-800">Best fit: AIME</div>
+                        <div class="text-xs text-slate-500 mt-1">Focus now: 2027 cycle, not already closed 2026 routes</div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 scroll-panel pr-2 min-h-0 flex-1">
+                    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                        <div class="bg-slate-900 text-white px-5 py-3 text-[11px] uppercase tracking-[0.16em] font-bold">
+                            Partition 1: Healthcare-First Targets
+                        </div>
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100 text-slate-600 text-[11px] uppercase tracking-[0.14em]">
+                                <tr>
+                                    <th class="px-5 py-4">Conference</th>
+                                    <th class="px-5 py-4">Acceptance Rate</th>
+                                    <th class="px-5 py-4">Submission Window</th>
+                                    <th class="px-5 py-4">Relevance To Our Paper</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-700">
+                                <tr class="border-t border-slate-200">
+                                    <td class="px-5 py-4 font-semibold text-slate-900">AIME 2027</td>
+                                    <td class="px-5 py-4"><span class="font-semibold text-[var(--theme-primary)]">41.8%</span> <span class="text-xs text-slate-400">(2025)</span></td>
+                                    <td class="px-5 py-4"><span class="text-slate-700">Opens around Oct-Nov 2026</span><br><span class="text-xs text-slate-400">Feb 2026 cycle closed; 2027 timing TBA officially</span></td>
+                                    <td class="px-5 py-4">Best pure AI-in-medicine fit for your topic. 2027 not yet officially posted in the sources I found. AIME 2026 was Jul 7-10, 2026. TBA officially.</td>
+                                </tr>
+                                <tr class="border-t border-slate-200 bg-slate-50/70">
+                                    <td class="px-5 py-4 font-semibold text-slate-900">MIDL 2027</td>
+                                    <td class="px-5 py-4"><span class="font-semibold text-[var(--theme-primary)]">~55%</span> <span class="text-xs text-slate-400">(2024, unofficial)</span></td>
+                                    <td class="px-5 py-4"><span class="text-slate-700">Opens ~Nov 2026; deadline ~Dec 2026</span><br><span class="text-xs text-slate-400">2026 cycle closed on Dec 10-11, 2025</span></td>
+                                    <td class="px-5 py-4">Best if we pivot toward medical imaging, medical VLM benchmarking, or multimodal healthcare evaluation.</td>
+                                </tr>
+                                <tr class="border-t border-slate-200">
+                                    <td class="px-5 py-4 font-semibold text-slate-900">MICCAI 2027</td>
+                                    <td class="px-5 py-4"><span class="font-semibold text-[var(--theme-primary)]">29%</span> <span class="text-xs text-slate-400">(2025)</span></td>
+                                    <td class="px-5 py-4"><span class="text-slate-700">Opens ~Dec 2026; deadline ~late Feb 2027</span><br><span class="text-xs text-slate-400">Feb 26, 2026 cycle closed</span></td>
+                                    <td class="px-5 py-4">Prestigious stretch target for clinical multimodal robustness, quantization, and healthcare benchmark evaluation.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                        <div class="bg-slate-800 text-white px-5 py-3 text-[11px] uppercase tracking-[0.16em] font-bold">
+                            Partition 2: Adjacent / Cross-Over Option
+                        </div>
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100 text-slate-600 text-[11px] uppercase tracking-[0.14em]">
+                                <tr>
+                                    <th class="px-5 py-4">Conference</th>
+                                    <th class="px-5 py-4">Acceptance Rate</th>
+                                    <th class="px-5 py-4">Submission Window</th>
+                                    <th class="px-5 py-4">Relevance To Our Paper</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-700">
+                                <tr class="border-t border-slate-200">
+                                    <td class="px-5 py-4 font-semibold text-slate-900">ICMR 2027</td>
+                                    <td class="px-5 py-4"><span class="font-semibold text-[var(--theme-primary)]">42.68%</span> <span class="text-xs text-slate-400">(2025 short)</span></td>
+                                    <td class="px-5 py-4"><span class="text-slate-700">Opens ~Dec 2026 / Jan 2027; deadline ~mid Feb 2027</span><br><span class="text-xs text-slate-400">Feb 13, 2026 cycle closed</span></td>
+                                    <td class="px-5 py-4">Best non-healthcare fallback if the story is framed as multimodal benchmark methodology, retrieval, or evaluation design.</td>
+                                </tr>
+                                <tr class="border-t border-slate-200 bg-slate-50/70">
+                                    <td class="px-5 py-4 font-semibold text-slate-900">ECAI 2027</td>
+                                    <td class="px-5 py-4"><span class="text-slate-500">Not foregrounded here</span></td>
+                                    <td class="px-5 py-4"><span class="text-slate-700">Opens ~Dec 2026; abstract ~mid Jan 2027; full paper ~early Mar 2027</span><br><span class="text-xs text-slate-400">2026 cycle closed on Mar 4, 2026</span></td>
+                                    <td class="px-5 py-4">Relevant as a broader AI target, especially because Alexander's earlier paper direction already connects to ECAI.</td>
+                                </tr>
+                                <tr class="border-t border-slate-200">
+                                    <td class="px-5 py-4 font-semibold text-slate-900">IEEE BHI</td>
+                                    <td class="px-5 py-4"><span class="text-slate-500">Not clearly surfaced</span></td>
+                                    <td class="px-5 py-4"><span class="text-slate-700">Timing to confirm later</span><br><span class="text-xs text-slate-400">Optional backup route</span></td>
+                                    <td class="px-5 py-4">Useful if the paper leans toward biomedical informatics, clinical AI deployment, multimodal health data, or explainable healthcare AI.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-4 mt-5 text-xs">
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4">
+                        <div class="font-bold text-slate-800 mb-1">Best Fit</div>
+                        <div class="text-slate-600">AIME is the cleanest match for a small healthcare AI pilot paper.</div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4">
+                        <div class="font-bold text-slate-800 mb-1">2027 Timing</div>
+                        <div class="text-slate-600">MIDL likely opens first around Nov 2026, while ICMR and MICCAI likely open around Dec 2026.</div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4">
+                        <div class="font-bold text-slate-800 mb-1">Stretch Route</div>
+                        <div class="text-slate-600">MICCAI works if we sharpen the story toward clinical multimodal benchmarking.</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ========================== -->
+        <!-- SLIDE 3: IDEA 1 -->
+        <!-- ========================== -->
+        <div class="slide" id="slide-3">
+            <div class="slide-header">
+                <div>
+                    <h1 class="font-display text-3xl font-bold text-slate-800">Concept 1: Physician Intent Preservation</h1>
+                    <p class="text-slate-500 mt-1">Primary-work extension of physician-intent modeling in clinical dialogue</p>
+                </div>
+                <div class="header-badge bg-green-50 text-green-700 border-green-200">
+                    <i class="fa-solid fa-stethoscope mr-2"></i> Closest To Alexander's Direction
+                </div>
+            </div>
+
+            <main class="flex-grow p-10 bg-white grid grid-cols-[1.1fr_0.9fr] gap-8">
+                <div class="bg-slate-50 rounded-3xl border border-slate-200 p-8">
+                    <div class="text-xs uppercase tracking-[0.18em] text-slate-400 font-bold mb-3">Working Title</div>
+                    <h2 class="font-display text-3xl font-bold text-[var(--theme-dark)] mb-5 leading-tight">
+                        Can small local LLMs preserve physician intent in doctor-patient dialogue?
+                    </h2>
+
+                    <div class="space-y-6 text-sm">
+                        <div>
+                            <h4 class="font-bold text-slate-800 mb-3">What can be done</h4>
+                            <ul class="space-y-3 text-slate-700 leading-relaxed">
+                                <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-[var(--theme-primary)] mt-1"></i><span>The dataset crafted in <strong>"Where does it hurt?"</strong> can be used as the empirical base and evaluated with medically augmented LLMs such as <strong>MedGemma</strong>, <strong>MedPhi</strong>, and <strong>MedLlama</strong>.</span></li>
+                                <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-[var(--theme-primary)] mt-1"></i><span>These models can be quantized for edge-device deployment and analyzed systematically across <strong>INT4</strong>, <strong>INT8</strong>, and <strong>FP16</strong> settings.</span></li>
+                                <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-[var(--theme-primary)] mt-1"></i><span>Multiple LLMs can be organized within a <strong>central agentic structure</strong> for next-intent classification and comparative evaluation.</span></li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-800 mb-3">How does it align?</h4>
+                            <ul class="space-y-3 text-slate-700 leading-relaxed">
+                                <li class="flex gap-3"><i class="fa-solid fa-check text-[var(--theme-accent)] mt-1"></i><span>The concept remains closely aligned with Alexander Loeser's existing dataset and research direction.</span></li>
+                                <li class="flex gap-3"><i class="fa-solid fa-check text-[var(--theme-accent)] mt-1"></i><span>The study would constitute a <strong>small but independent primary research paper</strong> rather than a review article.</span></li>
+                                <li class="flex gap-3"><i class="fa-solid fa-check text-[var(--theme-accent)] mt-1"></i><span>The results can provide preliminary evidence for clinically useful low-resource modeling before the broader PhD agenda is expanded.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-5">
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+                        <h4 class="font-bold text-slate-800 mb-3">Why it is feasible</h4>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            The published work already defines the <strong>Aci-bench dataset</strong> and reports
+                            <strong>5000+ annotated doctor-patient turns</strong> with a SOAP-based physician-intent
+                            taxonomy, making the study primarily an evaluation task rather than a new data-collection effort.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900 rounded-3xl p-6 text-white">
+                        <div class="text-xs uppercase tracking-[0.18em] text-cyan-300 font-bold mb-3">Model + quantization plan</div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs">MedGemma</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs">MedLlama</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs">MedPhi</span>
+                            <span class="px-3 py-1 rounded-full bg-white/10 text-xs">Encoder baseline</span>
+                        </div>
+                        <p class="text-sm text-slate-300 mb-4 leading-relaxed">
+                            A meaningful novelty angle is the comparison between generic baselines and medically aligned
+                            models under compression, rather than model comparison alone.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 rounded-full bg-emerald-400/20 text-xs">FP16</span>
+                            <span class="px-3 py-1 rounded-full bg-emerald-400/20 text-xs">8-bit</span>
+                            <span class="px-3 py-1 rounded-full bg-emerald-400/20 text-xs">4-bit</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-[var(--theme-bg)] rounded-3xl border border-violet-200 p-6">
+                        <div class="text-sm text-slate-700 leading-relaxed">
+                            <div class="font-bold text-slate-800 mb-2">Best venue</div>
+                            <div class="mb-4">AIME</div>
+                            <div class="font-bold text-slate-800 mb-2">Longer-term relevance</div>
+                            <div>This line of work can serve as a preliminary bridge from dialogue structure to later questions on clinical usefulness, reliable deployment, and eventually multimodal integration.</div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- ========================== -->
+        <!-- SLIDE 4: IDEA 2 -->
+        <!-- ========================== -->
+        <div class="slide" id="slide-4">
+            <div class="slide-header">
+                <div>
+                    <h1 class="font-display text-3xl font-bold text-slate-800">Concept 2: High-Stakes Benchmark Slice</h1>
+                    <p class="text-slate-500 mt-1">Emergency and low-resource clinical evaluation for small LLMs</p>
+                </div>
+                <div class="header-badge bg-[var(--theme-dark)] text-white border-none">
+                    <i class="fa-solid fa-triangle-exclamation mr-2"></i> Dataset Creation & Benchmarking Anchor
+                </div>
+            </div>
+
+            <main class="flex-grow p-10 bg-[#f8fafc] grid grid-cols-[1.05fr_0.95fr] gap-8 min-h-0 scroll-panel">
+                <div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
+                    <div class="text-xs uppercase tracking-[0.18em] text-slate-400 font-bold mb-3">Working Title</div>
+                    <h2 class="font-display text-3xl font-bold text-[var(--theme-dark)] mb-5 leading-tight">
+                        Do small clinical LLMs fail safely in emergency and low-resource scenarios?
+                    </h2>
+
+                    <div class="space-y-6 text-sm">
+                        <div>
+                            <h4 class="font-bold text-slate-800 mb-3">What can be done</h4>
+                            <ul class="space-y-3 text-slate-700 leading-relaxed">
+                                <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-[var(--theme-primary)] mt-1"></i><span>Following the logic of <strong>"Where does it hurt?"</strong>, a focused sub-dataset can be created for adverse emergency scenarios; if the resulting sample is insufficient, <strong>HealthBench</strong> and <strong>AMEGA</strong> can be used as supporting public resources.</span></li>
+                                <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-[var(--theme-primary)] mt-1"></i><span>A set of <strong>3-5 small open models</strong> can then be evaluated on this benchmark slice.</span></li>
+                                <li class="flex gap-3"><i class="fa-solid fa-arrow-right text-[var(--theme-primary)] mt-1"></i><span>The evaluation can report not only score, but also unsafe omission rate, overconfidence, escalation / referral behavior, and latency.</span></li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-800 mb-3">How does it align?</h4>
+                            <ul class="space-y-3 text-slate-700 leading-relaxed">
+                                <li class="flex gap-3"><i class="fa-solid fa-check text-[var(--theme-accent)] mt-1"></i><span>Dataset creation and benchmarking studies remain a well-recognized pattern in conference publications.</span></li>
+                                <li class="flex gap-3"><i class="fa-solid fa-check text-[var(--theme-accent)] mt-1"></i><span>It introduces the trustworthiness layer explicitly requested in the doctoral framing, including uncertainty, failure behavior, and safety.</span></li>
+                                <li class="flex gap-3"><i class="fa-solid fa-check text-[var(--theme-accent)] mt-1"></i><span>The sub-dataset strategy mirrors an established and feasible paper pattern: define a focused slice, benchmark it carefully, and use the results to motivate deeper follow-up work.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-5">
+                    <div class="bg-slate-900 rounded-3xl p-6 text-white">
+                        <div class="font-bold mb-3">Feasibility base</div>
+                        <p class="text-sm text-slate-200 leading-relaxed">
+                            <strong>HealthBench</strong> is built around 5,000 realistic health conversations with
+                            physician-written rubrics and includes emergency referrals and uncertainty handling.
+                            <strong>AMEGA</strong> already benchmarks guideline adherence across multiple medical specialties.
+                            This makes the study primarily a targeted benchmark-construction and evaluation exercise, rather than a new data-collection project.
+                        </p>
+                    </div>
+
+                    <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+                        <div class="font-bold text-slate-800 mb-3">Evaluation outputs</div>
+                        <ul class="space-y-3 text-sm text-slate-700">
+                            <li class="flex gap-3"><i class="fa-solid fa-circle text-[10px] text-[var(--theme-primary)] mt-1.5"></i><span>Overall score</span></li>
+                            <li class="flex gap-3"><i class="fa-solid fa-circle text-[10px] text-[var(--theme-primary)] mt-1.5"></i><span>Unsafe omission rate</span></li>
+                            <li class="flex gap-3"><i class="fa-solid fa-circle text-[10px] text-[var(--theme-primary)] mt-1.5"></i><span>Overconfidence</span></li>
+                            <li class="flex gap-3"><i class="fa-solid fa-circle text-[10px] text-[var(--theme-primary)] mt-1.5"></i><span>Poor escalation / referral behavior</span></li>
+                            <li class="flex gap-3"><i class="fa-solid fa-circle text-[10px] text-[var(--theme-primary)] mt-1.5"></i><span>Latency</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-[var(--theme-bg)] rounded-3xl border border-violet-200 p-6 text-sm text-slate-700 leading-relaxed">
+                        <div class="font-bold text-slate-800 mb-2">Best venue</div>
+                        <div class="mb-4">AIME short paper, with BHI as the operational backup route if required.</div>
+                        <div class="font-bold text-slate-800 mb-2">What this becomes later</div>
+                        <div>This direction can establish thesis objective 2 as the benchmark core. The same slice can later support objective 1 through the evaluation of <strong>quantization</strong> effects on reliability and clinical safety.</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="slide-dots">
+            <div class="dot active" id="dot-1"></div>
+            <div class="dot" id="dot-2"></div>
+            <div class="dot" id="dot-3"></div>
+            <div class="dot" id="dot-4"></div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="nav-controls">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">
+                Next <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 4;
+
+        function changeSlide(direction) {
+            const newSlide = currentSlide + direction;
+
+            if (newSlide >= 1 && newSlide <= totalSlides) {
+                // Remove active class from current
+                document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+                document.getElementById(`dot-${currentSlide}`).classList.remove('active');
+
+                // Add active class to new
+                document.getElementById(`slide-${newSlide}`).classList.add('active');
+                document.getElementById(`dot-${newSlide}`).classList.add('active');
+
+                currentSlide = newSlide;
+                updateButtons();
+            }
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+
+            prevBtn.disabled = currentSlide === 1;
+
+            if (currentSlide === totalSlides) {
+                nextBtn.innerHTML = 'Finish <i class="fa-solid fa-check"></i>';
+                nextBtn.classList.add('bg-theme-accent');
+            } else {
+                nextBtn.innerHTML = 'Next <i class="fa-solid fa-arrow-right"></i>';
+                nextBtn.classList.remove('bg-theme-accent');
+            }
+        }
+    </script>
+</body>
+
+</html>
