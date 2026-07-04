@@ -5,283 +5,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vatsal Patel | Interactive Résumé — The Journey</title>
-    <meta name="description" content="Vatsal Patel — Principal Research Engineer, HawkFranklin Research. An interactive résumé: cancer genomics, multi-omics, clinical AI, and RAG-LLM systems.">
+    <meta name="description" content="Vatsal Patel — Principal Research Engineer, HawkFranklin Research. Cancer genomics, multi-omics, clinical AI, RAG-LLM systems.">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        apple: { dark: '#000000', gray: '#1d1d1f', lightGray: '#f5f5f7', blue: '#2997ff' }
-                    }
-                }
-            }
-        }
+        tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] },
+            colors: { apple: { dark: '#000', gray: '#1d1d1f', lightGray: '#f5f5f7', blue: '#2997ff' } } } } }
     </script>
 
     <style>
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: auto; }
         body {
-            background-color: #05060a;
-            color: #f5f5f7;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+            background-color: #05060a; color: #f5f5f7;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
+        /* STATIC painted background — no live blur, no per-frame repaint */
+        body::before {
+            content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+            background:
+              radial-gradient(600px 600px at 12% -5%, rgba(37,99,235,0.16), transparent 60%),
+              radial-gradient(560px 560px at 105% 108%, rgba(147,51,234,0.14), transparent 60%),
+              #05060a;
+        }
+        /* Ambient tint that shifts to the active chapter colour (opacity only) */
+        #tint { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
+            background: radial-gradient(700px 700px at 78% 8%, var(--tint,#3b82f6), transparent 62%);
+            transition: background 1s ease; }
+        @media (prefers-color-scheme: no-preference) {}
 
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 9px; }
         ::-webkit-scrollbar-track { background: #05060a; }
-        ::-webkit-scrollbar-thumb { background: #2a2a33; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #2a2a33; border-radius: 5px; }
 
-        /* Glassmorphism */
-        .glass {
-            background: rgba(17, 19, 27, 0.6);
-            backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        /* Cards: gradient glass LOOK, but NO backdrop-filter (perf) */
+        .card {
+            background: linear-gradient(145deg, rgba(34,36,46,0.92) 0%, rgba(15,16,22,0.96) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.45);
         }
+        .soft { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+        .text-gradient { background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .gold-text { background-image: linear-gradient(100deg,#fbe08a,#e6c15a,#c9962f,#f2d270); }
 
-        .glass-card {
-            background: linear-gradient(145deg, rgba(32, 34, 44, 0.9) 0%, rgba(16, 17, 23, 0.95) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease;
-        }
+        .skill-tag { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 13px; border-radius: 30px; font-size: 0.78rem; transition: all .3s; }
+        .skill-tag:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); }
+        .section-eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
 
-        .glass-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.18);
-        }
+        /* ===================== LEFT PANEL ===================== */
+        .left-glass { background: rgba(12,13,19,0.72); border: 1px solid rgba(255,255,255,0.07);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); } /* single blur surface only */
 
-        /* Scroll reveal */
-        .reveal {
-            opacity: 0;
-            transform: translateY(38px);
-            transition: opacity 0.9s cubic-bezier(0.5, 0, 0, 1), transform 0.9s cubic-bezier(0.5, 0, 0, 1);
-        }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        .reveal.delay-1 { transition-delay: 0.08s; }
-        .reveal.delay-2 { transition-delay: 0.16s; }
-        .reveal.delay-3 { transition-delay: 0.24s; }
+        #identity { max-height: 520px; opacity: 1; overflow: hidden;
+            transition: max-height .6s cubic-bezier(.4,0,.2,1), opacity .4s ease, margin .6s ease, transform .6s ease; }
+        #identity.collapsed { max-height: 0; opacity: 0; margin: 0 !important; transform: translateY(-10px); pointer-events: none; }
+
+        /* Train timeline */
+        .rail-track { position: absolute; left: 11px; top: 4px; bottom: 4px; width: 2px;
+            background: rgba(255,255,255,0.09); border-radius: 2px; }
+        .rail-fill { position: absolute; left: 11px; top: 4px; width: 2px; height: calc(100% - 8px);
+            border-radius: 2px; transform: scaleY(0); transform-origin: top;
+            background: linear-gradient(180deg, var(--theme,#3b82f6), rgba(255,255,255,0.2));
+            box-shadow: 0 0 12px var(--theme,#3b82f6);
+            transition: background .6s ease, box-shadow .6s ease; will-change: transform; }
+        #train { position: absolute; left: 12px; top: 0; width: 2px; height: 2px;
+            transform: translate(-50%,-50%); will-change: transform; z-index: 5; }
+        #train::before { content: ""; position: absolute; left: 0; top: 0; width: 15px; height: 15px;
+            transform: translate(-50%,-50%); border-radius: 50%; background: var(--theme,#3b82f6);
+            box-shadow: 0 0 0 4px #05060a, 0 0 22px 4px var(--theme,#3b82f6);
+            transition: background .5s ease, box-shadow .5s ease; }
+        #train::after { content: ""; position: absolute; left: 0; top: 0; width: 15px; height: 15px;
+            transform: translate(-50%,-50%); border-radius: 50%; background: var(--theme,#3b82f6);
+            opacity: .5; animation: pulse 1.9s ease-out infinite; }
+        @keyframes pulse { 0%{width:15px;height:15px;opacity:.5} 100%{width:40px;height:40px;opacity:0} }
+
+        .station { position: relative; display: block; width: 100%; text-align: left;
+            padding: 8px 0 8px 30px; color: #7c828f; cursor: pointer;
+            transition: color .35s ease, transform .35s ease, padding .4s ease; }
+        .station::before { content: ""; position: absolute; left: 6px; top: 14px; width: 12px; height: 12px;
+            border-radius: 50%; background: #05060a; border: 2px solid #3a3d47; transition: all .35s ease; }
+        .station:hover { color: #c4c8d0; }
+        .station.active { color: #fff; transform: translateX(2px); }
+        .station.active::before { border-color: var(--c,#3b82f6); background: var(--c,#3b82f6);
+            box-shadow: 0 0 12px var(--c,#3b82f6); transform: scale(1.25); }
+        .stn-year { font-size: .6rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+            color: var(--c,#6b7280); opacity: .85; transition: font-size .4s ease; }
+        .stn-label { font-size: .8rem; font-weight: 500; line-height: 1.22; margin-top: 2px; transition: font-size .4s ease; }
+        /* When identity collapses, timeline breathes bigger */
+        #timeline.expanded .station { padding-top: 12px; padding-bottom: 12px; }
+        #timeline.expanded .stn-year { font-size: .64rem; }
+        #timeline.expanded .stn-label { font-size: .9rem; }
+
+        /* ===================== RIGHT: PINNED CHAPTERS ===================== */
+        .chapter { position: relative; height: calc(100vh + (var(--steps,1) * 72vh)); }
+        .pin { height: 100vh; display: flex; flex-direction: column; padding: 4.5rem 0 2rem; overflow: hidden; }
+        .chapter-head { flex: 0 0 auto; }
+        .stage { position: relative; flex: 1 1 auto; min-height: 0; margin-top: 1.25rem; }
+        .step-item { position: absolute; inset: 0; opacity: 0; visibility: hidden;
+            transform: translateY(26px) scale(.985);
+            transition: opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1), visibility .55s;
+            display: flex; flex-direction: column; }
+        .step-item.active { opacity: 1; visibility: visible; transform: none; }
+
+        .step-dots { display: flex; gap: 7px; margin-top: .9rem; }
+        .step-dot { width: 22px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.14); transition: all .4s ease; }
+        .step-dot.on { background: var(--theme,#3b82f6); box-shadow: 0 0 10px var(--theme,#3b82f6); width: 34px; }
+
+        .media-frame { position: relative; overflow: hidden; border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.08); background: #0b0c11; cursor: zoom-in; }
+        .media-frame img, .media-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .media-contain img { object-fit: contain; }
+        .media-cap { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: .8rem;
+            background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.05) 42%, transparent 68%); pointer-events: none; }
+
+        .scroll-hint { position: absolute; bottom: .25rem; left: 50%; transform: translateX(-50%);
+            font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: #6b7280;
+            display: flex; align-items: center; gap: .4rem; }
+        .scroll-hint i { animation: bob 1.6s ease-in-out infinite; }
+        @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+
+        /* Reveal (recognition section only) */
+        .reveal { opacity: 0; transform: translateY(34px);
+            transition: opacity .8s cubic-bezier(.5,0,0,1), transform .8s cubic-bezier(.5,0,0,1); }
+        .reveal.in { opacity: 1; transform: none; }
+
+        img, video { content-visibility: auto; }
+
+        /* ===================== FALLBACK (mobile / reduced-motion): no pinning ===================== */
+        body.no-pin .chapter { height: auto !important; }
+        body.no-pin .pin { height: auto !important; display: block; padding: 2.5rem 0; overflow: visible; }
+        body.no-pin .stage { position: static; margin-top: 1rem; }
+        body.no-pin .step-item { position: static; opacity: 1; visibility: visible; transform: none;
+            margin-bottom: 1rem; }
+        body.no-pin .step-dots, body.no-pin .scroll-hint { display: none; }
+        body.no-pin #identity { max-height: none !important; opacity: 1 !important; }
 
         @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1 !important; transform: none !important; }
-            #train { transition: none !important; }
+            .step-item { transition: none; } #train::after { animation: none; }
         }
-
-        /* Ambient morphing glow that shifts to active station color */
-        .ambient-glow {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            transition: background 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-            pointer-events: none;
-        }
-
-        .glow-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(110px);
-            z-index: -1;
-            opacity: 0.35;
-            pointer-events: none;
-        }
-
-        .text-gradient {
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* ===== LEFT TRAIN TIMELINE ===== */
-        .rail-wrap { position: relative; }
-        /* the static track */
-        .rail-track {
-            position: absolute;
-            left: 11px;
-            top: 6px;
-            bottom: 6px;
-            width: 2px;
-            background: rgba(255, 255, 255, 0.09);
-            border-radius: 2px;
-        }
-        /* the coloured progress that fills as you scroll */
-        .rail-fill {
-            position: absolute;
-            left: 11px;
-            top: 6px;
-            width: 2px;
-            height: 0px;
-            border-radius: 2px;
-            background: linear-gradient(180deg, var(--theme-color, #3b82f6), rgba(255,255,255,0.25));
-            box-shadow: 0 0 12px var(--theme-color, #3b82f6);
-            transition: background 0.6s ease, box-shadow 0.6s ease;
-            will-change: height;
-        }
-        /* the moving "train" */
-        #train {
-            position: absolute;
-            left: 12px;
-            top: 0px;
-            width: 2px;
-            height: 2px;
-            transform: translate(-50%, -50%);
-            transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 5;
-            will-change: top;
-        }
-        #train::before {
-            content: "";
-            position: absolute;
-            left: 0; top: 0;
-            width: 15px; height: 15px;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            background: var(--theme-color, #3b82f6);
-            box-shadow: 0 0 0 4px rgba(5,6,10,1), 0 0 22px 4px var(--theme-color, #3b82f6);
-            transition: background 0.5s ease, box-shadow 0.5s ease;
-        }
-        #train::after {
-            content: "";
-            position: absolute;
-            left: 0; top: 0;
-            width: 15px; height: 15px;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            background: var(--theme-color, #3b82f6);
-            opacity: 0.5;
-            animation: trainPulse 1.8s ease-out infinite;
-        }
-        @keyframes trainPulse {
-            0% { width: 15px; height: 15px; opacity: 0.5; }
-            100% { width: 42px; height: 42px; opacity: 0; }
-        }
-
-        .station {
-            position: relative;
-            display: block;
-            width: 100%;
-            text-align: left;
-            padding: 9px 0 9px 30px;
-            color: #7c828f;
-            transition: color 0.35s ease, transform 0.35s ease;
-            cursor: pointer;
-        }
-        .station::before {
-            content: "";
-            position: absolute;
-            left: 6px;
-            top: 15px;
-            width: 12px; height: 12px;
-            border-radius: 50%;
-            background: #05060a;
-            border: 2px solid #3a3d47;
-            transition: all 0.35s ease;
-        }
-        .station:hover { color: #c4c8d0; }
-        .station.active {
-            color: #ffffff;
-            transform: translateX(2px);
-        }
-        .station.active::before {
-            border-color: var(--stn-color, #3b82f6);
-            background: var(--stn-color, #3b82f6);
-            box-shadow: 0 0 12px var(--stn-color, #3b82f6);
-            transform: scale(1.25);
-        }
-        .station .stn-year {
-            font-size: 0.62rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--stn-color, #6b7280);
-            opacity: 0.85;
-        }
-        .station.active .stn-year { opacity: 1; }
-        .station .stn-label {
-            font-size: 0.82rem;
-            font-weight: 500;
-            line-height: 1.25;
-            margin-top: 2px;
-        }
-
-        /* Skill / pill tags */
-        .skill-tag {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 6px 13px;
-            border-radius: 30px;
-            font-size: 0.78rem;
-            transition: all 0.3s;
-        }
-        .skill-tag:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.3); }
-
-        /* Media frame */
-        .media-frame {
-            position: relative;
-            overflow: hidden;
-            border-radius: 1rem;
-            border: 1px solid rgba(255,255,255,0.08);
-            background: #0b0c11;
-            cursor: zoom-in;
-        }
-        .media-frame img {
-            width: 100%; height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
-        }
-        .media-frame:hover img { transform: scale(1.05); }
-        .media-cap {
-            position: absolute; inset: 0;
-            display: flex; align-items: flex-end;
-            padding: 0.75rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 45%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .section-eyebrow {
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
+        @media (max-width: 1023px) {
+            #leftPanel { position: relative !important; height: auto !important; }
         }
     </style>
 </head>
 
 <body class="selection:bg-apple-blue selection:text-white relative">
+    <div id="tint"></div>
 
-    <!-- Morphing ambient background + orbs -->
-    <div id="ambientGlow" class="ambient-glow"></div>
-    <div class="glow-orb w-[480px] h-[480px] bg-blue-900 top-[-120px] left-[-120px]"></div>
-    <div class="glow-orb w-[420px] h-[420px] bg-purple-900 bottom-[-140px] right-[-120px]"></div>
+    <div class="max-w-[1600px] mx-auto flex flex-col lg:flex-row relative">
 
-    <div class="max-w-[1600px] mx-auto min-h-screen flex flex-col lg:flex-row relative">
+        <!-- ===================== LEFT PANEL ===================== -->
+        <aside id="leftPanel" class="w-full lg:w-[36%] xl:w-[32%] lg:h-screen lg:sticky top-0 p-4 md:p-6 z-30">
+            <div class="left-glass rounded-3xl h-full flex flex-col p-5 md:p-6 relative overflow-hidden">
 
-        <!-- ============================================================= -->
-        <!-- LEFT PANEL: PROFILE + TRAIN TIMELINE (sticky)                 -->
-        <!-- ============================================================= -->
-        <aside class="w-full lg:w-[38%] xl:w-[34%] lg:h-screen lg:sticky top-0 p-5 md:p-8 z-20">
-            <div class="glass rounded-3xl h-full flex flex-col p-6 md:p-7 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-apple-blue rounded-full blur-[80px] opacity-20 pointer-events-none"></div>
-
-                <!-- Header / identity -->
-                <div class="shrink-0">
-                    <a href="index.html" class="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-[11px] font-semibold uppercase tracking-wider mb-5 group">
+                <!-- IDENTITY (collapses on scroll) -->
+                <div id="identity" class="shrink-0">
+                    <a href="index.html" class="inline-flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-[11px] font-semibold uppercase tracking-wider mb-4 group">
                         <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Portfolio
                     </a>
-
-                    <div class="flex items-center gap-4 mb-4">
+                    <div class="flex items-center gap-4 mb-3">
                         <div class="w-16 h-16 rounded-2xl bg-gray-800 overflow-hidden border border-white/10 shadow-xl shrink-0 relative">
                             <img src="images/Vatsal_Patel.jpg" alt="Vatsal Patel" class="absolute inset-0 w-full h-full object-cover"
                                 onerror="this.src='https://ui-avatars.com/api/?name=Vatsal+Patel&background=2997ff&color=fff'">
@@ -292,717 +180,677 @@
                             <p class="text-xs text-gradient bg-gradient-to-r from-blue-400 to-emerald-400 font-semibold">HawkFranklin Research</p>
                         </div>
                     </div>
-
-                    <p class="text-[13px] text-gray-400 font-light leading-relaxed mb-4 hidden md:block">
+                    <p class="text-[13px] text-gray-400 font-light leading-relaxed mb-4">
                         Computational biologist &amp; ML engineer — cancer genomics, multi-omics, and clinical AI.
                         <span class="text-gray-500">Ex-NIBMG (National Supercomputing Mission).</span>
                     </p>
-
-                    <div class="flex flex-wrap gap-2 mb-1">
-                        <a href="https://github.com/VatsalPatel18" target="_blank" rel="noopener" class="w-9 h-9 rounded-full glass flex items-center justify-center text-sm hover:bg-white hover:text-black transition-all"><i class="fa-brands fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/vatsal-patel-95b429141/" target="_blank" rel="noopener" class="w-9 h-9 rounded-full glass flex items-center justify-center text-sm hover:bg-white hover:text-black transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="https://huggingface.co/VatsalPatel18" target="_blank" rel="noopener" class="w-9 h-9 rounded-full glass flex items-center justify-center hover:bg-white transition-all"><img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="Hugging Face" class="w-4 h-4"></a>
-                        <a href="mailto:vatsal1804@gmail.com" class="w-9 h-9 rounded-full glass flex items-center justify-center text-sm hover:bg-white hover:text-black transition-all"><i class="fa-solid fa-envelope"></i></a>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <a href="https://github.com/VatsalPatel18" target="_blank" rel="noopener" class="w-9 h-9 rounded-full soft flex items-center justify-center text-sm hover:bg-white hover:text-black transition-all"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/vatsal-patel-95b429141/" target="_blank" rel="noopener" class="w-9 h-9 rounded-full soft flex items-center justify-center text-sm hover:bg-white hover:text-black transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://huggingface.co/VatsalPatel18" target="_blank" rel="noopener" class="w-9 h-9 rounded-full soft flex items-center justify-center hover:bg-white transition-all"><img src="https://cdn.simpleicons.org/huggingface/FFD21E" alt="Hugging Face" class="w-4 h-4"></a>
+                        <a href="mailto:vatsal1804@gmail.com" class="w-9 h-9 rounded-full soft flex items-center justify-center text-sm hover:bg-white hover:text-black transition-all"><i class="fa-solid fa-envelope"></i></a>
                     </div>
+                    <hr class="border-white/10 mb-1">
                 </div>
 
-                <hr class="border-white/10 my-4 shrink-0">
-
-                <!-- Train timeline -->
-                <div class="rail-wrap flex-1 min-h-0 overflow-y-auto pr-1 -mr-1" id="railWrap">
+                <!-- TIMELINE (stays, grows) -->
+                <div id="timeline" class="rail-wrap relative flex-1 min-h-0 overflow-y-auto pr-1 -mr-1 pt-2">
                     <div class="rail-track"></div>
                     <div class="rail-fill" id="railFill"></div>
                     <div id="train"></div>
-
                     <nav id="stations">
-                        <a href="#s-bsc" class="station" data-target="s-bsc" style="--stn-color:#94a3b8">
-                            <span class="stn-year">2018 — 2021</span>
-                            <span class="stn-label">B.Sc. Mathematics · St. Xavier's</span>
-                        </a>
-                        <a href="#s-cert" class="station" data-target="s-cert" style="--stn-color:#f97316">
-                            <span class="stn-year">2020</span>
-                            <span class="stn-label">Foundations · TensorFlow &amp; ML Certifications</span>
-                        </a>
-                        <a href="#s-papers" class="station" data-target="s-papers" style="--stn-color:#f59e0b">
-                            <span class="stn-year">2021</span>
-                            <span class="stn-label">First Research Papers</span>
-                        </a>
-                        <a href="#s-nibmg" class="station" data-target="s-nibmg" style="--stn-color:#22d3ee">
-                            <span class="stn-year">Sep 2021 — Mar 2025</span>
-                            <span class="stn-label">Bioinformatics Research Engineer · NIBMG</span>
-                        </a>
-                        <a href="#s-msc" class="station" data-target="s-msc" style="--stn-color:#6366f1">
-                            <span class="stn-year">Mar 2023 — Feb 2025</span>
-                            <span class="stn-label">M.Sc. Artificial Intelligence · Germany</span>
-                        </a>
-                        <a href="#s-gat" class="station" data-target="s-gat" style="--stn-color:#14b8a6">
-                            <span class="stn-year">June 2023</span>
-                            <span class="stn-label">Graph Attention for Multi-Omics · Helmholtz AI</span>
-                        </a>
-                        <a href="#s-patho" class="station" data-target="s-patho" style="--stn-color:#a855f7">
-                            <span class="stn-year">Aug 2024</span>
-                            <span class="stn-label">Immune-Omics × Pathology Vision Model</span>
-                        </a>
-                        <a href="#s-thesis" class="station" data-target="s-thesis" style="--stn-color:#3b82f6">
-                            <span class="stn-year">2025 · Grade 1.0</span>
-                            <span class="stn-label">M.Sc. Thesis → MedDiscover (CSBJ)</span>
-                        </a>
-                        <a href="#s-hawk" class="station" data-target="s-hawk" style="--stn-color:#10b981">
-                            <span class="stn-year">May 2025 — Present</span>
-                            <span class="stn-label">Founder · HawkFranklin Research</span>
-                        </a>
-                        <a href="#s-recognition" class="station" data-target="s-recognition" style="--stn-color:#f43f5e">
-                            <span class="stn-year">Portfolio</span>
-                            <span class="stn-label">Publications · Patents · Skills · References</span>
-                        </a>
+                        <a class="station" data-target="c-bsc" style="--c:#94a3b8"><span class="stn-year">2018 — 2021</span><span class="stn-label">B.Sc. Mathematics · St. Xavier's</span></a>
+                        <a class="station" data-target="c-cert" style="--c:#f97316"><span class="stn-year">2020</span><span class="stn-label">Foundations · TensorFlow &amp; ML</span></a>
+                        <a class="station" data-target="c-papers" style="--c:#f59e0b"><span class="stn-year">2021</span><span class="stn-label">First Research Papers</span></a>
+                        <a class="station" data-target="c-nibmg" style="--c:#22d3ee"><span class="stn-year">Sep 2021 — Mar 2025</span><span class="stn-label">Research Engineer · NIBMG</span></a>
+                        <a class="station" data-target="c-msc" style="--c:#6366f1"><span class="stn-year">Mar 2023 — Feb 2025</span><span class="stn-label">M.Sc. Artificial Intelligence</span></a>
+                        <a class="station" data-target="c-gat" style="--c:#14b8a6"><span class="stn-year">June 2023</span><span class="stn-label">Graph Attention · Multi-Omics</span></a>
+                        <a class="station" data-target="c-patho" style="--c:#a855f7"><span class="stn-year">Aug 2024</span><span class="stn-label">Immune-Omics × Pathology Vision</span></a>
+                        <a class="station" data-target="c-thesis" style="--c:#3b82f6"><span class="stn-year">2025 · Grade 1.0</span><span class="stn-label">Thesis → MedDiscover (CSBJ)</span></a>
+                        <a class="station" data-target="c-hawk-pelli" style="--c:#e6c15a"><span class="stn-year">May 2025 — Present</span><span class="stn-label">Founder · HawkFranklin Research</span></a>
+                        <a class="station" data-target="c-recognition" style="--c:#f43f5e"><span class="stn-year">Portfolio</span><span class="stn-label">Publications · Patents · Skills</span></a>
                     </nav>
                 </div>
 
-                <div class="shrink-0 pt-4 mt-2 border-t border-white/10 text-[11px] text-gray-500 flex items-center justify-between">
+                <div class="shrink-0 pt-3 mt-2 border-t border-white/10 text-[11px] text-gray-500 flex items-center justify-between">
                     <a href="mailto:vatsal1804@gmail.com" class="hover:text-white transition-colors">vatsal1804@gmail.com</a>
                     <span class="hidden sm:inline"><i class="fa-solid fa-computer-mouse mr-1"></i> Scroll the journey</span>
                 </div>
             </div>
         </aside>
 
-        <!-- ============================================================= -->
-        <!-- RIGHT PANEL: SCROLLING JOURNEY                                -->
-        <!-- ============================================================= -->
-        <main class="w-full lg:w-[62%] xl:w-[66%] p-5 md:p-10 pb-24 space-y-20 md:space-y-28">
+        <!-- ===================== RIGHT: JOURNEY ===================== -->
+        <main class="w-full lg:w-[64%] xl:w-[68%] px-5 md:px-10 relative">
 
             <!-- INTRO -->
-            <section class="pt-6 lg:pt-16 space-y-5">
-                <p class="section-eyebrow text-blue-400 reveal">Interactive Résumé</p>
-                <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] reveal delay-1">
+            <section id="intro" class="min-h-screen flex flex-col justify-center py-16">
+                <p class="section-eyebrow text-blue-400 mb-4">Interactive Résumé</p>
+                <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05]">
                     The Journey of a<br>
                     <span class="text-gradient bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400">Computational Biologist.</span>
                 </h2>
-                <p class="text-gray-400 font-light text-lg leading-relaxed max-w-2xl reveal delay-2">
-                    From pure mathematics to cancer genomics, multi-omics integration, and deployed clinical AI —
-                    each stop on the left rail is a station in the story. Scroll, and the train moves with you.
+                <p class="text-gray-400 font-light text-lg leading-relaxed max-w-2xl mt-5">
+                    From pure mathematics to cancer genomics, multi-omics, and deployed clinical AI. Each stop on the
+                    left rail is a station — scroll, and the train arrives while the story unfolds one frame at a time.
                 </p>
-                <div class="flex flex-wrap gap-2 pt-2 reveal delay-3">
-                    <span class="skill-tag">Cancer Genomics</span>
-                    <span class="skill-tag">Multi-Omics</span>
-                    <span class="skill-tag">Graph Attention Networks</span>
-                    <span class="skill-tag">RAG-LLM Systems</span>
+                <div class="flex flex-wrap gap-2 mt-6">
+                    <span class="skill-tag">Cancer Genomics</span><span class="skill-tag">Multi-Omics</span>
+                    <span class="skill-tag">Graph Attention Networks</span><span class="skill-tag">RAG-LLM Systems</span>
                     <span class="skill-tag">Clinical AI</span>
                 </div>
+                <div class="mt-10 text-gray-500 text-sm flex items-center gap-2 animate-pulse"><i class="fa-solid fa-arrow-down"></i> Begin</div>
             </section>
 
-            <!-- ========== STATION 1: B.Sc. Mathematics ========== -->
-            <section id="s-bsc" class="scroll-mt-8 space-y-6" data-color="#94a3b8"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(148,163,184,0.10), transparent 55%), radial-gradient(circle at 15% 90%, rgba(100,116,139,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-slate-400">2018 — 2021 · The Foundation</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2">B.Sc. Mathematics</h3>
-                    <p class="text-slate-300 font-medium mt-1 italic">St. Xavier's College, Mumbai · CGPA 9.31 / 10</p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6 items-stretch">
-                    <div class="glass-card rounded-3xl p-7 reveal">
-                        <div class="w-12 h-12 rounded-xl bg-slate-500/20 text-slate-300 flex items-center justify-center text-xl mb-5 border border-slate-500/30"><i class="fa-solid fa-square-root-variable"></i></div>
-                        <p class="text-gray-300 font-light leading-relaxed">
-                            A rigorous major in Mathematics with a minor in Physics — Linear Algebra, Vector Analysis,
-                            Optimization, and Topology. This is the analytical bedrock behind every model I build:
-                            the reason I think about biology in terms of geometry, structure, and completion.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mt-5">
-                            <span class="skill-tag">Linear Algebra</span>
-                            <span class="skill-tag">Optimization</span>
-                            <span class="skill-tag">Topology</span>
+            <!-- ========== CHAPTER: B.Sc. ========== -->
+            <section class="chapter" id="c-bsc" data-station="c-bsc" data-color="#94a3b8" style="--steps:2; --theme:#94a3b8">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <p class="section-eyebrow text-slate-400">2018 — 2021 · The Foundation</p>
+                        <h3 class="text-3xl md:text-5xl font-bold mt-2">B.Sc. Mathematics</h3>
+                        <p class="text-slate-300 font-medium mt-1 italic">St. Xavier's College, Mumbai · CGPA 9.31 / 10</p>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span></div>
+                    </div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
+                                <div class="w-14 h-14 rounded-2xl bg-slate-500/20 text-slate-300 flex items-center justify-center text-2xl mb-6 border border-slate-500/30"><i class="fa-solid fa-square-root-variable"></i></div>
+                                <p class="text-gray-200 font-light leading-relaxed text-lg md:text-xl max-w-2xl">
+                                    A rigorous major in Mathematics with a minor in Physics — Linear Algebra, Vector
+                                    Analysis, Optimization, and Topology. The analytical bedrock behind every model I build,
+                                    and the reason I think about biology in terms of geometry, structure, and completion.
+                                </p>
+                                <div class="flex flex-wrap gap-2 mt-6">
+                                    <span class="skill-tag">Linear Algebra</span><span class="skill-tag">Optimization</span><span class="skill-tag">Topology</span><span class="skill-tag">Vector Analysis</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="media-frame media-contain h-full bg-white" onclick="openModal(['images/Degree.png'],'B.Sc. Mathematics — St. Xavier\'s College')">
+                                <img src="images/opt/Degree.jpg" alt="B.Sc. Mathematics Degree" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-slate-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-award mr-1"></i> B.Sc. Degree · Click to view</span></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="media-frame reveal delay-1 min-h-[240px]" onclick="openCertModal(['images/Degree.png'], 'B.Sc. Mathematics — St. Xavier\'s College')">
-                        <img src="images/Degree.png" alt="B.Sc. Mathematics Degree">
-                        <div class="media-cap"><span class="text-[11px] text-slate-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-award mr-1"></i> B.Sc. Degree · Click to view</span></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ========== STATION 2: Certifications (as early as 2020) ========== -->
-            <section id="s-cert" class="scroll-mt-8 space-y-6" data-color="#f97316"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(249,115,22,0.12), transparent 55%), radial-gradient(circle at 15% 90%, rgba(234,88,12,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-orange-400">2020 · Ahead of the Curve</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2">Building the ML Foundation — as early as 2020</h3>
-                    <p class="text-gray-400 font-light mt-2 max-w-2xl">
-                        While still an undergraduate, I completed advanced specializations in deep learning and the
-                        mathematics behind it — years before it became mainstream. Verified, multi-course credentials.
-                    </p>
-                </div>
-                <div class="grid md:grid-cols-3 gap-5">
-                    <div class="glass-card rounded-2xl overflow-hidden reveal group">
-                        <div class="media-frame !rounded-none h-44 !border-0 !border-b border-white/10" onclick="openCertModal(['assets/unused/root-images/specialization_1.jpg'], 'TensorFlow Developer — DeepLearning.AI')">
-                            <img src="images/specialization_1.jpg" alt="TensorFlow Developer Certificate">
-                        </div>
-                        <div class="p-5">
-                            <span class="text-[10px] text-orange-400 font-bold uppercase tracking-widest">July 2020 · 4 Courses</span>
-                            <h4 class="font-bold text-white mt-1">TensorFlow Developer</h4>
-                            <p class="text-xs text-gray-400 font-light mt-1">DeepLearning.AI — building, training &amp; deploying neural networks.</p>
-                        </div>
-                    </div>
-                    <div class="glass-card rounded-2xl overflow-hidden reveal delay-1 group">
-                        <div class="media-frame !rounded-none h-44 !border-0 !border-b border-white/10" onclick="openCertModal(['assets/unused/root-images/specialization_2.jpg'], 'Machine Learning on Google Cloud')">
-                            <img src="images/specialization_2.jpg" alt="Machine Learning on Google Cloud Certificate">
-                        </div>
-                        <div class="p-5">
-                            <span class="text-[10px] text-orange-400 font-bold uppercase tracking-widest">July 2020 · 5 Courses</span>
-                            <h4 class="font-bold text-white mt-1">ML on Google Cloud</h4>
-                            <p class="text-xs text-gray-400 font-light mt-1">Production ML pipelines &amp; scalable cloud training.</p>
-                        </div>
-                    </div>
-                    <div class="glass-card rounded-2xl overflow-hidden reveal delay-2 group">
-                        <div class="media-frame !rounded-none h-44 !border-0 !border-b border-white/10" onclick="openCertModal(['assets/unused/root-images/specialization_3.jpg'], 'Mathematics for Machine Learning — Imperial College London')">
-                            <img src="images/specialization_3.jpg" alt="Mathematics for Machine Learning Certificate">
-                        </div>
-                        <div class="p-5">
-                            <span class="text-[10px] text-orange-400 font-bold uppercase tracking-widest">Sep 2020 · 3 Courses</span>
-                            <h4 class="font-bold text-white mt-1">Mathematics for ML</h4>
-                            <p class="text-xs text-gray-400 font-light mt-1">Imperial College London — Linear Algebra, Multivariate Calculus, PCA.</p>
-                        </div>
-                    </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
                 </div>
             </section>
 
-            <!-- ========== STATION 3: First Research Papers ========== -->
-            <section id="s-papers" class="scroll-mt-8 space-y-6" data-color="#f59e0b"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(245,158,11,0.12), transparent 55%), radial-gradient(circle at 15% 90%, rgba(217,119,6,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-amber-400">2021 · First Author</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2">First Research Papers</h3>
-                    <p class="text-gray-400 font-light mt-2 max-w-2xl">
-                        My first independent research — bridging optimization theory and cancer biology while still an
-                        undergraduate. Including a first-author deep-learning study on mapping single cells to cancer types.
-                    </p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="glass-card rounded-3xl p-6 reveal">
-                        <span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest">June 2021</span>
-                        <h4 class="font-bold text-white text-lg mt-1">Research Paper on Gradient Descent</h4>
-                        <p class="text-sm text-gray-400 font-light mt-2">An analytical study of gradient-based optimization — the mathematical engine behind modern deep learning.</p>
-                        <div class="media-frame mt-4 h-52" onclick="openCertModal(['images/extracted_slides/slide4_img2.png'], 'Research Paper · Gradient Descent')">
-                            <img src="images/extracted_slides/slide4_img2.png" alt="Gradient Descent research">
+            <!-- ========== CHAPTER: Certifications ========== -->
+            <section class="chapter" id="c-cert" data-station="c-cert" data-color="#f97316" style="--steps:3; --theme:#f97316">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <p class="section-eyebrow text-orange-400">2020 · Ahead of the Curve</p>
+                        <h3 class="text-3xl md:text-5xl font-bold mt-2">Building the ML Foundation</h3>
+                        <p class="text-gray-400 font-light mt-2 max-w-2xl">As early as 2020 — while still an undergraduate — advanced, verified specializations in deep learning and its mathematics.</p>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                    </div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="grid md:grid-cols-2 gap-6 h-full">
+                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/root-images/specialization_3.jpg'],'TensorFlow Developer — DeepLearning.AI')">
+                                    <img src="images/opt/spec_3.jpg" alt="TensorFlow Developer certificate" loading="lazy" decoding="async">
+                                </div>
+                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                                    <span class="text-[11px] text-orange-400 font-bold uppercase tracking-widest">July 2020 · 4 Courses</span>
+                                    <h4 class="text-2xl font-bold text-white mt-2">TensorFlow Developer</h4>
+                                    <p class="text-gray-300 font-light mt-3">DeepLearning.AI — building, training &amp; deploying scalable neural networks for vision and sequence data.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="grid md:grid-cols-2 gap-6 h-full">
+                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/root-images/specialization_2.jpg'],'Machine Learning on Google Cloud')">
+                                    <img src="images/opt/spec_2.jpg" alt="ML on Google Cloud certificate" loading="lazy" decoding="async">
+                                </div>
+                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                                    <span class="text-[11px] text-orange-400 font-bold uppercase tracking-widest">July 2020 · 5 Courses</span>
+                                    <h4 class="text-2xl font-bold text-white mt-2">ML on Google Cloud</h4>
+                                    <p class="text-gray-300 font-light mt-3">Production machine-learning pipelines and scalable cloud training end-to-end.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="grid md:grid-cols-2 gap-6 h-full">
+                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/root-images/specialization_1.jpg'],'Mathematics for Machine Learning — Imperial College London')">
+                                    <img src="images/opt/spec_1.jpg" alt="Mathematics for ML certificate" loading="lazy" decoding="async">
+                                </div>
+                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                                    <span class="text-[11px] text-orange-400 font-bold uppercase tracking-widest">Sep 2020 · 3 Courses · Imperial College London</span>
+                                    <h4 class="text-2xl font-bold text-white mt-2">Mathematics for ML</h4>
+                                    <p class="text-gray-300 font-light mt-3">Linear Algebra, Multivariate Calculus, and PCA — the maths under the models.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="glass-card rounded-3xl p-6 reveal delay-1">
-                        <span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest">Aug 2021 · First Author</span>
-                        <h4 class="font-bold text-white text-lg mt-1">Cancer Cell Mapping — Single-cell RNA-seq</h4>
-                        <p class="text-sm text-gray-400 font-light mt-2">A deep-learning model to automatically map cancer cells to cancer cell lines and cancer types from single-cell RNA-seq pan-cancer data.</p>
-                        <div class="media-frame mt-4 h-52" onclick="openCertModal(['images/extracted_slides/slide4_img3.png'], 'Cancer Cell Mapping · Single-cell RNA-seq')">
-                            <img src="images/extracted_slides/slide4_img3.png" alt="Cancer cell mapping research">
-                        </div>
-                    </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll · 3 credentials</div>
                 </div>
             </section>
 
-            <!-- ========== STATION 4: NIBMG ========== -->
-            <section id="s-nibmg" class="scroll-mt-8 space-y-6" data-color="#22d3ee"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(34,211,238,0.12), transparent 55%), radial-gradient(circle at 15% 90%, rgba(14,165,233,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-cyan-400">Sep 2021 — Mar 2025 · 3.5 Years</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2">Bioinformatics Research Engineer</h3>
-                    <p class="text-cyan-300 font-medium mt-1 italic">BRIC — National Institute of Biomedical Genomics (NIBMG), Kalyani · National Supercomputing Mission</p>
-                </div>
-                <div class="glass-card rounded-3xl p-7 reveal">
-                    <ul class="space-y-3 text-gray-300 font-light leading-relaxed">
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-circle-nodes text-cyan-400 mt-1.5 text-xs"></i><span><strong class="text-white">National Supercomputing Mission (NSM):</strong> large-scale genomics, transcriptome mapping, and drug-discovery pipelines on HPC clusters.</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-circle-nodes text-cyan-400 mt-1.5 text-xs"></i><span><strong class="text-white">GPU pipeline engineering:</strong> built and deployed scalable, high-performance GPU pipelines for tissue feature extraction from open-source foundation models.</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-circle-nodes text-cyan-400 mt-1.5 text-xs"></i><span><strong class="text-white">Histopathology vision:</strong> deep convolutional autoencoders &amp; Multiple Instance Learning on whole-slide images.</span></li>
-                        <li class="flex items-start gap-3"><i class="fa-solid fa-circle-nodes text-cyan-400 mt-1.5 text-xs"></i><span><strong class="text-white">Published (contributing author):</strong> ensemble ML evaluation of in-silico pathogenicity predictors for cancer driver mutations — <em>BioData Mining</em> (IF 6.1).</span></li>
-                    </ul>
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="media-frame reveal h-48 md:h-56" onclick="openCertModal(['images/me_presenting_poster.png'], 'Poster Session · Helmholtz AI Conference')">
-                        <img src="images/me_presenting_poster.png" alt="Presenting poster">
-                        <div class="media-cap"><span class="text-[10px] text-cyan-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-microphone mr-1"></i> Poster session</span></div>
+            <!-- ========== CHAPTER: First Papers ========== -->
+            <section class="chapter" id="c-papers" data-station="c-papers" data-color="#f59e0b" style="--steps:2; --theme:#f59e0b">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <p class="section-eyebrow text-amber-400">2021 · First Author</p>
+                        <h3 class="text-3xl md:text-5xl font-bold mt-2">First Research Papers</h3>
+                        <p class="text-gray-400 font-light mt-2 max-w-2xl">First independent research — bridging optimization theory and cancer biology as an undergraduate.</p>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span></div>
                     </div>
-                    <div class="media-frame reveal delay-1 h-48 md:h-56" onclick="openCertModal(['assets/unused/images/me_presenting_slide.png'], 'Research Presentation · NIBMG')">
-                        <img src="assets/unused/images/me_presenting_slide.png" alt="Presenting slide">
-                        <div class="media-cap"><span class="text-[10px] text-cyan-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-person-chalkboard mr-1"></i> Research talk</span></div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="grid md:grid-cols-2 gap-6 h-full">
+                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                                    <span class="text-[11px] text-amber-400 font-bold uppercase tracking-widest">June 2021</span>
+                                    <h4 class="text-2xl font-bold text-white mt-2">Research Paper on Gradient Descent</h4>
+                                    <p class="text-gray-300 font-light mt-3">An analytical study of gradient-based optimization — the mathematical engine behind modern deep learning.</p>
+                                </div>
+                                <div class="media-frame h-full" onclick="openModal(['images/extracted_slides/slide4_img2.png'],'Research Paper · Gradient Descent')">
+                                    <img src="images/opt/paper_grad.jpg" alt="Gradient Descent research" loading="lazy" decoding="async">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="grid md:grid-cols-2 gap-6 h-full">
+                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                                    <span class="text-[11px] text-amber-400 font-bold uppercase tracking-widest">Aug 2021 · First Author</span>
+                                    <h4 class="text-2xl font-bold text-white mt-2">Cancer Cell Mapping — Single-cell RNA-seq</h4>
+                                    <p class="text-gray-300 font-light mt-3">A deep-learning model mapping cancer cells to cancer cell lines and cancer types from single-cell RNA-seq pan-cancer data.</p>
+                                </div>
+                                <div class="media-frame h-full" onclick="openModal(['images/extracted_slides/slide4_img3.png'],'Cancer Cell Mapping · Single-cell RNA-seq')">
+                                    <img src="images/opt/paper_cellmap.jpg" alt="Cancer cell mapping research" loading="lazy" decoding="async">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-frame reveal delay-2 h-48 md:h-56" onclick="openCertModal(['images/nibmg_work_sep21_mar25-1.png'], 'NIBMG — Work Summary (Sep 2021 – Mar 2025)')">
-                        <img src="images/nibmg_work_sep21_mar25-1.png" alt="NIBMG work summary">
-                        <div class="media-cap"><span class="text-[10px] text-cyan-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-lines mr-1"></i> Work summary</span></div>
-                    </div>
-                    <div class="media-frame reveal delay-3 h-48 md:h-56" onclick="openCertModal(['assets/unused/images/nibmg_2025_paper.png'], 'BioData Mining — Ensemble ML Pathogenicity (2025)')">
-                        <img src="assets/unused/images/nibmg_2025_paper.png" alt="BioData Mining ensemble paper"
-                            onerror="this.onerror=null;this.src='images/graph_slide1_complete_project.png'">
-                        <div class="media-cap"><span class="text-[10px] text-cyan-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-invoice mr-1"></i> BioData Mining '25</span></div>
-                    </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
                 </div>
             </section>
 
-            <!-- ========== STATION 5: M.Sc. AI ========== -->
-            <section id="s-msc" class="scroll-mt-8 space-y-6" data-color="#6366f1"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(99,102,241,0.12), transparent 55%), radial-gradient(circle at 15% 90%, rgba(79,70,229,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-indigo-400">Mar 2023 — Feb 2025 · Berlin, Germany</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2">M.Sc. Artificial Intelligence</h3>
-                    <p class="text-indigo-300 font-medium mt-1 italic">IU International University of Applied Sciences · Grade 1.8 (German scale)</p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6 items-stretch">
-                    <div class="glass-card rounded-3xl p-7 reveal">
-                        <div class="w-12 h-12 rounded-xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-xl mb-5 border border-indigo-500/30"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <p class="text-gray-300 font-light leading-relaxed">
-                            A formal deep-learning education layered on top of years of applied research — advanced ML,
-                            deep learning, and biomedical applications. Pursued alongside my full-time engineering role,
-                            culminating in a Grade&nbsp;1.0 thesis (next stop).
-                        </p>
-                        <div class="flex flex-wrap gap-2 mt-5">
-                            <span class="skill-tag">Deep Learning</span>
-                            <span class="skill-tag">Transformers</span>
-                            <span class="skill-tag">Biomedical AI</span>
+            <!-- ========== CHAPTER: NIBMG (4 steps) ========== -->
+            <section class="chapter" id="c-nibmg" data-station="c-nibmg" data-color="#22d3ee" style="--steps:4; --theme:#22d3ee">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <p class="section-eyebrow text-cyan-400">Sep 2021 — Mar 2025 · 3.5 Years</p>
+                        <h3 class="text-3xl md:text-5xl font-bold mt-2">Bioinformatics Research Engineer</h3>
+                        <p class="text-cyan-300 font-medium mt-1 italic">BRIC — NIBMG, Kalyani · National Supercomputing Mission</p>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                    </div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
+                                <ul class="space-y-4 text-gray-200 font-light leading-relaxed text-base md:text-lg max-w-2xl">
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-nodes text-cyan-400 mt-1.5 text-sm"></i><span><strong class="text-white">National Supercomputing Mission (NSM):</strong> large-scale genomics, transcriptome mapping, and drug-discovery pipelines on HPC clusters.</span></li>
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-nodes text-cyan-400 mt-1.5 text-sm"></i><span><strong class="text-white">GPU pipeline engineering:</strong> scalable, high-performance GPU pipelines for tissue feature extraction from foundation models.</span></li>
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-circle-nodes text-cyan-400 mt-1.5 text-sm"></i><span><strong class="text-white">Histopathology vision:</strong> deep convolutional autoencoders &amp; Multiple Instance Learning on whole-slide images.</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="media-frame h-full" onclick="openModal(['images/me_presenting_poster.png'],'Poster Session · Helmholtz AI Conference')">
+                                <img src="images/opt/me_presenting_poster.jpg" alt="Presenting poster" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-cyan-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-microphone mr-1"></i> Poster session · Helmholtz AI</span></div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="media-frame media-contain h-full bg-white" onclick="openModal(['images/nibmg_work_sep21_mar25-1.png'],'NIBMG — Work Summary (Sep 2021 – Mar 2025)')">
+                                <img src="images/opt/nibmg_work.jpg" alt="NIBMG work summary" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-cyan-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-lines mr-1"></i> Work summary</span></div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="grid md:grid-cols-2 gap-6 h-full">
+                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/images/nibmg_2025_paper.png'],'BioData Mining — Ensemble ML Pathogenicity (2025)')">
+                                    <img src="images/opt/nibmg_2025_paper.jpg" alt="BioData Mining ensemble paper" loading="lazy" decoding="async">
+                                </div>
+                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                                    <span class="text-[11px] text-cyan-400 font-bold uppercase tracking-widest">BioData Mining · IF 6.1 · Contributing Author</span>
+                                    <h4 class="text-xl font-bold text-white mt-2 leading-snug">Ensemble ML evaluation of in-silico pathogenicity predictors for cancer driver mutations</h4>
+                                    <p class="text-gray-300 font-light mt-3 text-sm">Random-forest ensemble reaching AUC-ROC 0.89 across 502 HNSC patients &amp; 299 driver genes.</p>
+                                    <a href="https://doi.org/10.1186/s13040-024-00420-x" target="_blank" rel="noopener" class="text-blue-400 hover:underline text-sm mt-3 inline-flex items-center gap-1"><i class="fa-solid fa-link"></i> 10.1186/s13040-024-00420-x</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="media-frame reveal delay-1 min-h-[260px]" onclick="openCertModal(['images/master_degree_sc.png'], 'M.Sc. Artificial Intelligence — IU Germany')">
-                        <img src="images/master_degree_sc.png" alt="M.Sc. Artificial Intelligence Degree">
-                        <div class="media-cap"><span class="text-[11px] text-indigo-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-graduation-cap mr-1"></i> M.Sc. Degree · Click to view</span></div>
-                    </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll · 4 frames</div>
                 </div>
             </section>
 
-            <!-- ========== STATION 6: Graph Attention / Multi-Omics ========== -->
-            <section id="s-gat" class="scroll-mt-8 space-y-6" data-color="#14b8a6"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(20,184,166,0.12), transparent 55%), radial-gradient(circle at 15% 90%, rgba(13,148,136,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-teal-400">June 2023 · Helmholtz AI Conference, Germany</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2">Graph Attention for Multi-Omics</h3>
-                    <p class="text-gray-400 font-light mt-2 max-w-2xl">
-                        Patient-specific heterogeneous graphs combining genomics, transcriptomics, and methylomics —
-                        distilled into low-dimensional embeddings with Graph Attention Autoencoders for risk stratification.
-                        Presented as a flash talk &amp; poster at the Helmholtz AI Conference.
-                    </p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6 items-stretch">
-                    <div class="glass-card rounded-3xl p-7 reveal">
-                        <ul class="space-y-3 text-gray-300 font-light leading-relaxed text-sm">
-                            <li class="flex items-start gap-3"><i class="fa-solid fa-diagram-project text-teal-400 mt-1 text-xs"></i><span>Heterogeneous multi-omic networks per patient (TCGA / HNSCC).</span></li>
-                            <li class="flex items-start gap-3"><i class="fa-solid fa-diagram-project text-teal-400 mt-1 text-xs"></i><span>Graph Attention Autoencoders in PyTorch Geometric for biomarker discovery.</span></li>
-                            <li class="flex items-start gap-3"><i class="fa-solid fa-diagram-project text-teal-400 mt-1 text-xs"></i><span>First-author independent research — open-source codebase &amp; Hugging Face Space.</span></li>
-                        </ul>
-                        <a href="https://github.com/VatsalPatel18/Graph-Attention-Autoencoder-for-MultiOmics-Analysis" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-5 px-5 py-2 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30 hover:bg-teal-500 hover:text-white transition-all text-sm font-medium">
-                            <i class="fa-brands fa-github"></i> View Repository
-                        </a>
+            <!-- ========== CHAPTER: M.Sc. ========== -->
+            <section class="chapter" id="c-msc" data-station="c-msc" data-color="#6366f1" style="--steps:2; --theme:#6366f1">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <p class="section-eyebrow text-indigo-400">Mar 2023 — Feb 2025 · Germany</p>
+                        <h3 class="text-3xl md:text-5xl font-bold mt-2">M.Sc. Artificial Intelligence</h3>
+                        <p class="text-indigo-300 font-medium mt-1 italic">IU International University of Applied Sciences · Grade 1.8</p>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="media-frame reveal delay-1 h-full min-h-[130px]" onclick="openCertModal(['images/graph_slide4_result.png'], 'GAT — Patient Stratification Result')">
-                            <img src="images/graph_slide4_result.png" alt="GAT result">
-                            <div class="media-cap"><span class="text-[10px] text-teal-200 font-bold uppercase tracking-wider">Stratification</span></div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
+                                <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-2xl mb-6 border border-indigo-500/30"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <p class="text-gray-200 font-light leading-relaxed text-lg md:text-xl max-w-2xl">
+                                    A formal deep-learning education layered on years of applied research — advanced ML,
+                                    deep learning, and biomedical applications — pursued alongside my full-time engineering
+                                    role, culminating in a Grade&nbsp;1.0 thesis (next stop).
+                                </p>
+                                <div class="flex flex-wrap gap-2 mt-6"><span class="skill-tag">Deep Learning</span><span class="skill-tag">Transformers</span><span class="skill-tag">Biomedical AI</span></div>
+                            </div>
                         </div>
-                        <div class="media-frame reveal delay-2 h-full min-h-[130px]" onclick="openCertModal(['images/graph_slide1_complete_project.png'], 'Graph Attention Autoencoder — Pipeline')">
-                            <img src="images/graph_slide1_complete_project.png" alt="GAT pipeline">
-                            <div class="media-cap"><span class="text-[10px] text-teal-200 font-bold uppercase tracking-wider">Pipeline</span></div>
+                        <div class="step-item">
+                            <div class="media-frame media-contain h-full bg-white" onclick="openModal(['images/master_degree_sc.png'],'M.Sc. Artificial Intelligence — IU Germany')">
+                                <img src="images/opt/master_degree_sc.jpg" alt="M.Sc. AI Degree" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-indigo-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-graduation-cap mr-1"></i> M.Sc. Degree · Click to view</span></div>
+                            </div>
                         </div>
                     </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
                 </div>
             </section>
 
-            <!-- ========== STATION 7: Immune-Omics x Pathology Vision ========== -->
-            <section id="s-patho" class="scroll-mt-8 space-y-6" data-color="#a855f7"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(168,85,247,0.12), transparent 55%), radial-gradient(circle at 15% 90%, rgba(124,58,237,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-purple-400">Aug 2024 · Under Journal Review</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2">Immune-Omics Alignment of a Pathology Vision Model</h3>
-                    <p class="text-gray-400 font-light mt-2 max-w-2xl">
-                        Predicting high-risk HNSCC patients directly from whole-slide images —
-                        <strong class="text-purple-300">AUC &gt; 0.85</strong> — by contrastively aligning pathology
-                        visual features with immune-omics parameters. Drastically reduces NGS cost and turnaround.
-                    </p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6 items-stretch">
-                    <div class="glass-card rounded-3xl p-7 reveal">
-                        <ul class="space-y-3 text-gray-300 font-light leading-relaxed text-sm">
-                            <li class="flex items-start gap-3"><i class="fa-solid fa-dna text-purple-400 mt-1 text-xs"></i><span><strong class="text-white">Contrastive feature alignment</strong> of pathology visuals ↔ immune-omics via cosine-similarity loss.</span></li>
-                            <li class="flex items-start gap-3"><i class="fa-solid fa-dna text-purple-400 mt-1 text-xs"></i><span><strong class="text-white">Attention-based MIL head</strong> aggregating tile features per WSI (100k × 80k px).</span></li>
-                            <li class="flex items-start gap-3"><i class="fa-solid fa-dna text-purple-400 mt-1 text-xs"></i><span><strong class="text-white">Clinical impact:</strong> high-risk stratification from an H&amp;E slide alone.</span></li>
-                        </ul>
+            <!-- ========== CHAPTER: GAT ========== -->
+            <section class="chapter" id="c-gat" data-station="c-gat" data-color="#14b8a6" style="--steps:3; --theme:#14b8a6">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <p class="section-eyebrow text-teal-400">June 2023 · Helmholtz AI Conference, Germany</p>
+                        <h3 class="text-3xl md:text-5xl font-bold mt-2">Graph Attention for Multi-Omics</h3>
+                        <p class="text-gray-400 font-light mt-2 max-w-2xl">Patient-specific heterogeneous graphs combining genomics, transcriptomics &amp; methylomics — distilled with Graph Attention Autoencoders.</p>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="media-frame reveal delay-1 min-h-[150px]" onclick="openCertModal(['images/histo_slide1_wsi.png'], 'Whole-Slide Image Dissection')">
-                            <img src="images/histo_slide1_wsi.png" alt="WSI pathology">
-                            <div class="media-cap"><span class="text-[10px] text-purple-200 font-bold uppercase tracking-wider">WSI</span></div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
+                                <ul class="space-y-4 text-gray-200 font-light leading-relaxed text-base md:text-lg max-w-2xl">
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-diagram-project text-teal-400 mt-1.5 text-sm"></i><span>Heterogeneous multi-omic networks per patient (TCGA / HNSCC).</span></li>
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-diagram-project text-teal-400 mt-1.5 text-sm"></i><span>Graph Attention Autoencoders in PyTorch Geometric for biomarker discovery.</span></li>
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-diagram-project text-teal-400 mt-1.5 text-sm"></i><span>First-author research — presented as a flash talk &amp; poster.</span></li>
+                                </ul>
+                                <a href="https://github.com/VatsalPatel18/Graph-Attention-Autoencoder-for-MultiOmics-Analysis" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-6 w-max px-5 py-2 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/30 hover:bg-teal-500 hover:text-white transition-all text-sm font-medium"><i class="fa-brands fa-github"></i> View Repository</a>
+                            </div>
                         </div>
-                        <div class="media-frame reveal delay-2 min-h-[150px]" onclick="openCertModal(['assets/unused/images/histo_slide2_hypothesis.png'], 'Pathology × Immune-Omics — Hypothesis')">
-                            <img src="assets/unused/images/histo_slide2_hypothesis.png" alt="Pathology hypothesis">
-                            <div class="media-cap"><span class="text-[10px] text-purple-200 font-bold uppercase tracking-wider">Hypothesis</span></div>
+                        <div class="step-item">
+                            <div class="media-frame h-full" onclick="openModal(['images/graph_slide4_result.png'],'GAT — Patient Stratification')">
+                                <img src="images/opt/graph_result.jpg" alt="GAT result" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-teal-200 font-bold uppercase tracking-wider">Patient stratification</span></div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="media-frame h-full" onclick="openModal(['images/graph_slide1_complete_project.png'],'Graph Attention Autoencoder — Pipeline')">
+                                <img src="images/opt/graph_pipeline.jpg" alt="GAT pipeline" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-teal-200 font-bold uppercase tracking-wider">Full pipeline</span></div>
+                            </div>
                         </div>
                     </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
                 </div>
             </section>
 
-            <!-- ========== STATION 8: Thesis / MedDiscover ========== -->
-            <section id="s-thesis" class="scroll-mt-8 space-y-6" data-color="#3b82f6"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(59,130,246,0.13), transparent 55%), radial-gradient(circle at 15% 90%, rgba(37,99,235,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-blue-400">M.Sc. Thesis · Grade 1.0</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2">RAG-LLMs for Metabolomic Biomarker Research</h3>
-                    <p class="text-gray-400 font-light mt-2 max-w-2xl">
-                        My master's thesis — <em>Retrieval-Augmented Generation with Large Language Models for Metabolomic
-                        Biomarker Research</em> — earned the <strong class="text-blue-300">top grade of 1.0</strong> and became a
-                        first-author peer-reviewed paper, <strong>MedDiscover</strong>, published in the
-                        <em>Computational and Structural Biotechnology Journal (CSBJ)</em>.
-                    </p>
-                </div>
-                <div class="grid md:grid-cols-2 gap-6 items-stretch">
-                    <div class="glass-card rounded-3xl p-7 reveal flex flex-col justify-between">
-                        <div>
-                            <span class="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-full text-[11px] font-bold uppercase tracking-widest">CSBJ · IF 4.1 · First Author</span>
-                            <h4 class="font-bold text-white text-lg mt-4 leading-snug">MedDiscover: A Domain-Specific RAG Framework for Evidence-Grounded Knowledge Extraction in Metabolomics</h4>
-                            <p class="text-sm text-gray-400 font-light mt-2">Vatsal Pravinbhai Patel, Elena Jolkver, Anne Schwerk · Published 9 April 2026.</p>
+            <!-- ========== CHAPTER: Pathology ========== -->
+            <section class="chapter" id="c-patho" data-station="c-patho" data-color="#a855f7" style="--steps:3; --theme:#a855f7">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <p class="section-eyebrow text-purple-400">Aug 2024 · Under Journal Review</p>
+                        <h3 class="text-3xl md:text-5xl font-bold mt-2">Immune-Omics × Pathology Vision</h3>
+                        <p class="text-gray-400 font-light mt-2 max-w-2xl">Predicting high-risk HNSCC directly from whole-slide images — <strong class="text-purple-300">AUC &gt; 0.85</strong> — by aligning pathology features with immune-omics.</p>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                    </div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
+                                <ul class="space-y-4 text-gray-200 font-light leading-relaxed text-base md:text-lg max-w-2xl">
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-dna text-purple-400 mt-1.5 text-sm"></i><span><strong class="text-white">Contrastive feature alignment</strong> of pathology visuals ↔ immune-omics via cosine-similarity loss.</span></li>
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-dna text-purple-400 mt-1.5 text-sm"></i><span><strong class="text-white">Attention-based MIL head</strong> aggregating tile features per WSI (100k × 80k px).</span></li>
+                                    <li class="flex items-start gap-3"><i class="fa-solid fa-dna text-purple-400 mt-1.5 text-sm"></i><span><strong class="text-white">Clinical impact:</strong> high-risk stratification from an H&amp;E slide alone — cutting NGS cost &amp; turnaround.</span></li>
+                                </ul>
+                            </div>
                         </div>
-                        <a href="https://doi.org/10.34133/csbj.0018" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-5 text-blue-400 hover:text-blue-300 text-sm font-medium"><i class="fa-solid fa-link"></i> DOI: 10.34133/csbj.0018</a>
+                        <div class="step-item">
+                            <div class="media-frame h-full" onclick="openModal(['images/histo_slide1_wsi.png'],'Whole-Slide Image Dissection')">
+                                <img src="images/opt/histo_wsi.jpg" alt="WSI pathology" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-purple-200 font-bold uppercase tracking-wider">Whole-slide image</span></div>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/images/histo_slide2_hypothesis.png'],'Pathology × Immune-Omics — Hypothesis')">
+                                <img src="images/opt/histo_hypothesis.jpg" alt="Pathology hypothesis" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-purple-200 font-bold uppercase tracking-wider">Hypothesis</span></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-frame reveal delay-1 min-h-[260px] bg-white" onclick="openCertModal(['assets/unused/images/mediscover-paper-published.png'], 'MedDiscover — Published in CSBJ (2026)')">
-                        <img src="assets/unused/images/mediscover-paper-published.png" alt="MedDiscover published paper" class="!object-contain">
-                        <div class="media-cap"><span class="text-[11px] text-blue-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-lines mr-1"></i> Published · Click to view</span></div>
-                    </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
                 </div>
             </section>
 
-            <!-- ========== STATION 9: HawkFranklin ========== -->
-            <section id="s-hawk" class="scroll-mt-8 space-y-6" data-color="#10b981"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(16,185,129,0.13), transparent 55%), radial-gradient(circle at 15% 90%, rgba(5,150,105,0.10), transparent 55%)">
-                <div class="reveal">
-                    <p class="section-eyebrow text-emerald-400">May 2025 — Present · Founder</p>
-                    <h3 class="text-3xl md:text-4xl font-bold mt-2 text-gradient bg-gradient-to-r from-emerald-400 to-blue-400">HawkFranklin Research</h3>
-                    <p class="text-emerald-300 font-medium mt-1 italic">Founder &amp; Principal Research Engineer</p>
-                    <p class="text-gray-400 font-light mt-3 max-w-2xl">
-                        Building applied AI products in clinical care and genomics — deployed at the World Health Expo (WHX)
-                        Dubai, Feb 2026 — while advancing new mathematical structure for multi-omics integration.
-                    </p>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-5">
-                    <a href="project_pelliscope.html" class="glass-card rounded-3xl p-6 group reveal">
-                        <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center mb-4"><img src="assets/media/icons/pelliscope.png" alt="PelliScope" class="w-7 h-7 object-contain" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fa-solid fa-staff-snake text-emerald-400 text-xl\'></i>'"></div>
-                        <h4 class="font-bold text-white text-lg">PelliScope</h4>
-                        <p class="text-sm text-gray-400 font-light mt-1">AI teledermatology — pre-consultation differential diagnosis, validated at <strong class="text-emerald-300">AUC ≈ 0.863</strong>. Shown at WHX Dubai with Emirates Health Services.</p>
-                        <span class="inline-flex items-center gap-1 text-emerald-400 text-xs font-semibold mt-3 group-hover:gap-2 transition-all">View project <i class="fa-solid fa-arrow-right -rotate-45"></i></span>
-                    </a>
-                    <a href="project_oncogemma.html" class="glass-card rounded-3xl p-6 group reveal delay-1">
-                        <div class="w-12 h-12 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center mb-4"><img src="assets/media/icons/oncogemma_logo_only.png" alt="OncoGemma" class="w-7 h-7 object-contain" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\'fa-solid fa-microscope text-purple-400 text-xl\'></i>'"></div>
-                        <h4 class="font-bold text-white text-lg">OncoGemma</h4>
-                        <p class="text-sm text-gray-400 font-light mt-1">Advanced pathology workstation integrating high-resolution WSI with multimodal AI for cancer subtype prediction &amp; biomarker identification.</p>
-                        <span class="inline-flex items-center gap-1 text-purple-400 text-xs font-semibold mt-3 group-hover:gap-2 transition-all">View project <i class="fa-solid fa-arrow-right -rotate-45"></i></span>
-                    </a>
-                </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="media-frame reveal h-40 md:h-48" onclick="openCertModal(['images/whx_expo26/image1_expo.jpg','images/whx_expo26/image2_expo.jpg','images/whx_expo26/image4_expo.jpg','images/whx_expo26/image5_expo.jpg'], 'WHX Dubai 2026 — Live Deployment', 0)">
-                        <img src="images/whx_expo26/image1_expo.jpg" alt="WHX Dubai 1">
-                        <div class="media-cap"><span class="text-[10px] text-emerald-200 font-bold uppercase tracking-wider">WHX Dubai '26</span></div>
+            <!-- ========== CHAPTER: Thesis / MedDiscover ========== -->
+            <section class="chapter" id="c-thesis" data-station="c-thesis" data-color="#3b82f6" style="--steps:2; --theme:#3b82f6">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <p class="section-eyebrow text-blue-400">M.Sc. Thesis · Grade 1.0</p>
+                        <h3 class="text-3xl md:text-5xl font-bold mt-2">RAG-LLMs for Metabolomics</h3>
+                        <p class="text-gray-400 font-light mt-2 max-w-2xl">The top-grade thesis became a first-author paper — <strong>MedDiscover</strong>, published in CSBJ.</p>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span></div>
                     </div>
-                    <div class="media-frame reveal delay-1 h-40 md:h-48" onclick="openCertModal(['images/whx_expo26/image2_expo.jpg','images/whx_expo26/image1_expo.jpg','images/whx_expo26/image4_expo.jpg','images/whx_expo26/image5_expo.jpg'], 'WHX Dubai 2026 — Live Deployment', 0)">
-                        <img src="images/whx_expo26/image2_expo.jpg" alt="WHX Dubai 2">
-                        <div class="media-cap"><span class="text-[10px] text-emerald-200 font-bold uppercase tracking-wider">Live demo</span></div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
+                                <span class="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-full text-[11px] font-bold uppercase tracking-widest w-max">CSBJ · IF 4.1 · First Author</span>
+                                <h4 class="text-2xl font-bold text-white mt-4 leading-snug max-w-2xl">MedDiscover: A Domain-Specific RAG Framework for Evidence-Grounded Knowledge Extraction in Metabolomics</h4>
+                                <p class="text-gray-300 font-light mt-3">Vatsal Pravinbhai Patel, Elena Jolkver, Anne Schwerk · Published 9 April 2026. Thesis graded 1.0 (top) at IU / Berlin Institute of Health.</p>
+                                <a href="https://doi.org/10.34133/csbj.0018" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-5 text-blue-400 hover:text-blue-300 text-sm font-medium"><i class="fa-solid fa-link"></i> DOI: 10.34133/csbj.0018</a>
+                            </div>
+                        </div>
+                        <div class="step-item">
+                            <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/images/mediscover-paper-published.png'],'MedDiscover — Published in CSBJ (2026)')">
+                                <img src="images/opt/mediscover_paper.jpg" alt="MedDiscover published paper" loading="lazy" decoding="async">
+                                <div class="media-cap"><span class="text-[11px] text-blue-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-lines mr-1"></i> Published · Click to view</span></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-frame reveal delay-2 h-40 md:h-48" onclick="openCertModal(['images/whx_expo26/image4_expo.jpg','images/whx_expo26/image1_expo.jpg','images/whx_expo26/image2_expo.jpg','images/whx_expo26/image5_expo.jpg'], 'WHX Dubai 2026 — Live Deployment', 0)">
-                        <img src="images/whx_expo26/image4_expo.jpg" alt="WHX Dubai 3">
-                        <div class="media-cap"><span class="text-[10px] text-emerald-200 font-bold uppercase tracking-wider">Emirates Health</span></div>
-                    </div>
-                    <div class="media-frame reveal delay-3 h-40 md:h-48" onclick="openCertModal(['images/whx_expo26/image5_expo.jpg','images/whx_expo26/image1_expo.jpg','images/whx_expo26/image2_expo.jpg','images/whx_expo26/image4_expo.jpg'], 'WHX Dubai 2026 — Live Deployment', 0)">
-                        <img src="images/whx_expo26/image5_expo.jpg" alt="WHX Dubai 4">
-                        <div class="media-cap"><span class="text-[10px] text-emerald-200 font-bold uppercase tracking-wider">Showcase</span></div>
-                    </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
                 </div>
             </section>
 
-            <!-- ========== TERMINUS: Recognition ========== -->
-            <section id="s-recognition" class="scroll-mt-8 space-y-10" data-color="#f43f5e"
-                data-glow="radial-gradient(circle at 80% 10%, rgba(244,63,94,0.12), transparent 55%), radial-gradient(circle at 15% 90%, rgba(147,51,234,0.10), transparent 55%)">
+            <!-- ========== CHAPTER: HawkFranklin · PelliScope ========== -->
+            <section class="chapter" id="c-hawk-pelli" data-station="c-hawk-pelli" data-color="#e6c15a" style="--steps:3; --theme:#10b981">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <!-- HawkFranklin masthead (gold) -->
+                        <div class="flex items-center gap-3 mb-3">
+                            <img src="assets/media/icons/opt/hawkfranklin_logo.png" alt="HawkFranklin" class="w-11 h-11 object-contain" loading="lazy">
+                            <div>
+                                <p class="section-eyebrow gold-text text-gradient">HawkFranklin Research</p>
+                                <p class="text-[11px] text-gray-500 font-medium">Founder &amp; Principal Research Engineer · May 2025 — Present</p>
+                            </div>
+                        </div>
+                        <!-- Sub-brand: PelliScope -->
+                        <div class="flex items-center gap-3 mt-4">
+                            <div class="w-11 h-11 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center">
+                                <img src="assets/media/icons/pelliscope.png" alt="PelliScope" class="w-7 h-7 object-contain" onerror="this.replaceWith(Object.assign(document.createElement('i'),{className:'fa-solid fa-staff-snake text-emerald-400 text-xl'}))">
+                            </div>
+                            <h3 class="text-3xl md:text-4xl font-bold">PelliScope <span class="text-emerald-400 font-light text-xl">· AI Teledermatology</span></h3>
+                        </div>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                    </div>
+                    <div class="stage">
+                        <!-- Step 1: pitch + shortlist -->
+                        <div class="step-item">
+                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
+                                <p class="text-gray-200 font-light leading-relaxed text-lg md:text-xl max-w-2xl">
+                                    AI for pre-medical dermatology inquiry and rapid infectious screening — validated at
+                                    <strong class="text-emerald-300">AUC ≈ 0.863</strong>, developed for
+                                    <strong class="text-white">Emirates Health Services (EHS)</strong> in partnership with Oracle Health.
+                                </p>
+                                <div class="mt-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 max-w-2xl">
+                                    <p class="text-emerald-200 text-sm md:text-base font-medium"><i class="fa-solid fa-award mr-2"></i>
+                                    HawkFranklin's dermatology solution was <strong>shortlisted by Emirates Health Services</strong> for showcasing at <strong>WHX Health Dubai (Feb 9–12, 2026)</strong>.</p>
+                                </div>
+                                <a href="project_pelliscope.html" class="inline-flex items-center gap-2 mt-6 w-max px-5 py-2 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition-all text-sm font-medium">Explore PelliScope <i class="fa-solid fa-arrow-right -rotate-45"></i></a>
+                            </div>
+                        </div>
+                        <!-- Step 2: EHS letter -->
+                        <div class="step-item">
+                            <div class="grid md:grid-cols-2 gap-6 h-full">
+                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['images/ehs_acknowledgment-1.png'],'Emirates Health Services — Acknowledgment Letter')">
+                                    <img src="images/opt/ehs_letter.jpg" alt="EHS acknowledgment letter" loading="lazy" decoding="async">
+                                    <div class="media-cap"><span class="text-[11px] text-emerald-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-contract mr-1"></i> EHS letter · Click to view</span></div>
+                                </div>
+                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                                    <span class="text-[11px] text-emerald-400 font-bold uppercase tracking-widest">EHS UAE · Deployment Partner</span>
+                                    <h4 class="text-2xl font-bold text-white mt-2">Recognised by Emirates Health Services</h4>
+                                    <p class="text-gray-300 font-light mt-3">An official acknowledgment from EHS — the UAE's national health authority — for the PelliScope dermatology solution ahead of the WHX Dubai showcase.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Step 3: WHX booth photos (smaller, together) -->
+                        <div class="step-item">
+                            <div class="grid grid-cols-2 gap-4 h-full">
+                                <div class="media-frame" onclick="openModal(['images/whx_expo26/image1_expo.jpg','images/whx_expo26/image2_expo.jpg','images/whx_expo26/image4_expo.jpg','images/whx_expo26/image5_expo.jpg'],'WHX Health Dubai 2026 — Live Deployment',0)"><img src="images/opt/whx_image1.jpg" alt="WHX Dubai 1" loading="lazy" decoding="async"><div class="media-cap"><span class="text-[10px] text-emerald-200 font-bold uppercase tracking-wider">WHX Dubai '26</span></div></div>
+                                <div class="media-frame" onclick="openModal(['images/whx_expo26/image2_expo.jpg','images/whx_expo26/image1_expo.jpg','images/whx_expo26/image4_expo.jpg','images/whx_expo26/image5_expo.jpg'],'WHX Health Dubai 2026 — Live Deployment',0)"><img src="images/opt/whx_image2.jpg" alt="WHX Dubai 2" loading="lazy" decoding="async"><div class="media-cap"><span class="text-[10px] text-emerald-200 font-bold uppercase tracking-wider">Live demo</span></div></div>
+                                <div class="media-frame" onclick="openModal(['images/whx_expo26/image4_expo.jpg','images/whx_expo26/image1_expo.jpg','images/whx_expo26/image2_expo.jpg','images/whx_expo26/image5_expo.jpg'],'WHX Health Dubai 2026 — Live Deployment',0)"><img src="images/opt/whx_image4.jpg" alt="WHX Dubai 3" loading="lazy" decoding="async"><div class="media-cap"><span class="text-[10px] text-emerald-200 font-bold uppercase tracking-wider">Emirates Health</span></div></div>
+                                <div class="media-frame" onclick="openModal(['images/whx_expo26/image5_expo.jpg','images/whx_expo26/image1_expo.jpg','images/whx_expo26/image2_expo.jpg','images/whx_expo26/image4_expo.jpg'],'WHX Health Dubai 2026 — Live Deployment',0)"><img src="images/opt/whx_image5.jpg" alt="WHX Dubai 4" loading="lazy" decoding="async"><div class="media-cap"><span class="text-[10px] text-emerald-200 font-bold uppercase tracking-wider">Showcase</span></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll · then OncoGemma</div>
+                </div>
+            </section>
 
+            <!-- ========== CHAPTER: HawkFranklin · OncoGemma ========== -->
+            <section class="chapter" id="c-hawk-onco" data-station="c-hawk-pelli" data-color="#a855f7" style="--steps:2; --theme:#a855f7">
+                <div class="pin">
+                    <div class="chapter-head">
+                        <div class="flex items-center gap-3 mb-3">
+                            <img src="assets/media/icons/opt/hawkfranklin_logo.png" alt="HawkFranklin" class="w-11 h-11 object-contain" loading="lazy">
+                            <div>
+                                <p class="section-eyebrow gold-text text-gradient">HawkFranklin Research</p>
+                                <p class="text-[11px] text-gray-500 font-medium">Flagship Pathology Workstation</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4">
+                            <img src="assets/media/icons/opt/oncogemma_logo.png" alt="OncoGemma" class="w-11 h-11 object-contain">
+                            <img src="assets/media/icons/opt/oncogemma_text.png" alt="OncoGemma" class="h-7 object-contain">
+                        </div>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span></div>
+                    </div>
+                    <div class="stage">
+                        <div class="step-item">
+                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
+                                <p class="text-gray-200 font-light leading-relaxed text-lg md:text-xl max-w-2xl">
+                                    <strong class="text-purple-300">OncoGemma</strong> — an advanced pathology workstation integrating
+                                    high-resolution Whole-Slide Imaging with multimodal AI for cancer subtype prediction and
+                                    mutational-biomarker identification, paired with my Graph Attention Autoencoder for risk stratification.
+                                </p>
+                                <a href="project_oncogemma.html" class="inline-flex items-center gap-2 mt-6 w-max px-5 py-2 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 hover:bg-purple-500 hover:text-white transition-all text-sm font-medium">Explore OncoGemma <i class="fa-solid fa-arrow-right -rotate-45"></i></a>
+                            </div>
+                        </div>
+                        <div class="step-item" data-video>
+                            <div class="media-frame h-full bg-black">
+                                <video id="oncoVideo" muted loop playsinline preload="none" poster="images/opt/histo_wsi.jpg" class="!object-contain">
+                                    <source src="assets/media/videos/oncogemma-demo1_crop.mp4" type="video/mp4">
+                                </video>
+                                <div class="media-cap"><span class="text-[11px] text-purple-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-play mr-1"></i> OncoGemma — live demo</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
+                </div>
+            </section>
+
+            <!-- ========== RECOGNITION (not pinned) ========== -->
+            <section id="c-recognition" data-station="c-recognition" data-color="#f43f5e" class="py-20 space-y-14">
                 <!-- Publications -->
                 <div class="space-y-5">
-                    <div class="reveal">
-                        <p class="section-eyebrow text-rose-400">The Record</p>
-                        <h3 class="text-3xl md:text-4xl font-bold mt-2">Publications</h3>
-                    </div>
+                    <div class="reveal"><p class="section-eyebrow text-rose-400">The Record</p><h3 class="text-3xl md:text-4xl font-bold mt-2">Publications</h3></div>
                     <div class="space-y-4">
-                        <div class="glass-card rounded-2xl p-6 reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
-                            <div class="flex-1">
-                                <span class="text-[10px] bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2 py-0.5 rounded uppercase font-bold">Apr 2026 · CSBJ · First Author</span>
+                        <div class="card rounded-2xl p-6 reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
+                            <div class="flex-1"><span class="text-[10px] bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2 py-0.5 rounded uppercase font-bold">Apr 2026 · CSBJ · First Author</span>
                                 <h4 class="font-bold text-white mt-2">MedDiscover: A Domain-Specific RAG Framework for Evidence-Grounded Knowledge Extraction in Metabolomics</h4>
-                                <a href="https://doi.org/10.34133/csbj.0018" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:underline inline-flex items-center gap-1 mt-1"><i class="fa-solid fa-link"></i> 10.34133/csbj.0018</a>
-                            </div>
+                                <a href="https://doi.org/10.34133/csbj.0018" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:underline inline-flex items-center gap-1 mt-1"><i class="fa-solid fa-link"></i> 10.34133/csbj.0018</a></div>
                             <div class="text-center shrink-0"><div class="text-2xl font-extrabold text-white">4.1</div><div class="text-[10px] text-gray-500 uppercase tracking-wider">Impact</div></div>
                         </div>
-                        <div class="glass-card rounded-2xl p-6 reveal delay-1 flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
-                            <div class="flex-1">
-                                <span class="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded uppercase font-bold">Jan 2025 · BioData Mining · Contributing Author</span>
+                        <div class="card rounded-2xl p-6 reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
+                            <div class="flex-1"><span class="text-[10px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded uppercase font-bold">Jan 2025 · BioData Mining · Contributing Author</span>
                                 <h4 class="font-bold text-white mt-2">An ensemble machine learning-based performance evaluation identifies top in-silico pathogenicity prediction methods for cancer driver mutations</h4>
-                                <a href="https://doi.org/10.1186/s13040-024-00420-x" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:underline inline-flex items-center gap-1 mt-1"><i class="fa-solid fa-link"></i> 10.1186/s13040-024-00420-x</a>
-                            </div>
+                                <a href="https://doi.org/10.1186/s13040-024-00420-x" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:underline inline-flex items-center gap-1 mt-1"><i class="fa-solid fa-link"></i> 10.1186/s13040-024-00420-x</a></div>
                             <div class="text-center shrink-0"><div class="text-2xl font-extrabold text-white">6.1</div><div class="text-[10px] text-gray-500 uppercase tracking-wider">Impact</div></div>
                         </div>
-                        <div class="glass-card rounded-2xl p-6 reveal delay-2 flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
-                            <div class="flex-1">
-                                <span class="text-[10px] bg-purple-500/10 border border-purple-500/20 text-purple-400 px-2 py-0.5 rounded uppercase font-bold">Dec 2023 · Cytokine · Contributing Author</span>
+                        <div class="card rounded-2xl p-6 reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
+                            <div class="flex-1"><span class="text-[10px] bg-purple-500/10 border border-purple-500/20 text-purple-400 px-2 py-0.5 rounded uppercase font-bold">Dec 2023 · Cytokine · Contributing Author</span>
                                 <h4 class="font-bold text-white mt-2">Multi-faceted dysregulated immune response for COVID-19 infection explaining clinical heterogeneity</h4>
-                                <a href="https://doi.org/10.1016/j.cyto.2023.156434" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:underline inline-flex items-center gap-1 mt-1"><i class="fa-solid fa-link"></i> 10.1016/j.cyto.2023.156434</a>
-                            </div>
+                                <a href="https://doi.org/10.1016/j.cyto.2023.156434" target="_blank" rel="noopener" class="text-xs text-blue-400 hover:underline inline-flex items-center gap-1 mt-1"><i class="fa-solid fa-link"></i> 10.1016/j.cyto.2023.156434</a></div>
                             <div class="text-center shrink-0"><div class="text-2xl font-extrabold text-white">3.7</div><div class="text-[10px] text-gray-500 uppercase tracking-wider">Impact</div></div>
                         </div>
-                        <div class="glass-card rounded-2xl p-6 reveal delay-3 flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
-                            <div class="flex-1">
-                                <span class="text-[10px] bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-0.5 rounded uppercase font-bold">Aug 2021 · First Author</span>
-                                <h4 class="font-bold text-white mt-2">Deep Learning model to map cancer cells to cancer cell lines and cancer types from single-cell RNA-seq pan-cancer data</h4>
-                            </div>
+                        <div class="card rounded-2xl p-6 reveal flex flex-col md:flex-row md:items-center gap-3 md:gap-6">
+                            <div class="flex-1"><span class="text-[10px] bg-amber-500/10 border border-amber-500/20 text-amber-400 px-2 py-0.5 rounded uppercase font-bold">Aug 2021 · First Author</span>
+                                <h4 class="font-bold text-white mt-2">Deep Learning model to map cancer cells to cancer cell lines and cancer types from single-cell RNA-seq pan-cancer data</h4></div>
                             <div class="text-center shrink-0"><div class="text-2xl font-extrabold text-white">0.5</div><div class="text-[10px] text-gray-500 uppercase tracking-wider">Impact</div></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Patents + Peer review -->
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div class="space-y-4">
-                        <div class="reveal"><h3 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-lightbulb text-amber-400"></i> Patents</h3></div>
-                        <div class="glass-card rounded-2xl p-5 reveal">
-                            <span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest">Filed · May 2026</span>
-                            <h4 class="font-semibold text-white mt-1 text-sm">System and Methods for Secondary Multiomic Profile Synthesis</h4>
-                        </div>
-                        <div class="glass-card rounded-2xl p-5 reveal delay-1">
-                            <span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest">Filed · Apr 2025</span>
-                            <h4 class="font-semibold text-white mt-1 text-sm">Systems and Methods for an Adaptive AI Agent-Driven Interactive Learning Ecosystem</h4>
+                <!-- Peer Reviewer — LARGE separate panel -->
+                <div class="space-y-4">
+                    <div class="reveal"><h3 class="text-2xl md:text-3xl font-bold flex items-center gap-3"><i class="fa-solid fa-user-check text-rose-400"></i> Verified Peer Reviewer</h3></div>
+                    <div class="card rounded-3xl p-4 md:p-6 reveal">
+                        <div class="media-frame media-contain w-full bg-white" style="aspect-ratio: 16/10" onclick="openModal(['assets/unused/images/certificate_reviewing_papers.jpeg'],'Peer Reviewer — Certificate')">
+                            <img src="images/opt/reviewer_cert.jpg" alt="Peer reviewer certificate" loading="lazy" decoding="async">
+                            <div class="media-cap"><span class="text-[11px] text-rose-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-certificate mr-1"></i> Invited peer reviewer · Click to enlarge</span></div>
                         </div>
                     </div>
-                    <div class="space-y-4">
-                        <div class="reveal"><h3 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-user-check text-rose-400"></i> Peer Reviewer</h3></div>
-                        <div class="glass-card rounded-2xl p-4 reveal overflow-hidden">
-                            <div class="media-frame h-48 bg-white" onclick="openCertModal(['assets/unused/images/certificate_reviewing_papers.jpeg'], 'Peer Reviewer — Certificate')">
-                                <img src="assets/unused/images/certificate_reviewing_papers.jpeg" alt="Peer reviewer certificate" class="!object-contain">
-                                <div class="media-cap"><span class="text-[10px] text-rose-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-certificate mr-1"></i> Verified reviewer · Click to view</span></div>
-                            </div>
-                            <p class="text-xs text-gray-400 font-light mt-3">Invited peer reviewer for biomedical &amp; ML research journals.</p>
-                        </div>
+                </div>
+
+                <!-- Patents -->
+                <div class="space-y-4">
+                    <div class="reveal"><h3 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-lightbulb text-amber-400"></i> Patents</h3></div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="card rounded-2xl p-5 reveal"><span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest">Filed · May 2026</span><h4 class="font-semibold text-white mt-1 text-sm">System and Methods for Secondary Multiomic Profile Synthesis</h4></div>
+                        <div class="card rounded-2xl p-5 reveal"><span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest">Filed · Apr 2025</span><h4 class="font-semibold text-white mt-1 text-sm">Systems and Methods for an Adaptive AI Agent-Driven Interactive Learning Ecosystem</h4></div>
                     </div>
                 </div>
 
                 <!-- Skills -->
                 <div class="space-y-4">
                     <div class="reveal"><h3 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-layer-group text-blue-400"></i> Technical Toolchain</h3></div>
-                    <div class="glass-card rounded-2xl p-6 reveal">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="skill-tag">Python</span><span class="skill-tag">Unix</span>
-                            <span class="skill-tag">PyTorch / PyTorch-Geometric</span><span class="skill-tag">TensorFlow</span>
-                            <span class="skill-tag">Scikit-learn</span><span class="skill-tag">Pandas</span>
-                            <span class="skill-tag">Hugging Face</span><span class="skill-tag">Docker / Singularity</span>
-                            <span class="skill-tag">GPU Training</span><span class="skill-tag">LangChain</span>
-                            <span class="skill-tag">Graph Neural Networks</span><span class="skill-tag">CLIP (Contrastive)</span>
-                            <span class="skill-tag">Vision Transformers</span><span class="skill-tag">Llama.cpp</span>
-                            <span class="skill-tag">Google Cloud</span><span class="skill-tag">Llama Index</span>
-                            <span class="skill-tag">Multiple Instance Learning</span>
-                        </div>
-                    </div>
+                    <div class="card rounded-2xl p-6 reveal"><div class="flex flex-wrap gap-2">
+                        <span class="skill-tag">Python</span><span class="skill-tag">Unix</span><span class="skill-tag">PyTorch / PyG</span><span class="skill-tag">TensorFlow</span><span class="skill-tag">Scikit-learn</span><span class="skill-tag">Pandas</span><span class="skill-tag">Hugging Face</span><span class="skill-tag">Docker / Singularity</span><span class="skill-tag">GPU Training</span><span class="skill-tag">LangChain</span><span class="skill-tag">Graph Neural Networks</span><span class="skill-tag">CLIP</span><span class="skill-tag">Vision Transformers</span><span class="skill-tag">Llama.cpp</span><span class="skill-tag">Google Cloud</span><span class="skill-tag">Llama Index</span><span class="skill-tag">Multiple Instance Learning</span>
+                    </div></div>
                 </div>
 
                 <!-- References -->
                 <div class="space-y-4">
                     <div class="reveal"><h3 class="text-2xl font-bold flex items-center gap-3"><i class="fa-solid fa-comments text-emerald-400"></i> References</h3></div>
                     <div class="grid md:grid-cols-3 gap-4">
-                        <div class="glass-card rounded-2xl p-5 reveal">
-                            <h4 class="font-bold text-white text-sm">Dr. Anne Schwerk</h4>
-                            <p class="text-xs text-gray-400 font-light mt-1">Professor of AI, IU International University of Applied Sciences, Bad Honnef, Germany</p>
-                            <a href="mailto:anne.schwerk@iu.org" class="text-xs text-blue-400 hover:underline mt-2 inline-block">anne.schwerk@iu.org</a>
-                        </div>
-                        <div class="glass-card rounded-2xl p-5 reveal delay-1">
-                            <h4 class="font-bold text-white text-sm">Dr. Analabha Basu</h4>
-                            <p class="text-xs text-gray-400 font-light mt-1">Associate Professor, Statistical Genomics, NIBMG, India</p>
-                            <a href="mailto:ab1@nibmg.ac.in" class="text-xs text-blue-400 hover:underline mt-2 inline-block">ab1@nibmg.ac.in</a>
-                        </div>
-                        <div class="glass-card rounded-2xl p-5 reveal delay-2">
-                            <h4 class="font-bold text-white text-sm">Prof. Meenal Kolkar</h4>
-                            <p class="text-xs text-gray-400 font-light mt-1">Associate Professor, Dept. of Mathematics, St. Xavier's College, Mumbai, India</p>
-                            <a href="mailto:meenal.kolkar@xaviers.edu" class="text-xs text-blue-400 hover:underline mt-2 inline-block">meenal.kolkar@xaviers.edu</a>
-                        </div>
+                        <div class="card rounded-2xl p-5 reveal"><h4 class="font-bold text-white text-sm">Dr. Anne Schwerk</h4><p class="text-xs text-gray-400 font-light mt-1">Professor of AI, IU International University of Applied Sciences, Bad Honnef, Germany</p><a href="mailto:anne.schwerk@iu.org" class="text-xs text-blue-400 hover:underline mt-2 inline-block">anne.schwerk@iu.org</a></div>
+                        <div class="card rounded-2xl p-5 reveal"><h4 class="font-bold text-white text-sm">Dr. Analabha Basu</h4><p class="text-xs text-gray-400 font-light mt-1">Associate Professor, Statistical Genomics, NIBMG, India</p><a href="mailto:ab1@nibmg.ac.in" class="text-xs text-blue-400 hover:underline mt-2 inline-block">ab1@nibmg.ac.in</a></div>
+                        <div class="card rounded-2xl p-5 reveal"><h4 class="font-bold text-white text-sm">Prof. Meenal Kolkar</h4><p class="text-xs text-gray-400 font-light mt-1">Associate Professor, Dept. of Mathematics, St. Xavier's College, Mumbai, India</p><a href="mailto:meenal.kolkar@xaviers.edu" class="text-xs text-blue-400 hover:underline mt-2 inline-block">meenal.kolkar@xaviers.edu</a></div>
                     </div>
                 </div>
 
-                <!-- Contact CTA -->
-                <div class="glass-card rounded-3xl p-8 md:p-10 text-center reveal relative overflow-hidden">
+                <!-- CTA -->
+                <div class="card rounded-3xl p-8 md:p-10 text-center reveal relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-emerald-600/10 pointer-events-none"></div>
                     <div class="relative">
                         <h3 class="text-2xl md:text-3xl font-bold">Let's build something that matters.</h3>
                         <p class="text-gray-400 font-light mt-2">Clinical partners · investors · researchers on the math of biology.</p>
                         <div class="flex flex-wrap gap-3 justify-center mt-6">
                             <a href="mailto:vatsal1804@gmail.com" class="px-6 py-2.5 rounded-full bg-white text-black font-medium text-sm hover:bg-gray-200 transition-all"><i class="fa-solid fa-envelope mr-2"></i>vatsal1804@gmail.com</a>
-                            <a href="https://github.com/VatsalPatel18" target="_blank" rel="noopener" class="px-6 py-2.5 rounded-full glass text-white font-medium text-sm hover:bg-white/10 transition-all"><i class="fa-brands fa-github mr-2"></i>GitHub</a>
-                            <a href="https://www.linkedin.com/in/vatsal-patel-95b429141/" target="_blank" rel="noopener" class="px-6 py-2.5 rounded-full glass text-white font-medium text-sm hover:bg-white/10 transition-all"><i class="fa-brands fa-linkedin mr-2"></i>LinkedIn</a>
+                            <a href="https://github.com/VatsalPatel18" target="_blank" rel="noopener" class="px-6 py-2.5 rounded-full soft text-white font-medium text-sm hover:bg-white/10 transition-all"><i class="fa-brands fa-github mr-2"></i>GitHub</a>
+                            <a href="https://www.linkedin.com/in/vatsal-patel-95b429141/" target="_blank" rel="noopener" class="px-6 py-2.5 rounded-full soft text-white font-medium text-sm hover:bg-white/10 transition-all"><i class="fa-brands fa-linkedin mr-2"></i>LinkedIn</a>
                         </div>
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
 
-    <!-- ===== Certificate / Image Modal ===== -->
-    <div id="certModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-3 md:p-8 bg-black/90 backdrop-blur-sm transition-opacity opacity-0">
-        <div id="certModalInner" class="relative max-w-[96rem] w-[96vw] h-[92vh] bg-gray-900 rounded-2xl border border-white/20 p-3 md:p-4 shadow-2xl flex flex-col transition-transform scale-95 origin-center">
+    <!-- ===== Modal ===== -->
+    <div id="modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-3 md:p-8 bg-black/90 backdrop-blur-sm transition-opacity opacity-0">
+        <div id="modalInner" class="relative max-w-[96rem] w-[96vw] h-[92vh] bg-gray-900 rounded-2xl border border-white/20 p-3 md:p-4 shadow-2xl flex flex-col transition-transform scale-95 origin-center">
             <div class="flex justify-between items-center px-4 py-3 border-b border-white/10 mb-3">
-                <h3 id="certModalTitle" class="text-white font-semibold text-sm flex items-center gap-2"><i class="fa-solid fa-expand text-gray-400"></i> Credential</h3>
-                <button onclick="closeCertModal()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-500/50 transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <h3 id="modalTitle" class="text-white font-semibold text-sm flex items-center gap-2"><i class="fa-solid fa-expand text-gray-400"></i> Credential</h3>
+                <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-red-500/50 transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="flex-grow min-h-0 flex items-center justify-center overflow-hidden relative">
-                <button id="modalPrevBtn" onclick="prevModalImage(event)" class="absolute left-4 z-10 w-12 h-12 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors hidden"><i class="fa-solid fa-chevron-left"></i></button>
-                <img id="certImage" src="" alt="Certificate" class="w-auto h-auto max-w-[96%] max-h-[80vh] object-contain rounded-lg transition-opacity duration-300"
-                    onerror="this.src='https://placehold.co/900x600/1D1D1F/FFFFFF?text=Image+coming+soon';">
-                <button id="modalNextBtn" onclick="nextModalImage(event)" class="absolute right-4 z-10 w-12 h-12 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors hidden"><i class="fa-solid fa-chevron-right"></i></button>
+                <button id="mPrev" onclick="prevImg(event)" class="absolute left-4 z-10 w-12 h-12 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors hidden"><i class="fa-solid fa-chevron-left"></i></button>
+                <img id="modalImg" src="" alt="Credential" class="w-auto h-auto max-w-[96%] max-h-[80vh] object-contain rounded-lg transition-opacity duration-300" onerror="this.src='https://placehold.co/900x600/1D1D1F/FFFFFF?text=Image';">
+                <button id="mNext" onclick="nextImg(event)" class="absolute right-4 z-10 w-12 h-12 rounded-full bg-black/50 border border-white/10 text-white flex items-center justify-center hover:bg-white/20 transition-colors hidden"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
         </div>
     </div>
 
-    <!-- ===== Scripts ===== -->
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script>
-        /* ---------- Certificate modal (accepts full relative paths) ---------- */
-        const certModal = document.getElementById('certModal');
-        const certModalInner = document.getElementById('certModalInner');
-        const certImage = document.getElementById('certImage');
-        let modalImages = [];
-        let modalIndex = 0;
+    /* ---------------- Modal ---------------- */
+    const modal=document.getElementById('modal'), modalInner=document.getElementById('modalInner'), modalImg=document.getElementById('modalImg');
+    let mImgs=[], mIdx=0;
+    function renderImg(){ modalImg.style.opacity=0; setTimeout(()=>{ modalImg.src=mImgs[mIdx]; modalImg.onload=()=>modalImg.style.opacity=1; },110); }
+    function openModal(imgs,title='Credential',i=0){ mImgs=Array.isArray(imgs)?imgs:[imgs]; mIdx=i;
+        document.getElementById('modalTitle').innerHTML='<i class="fa-solid fa-expand text-gray-400 mr-1"></i> '+title;
+        const many=mImgs.length>1; document.getElementById('mPrev').classList.toggle('hidden',!many); document.getElementById('mNext').classList.toggle('hidden',!many);
+        renderImg(); modal.classList.remove('hidden'); setTimeout(()=>{modal.classList.remove('opacity-0'); modalInner.classList.replace('scale-95','scale-100');},10); document.body.style.overflow='hidden'; }
+    function nextImg(e){ if(e)e.stopPropagation(); mIdx=(mIdx+1)%mImgs.length; renderImg(); }
+    function prevImg(e){ if(e)e.stopPropagation(); mIdx=(mIdx-1+mImgs.length)%mImgs.length; renderImg(); }
+    function closeModal(){ modal.classList.add('opacity-0'); modalInner.classList.replace('scale-100','scale-95'); setTimeout(()=>{modal.classList.add('hidden'); document.body.style.overflow='auto';},300); }
+    modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
+    document.addEventListener('keydown',e=>{ if(modal.classList.contains('hidden'))return; if(e.key==='Escape')closeModal(); else if(e.key==='ArrowRight')nextImg(); else if(e.key==='ArrowLeft')prevImg(); });
 
-        function renderModalImage() {
-            certImage.style.opacity = 0;
-            setTimeout(() => {
-                certImage.src = modalImages[modalIndex];
-                certImage.onload = () => { certImage.style.opacity = 1; };
-            }, 120);
+    /* ---------------- Timeline state ---------------- */
+    const stations=Array.from(document.querySelectorAll('.station'));
+    const stationIndex={}; stations.forEach((s,i)=>stationIndex[s.dataset.target]=i);
+    const train=document.getElementById('train'), railFill=document.getElementById('railFill');
+    const timeline=document.getElementById('timeline'), tint=document.getElementById('tint');
+    let nodeY=[]; // dot centre offset within timeline scroll content
+    function measure(){ nodeY=stations.map(s=>s.offsetTop+14); }
+    let curStation=-1;
+    function activate(idx,color){
+        if(idx===curStation && color===undefined) return;
+        curStation=idx;
+        stations.forEach((s,i)=>s.classList.toggle('active',i===idx));
+        const c=color||getComputedStyle(stations[idx]).getPropertyValue('--c')||'#3b82f6';
+        railFill.style.setProperty('--theme',c); train.style.setProperty('--theme',c); tint.style.setProperty('--tint',c);
+        const y=nodeY[idx]||0, total=timeline.scrollHeight||1;
+        if(window.gsap){ gsap.to(train,{y:y,duration:.5,ease:'power3.out',overwrite:true}); gsap.to(railFill,{scaleY:Math.max(0,y/total),duration:.5,ease:'power3.out',overwrite:true}); }
+        else { train.style.transform=`translate(-50%,-50%) translateY(${y}px)`; railFill.style.transform=`scaleY(${y/total})`; }
+        // keep active station visible if the rail scrolls
+        if(timeline.scrollHeight>timeline.clientHeight){ const st=stations[idx]; const top=st.offsetTop, bot=top+st.offsetHeight;
+            if(top<timeline.scrollTop) timeline.scrollTo({top:top-10,behavior:'smooth'});
+            else if(bot>timeline.scrollTop+timeline.clientHeight) timeline.scrollTo({top:bot-timeline.clientHeight+10,behavior:'smooth'}); }
+    }
+    stations.forEach(s=>s.addEventListener('click',()=>{ const t=document.getElementById(s.dataset.target); if(t) window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-10,behavior:'smooth'}); }));
+
+    /* ---------------- Step engine ---------------- */
+    function setStep(items,dots,idx){
+        items.forEach((it,i)=>{ const on=i===idx; it.classList.toggle('active',on);
+            const v=it.querySelector('video'); if(v){ if(on){ v.play().catch(()=>{}); } else { v.pause(); } } });
+        dots.forEach((d,i)=>d.classList.toggle('on',i===idx));
+    }
+
+    /* ---------------- Boot ---------------- */
+    const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const smallOrNoGsap=()=>window.innerWidth<1024 || reduce || !window.gsap;
+
+    function boot(){
+        measure();
+        if(smallOrNoGsap()){
+            document.body.classList.add('no-pin');
+            // simple active-on-enter via IntersectionObserver
+            const io=new IntersectionObserver(en=>en.forEach(e=>{ if(e.isIntersecting){ const st=e.target.dataset.station; if(st!=null&&stationIndex[st]!=null) activate(stationIndex[st]); }}),{threshold:.3,rootMargin:'-20% 0px -40% 0px'});
+            document.querySelectorAll('[data-station]').forEach(c=>io.observe(c));
+            // reveal + show all steps already visible via CSS
+            const ro=new IntersectionObserver(en=>en.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target);} }),{threshold:.12});
+            document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+            activate(0);
+            return;
         }
-        function openCertModal(images, title = 'Credential', index = 0) {
-            modalImages = Array.isArray(images) ? images : [images];
-            modalIndex = index;
-            document.getElementById('certModalTitle').innerHTML = '<i class="fa-solid fa-expand text-gray-400 mr-1"></i> ' + title;
-            const many = modalImages.length > 1;
-            document.getElementById('modalPrevBtn').classList.toggle('hidden', !many);
-            document.getElementById('modalNextBtn').classList.toggle('hidden', !many);
-            renderModalImage();
-            certModal.classList.remove('hidden');
-            setTimeout(() => { certModal.classList.remove('opacity-0'); certModalInner.classList.replace('scale-95', 'scale-100'); }, 10);
-            document.body.style.overflow = 'hidden';
-        }
-        function nextModalImage(e) { if (e) e.stopPropagation(); modalIndex = (modalIndex + 1) % modalImages.length; renderModalImage(); }
-        function prevModalImage(e) { if (e) e.stopPropagation(); modalIndex = (modalIndex - 1 + modalImages.length) % modalImages.length; renderModalImage(); }
-        function closeCertModal() {
-            certModal.classList.add('opacity-0');
-            certModalInner.classList.replace('scale-100', 'scale-95');
-            setTimeout(() => { certModal.classList.add('hidden'); document.body.style.overflow = 'auto'; }, 300);
-        }
-        certModal.addEventListener('click', (e) => { if (e.target === certModal) closeCertModal(); });
-        document.addEventListener('keydown', (e) => {
-            if (certModal.classList.contains('hidden')) return;
-            if (e.key === 'Escape') closeCertModal();
-            else if (e.key === 'ArrowRight') nextModalImage();
-            else if (e.key === 'ArrowLeft') prevModalImage();
+        gsap.registerPlugin(ScrollTrigger);
+        // identity collapse
+        ScrollTrigger.create({ trigger:'#intro', start:'top top', end:'bottom top-=40',
+            onLeave:()=>{ document.getElementById('identity').classList.add('collapsed'); timeline.classList.add('expanded'); setTimeout(measure,650); },
+            onEnterBack:()=>{ document.getElementById('identity').classList.remove('collapsed'); timeline.classList.remove('expanded'); setTimeout(measure,650); } });
+
+        // pinned chapters
+        document.querySelectorAll('.chapter').forEach(ch=>{
+            const items=Array.from(ch.querySelectorAll('.step-item'));
+            const dots=Array.from(ch.querySelectorAll('.step-dot'));
+            const sIdx=stationIndex[ch.dataset.station];
+            const color=ch.dataset.color;
+            setStep(items,dots,0);
+            ScrollTrigger.create({ trigger:ch, start:'top top', end:'bottom bottom', pin:ch.querySelector('.pin'), pinSpacing:true, scrub:true, anticipatePin:1,
+                onToggle:self=>{ if(self.isActive) activate(sIdx,color); },
+                onUpdate:self=>{ const idx=Math.min(items.length-1,Math.floor(self.progress*items.length)); setStep(items,dots,idx); } });
         });
+        // recognition reveals
+        const ro=new IntersectionObserver(en=>en.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target);} }),{threshold:.12});
+        document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+        // recognition active
+        ScrollTrigger.create({ trigger:'#c-recognition', start:'top center', end:'bottom bottom', onToggle:self=>{ if(self.isActive) activate(stationIndex['c-recognition'],'#f43f5e'); } });
 
-        /* ---------- Scroll reveal ---------- */
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-        /* ---------- Train timeline engine ---------- */
-        const sections = Array.from(document.querySelectorAll('main section[id]'));
-        const stationEls = Array.from(document.querySelectorAll('.station'));
-        const stationByTarget = {};
-        stationEls.forEach(s => stationByTarget[s.dataset.target] = s);
-        const train = document.getElementById('train');
-        const railFill = document.getElementById('railFill');
-        const railWrap = document.getElementById('railWrap');
-        const ambientGlow = document.getElementById('ambientGlow');
-
-        // node centers (relative to railWrap top), measured from each station dot
-        let nodeCenters = [];
-        function measureNodes() {
-            const wrapTop = railWrap.getBoundingClientRect().top;
-            nodeCenters = stationEls.map(s => {
-                const r = s.getBoundingClientRect();
-                // dot sits ~15px from the station top (see .station::before)
-                return (r.top - wrapTop) + railWrap.scrollTop + 15;
-            });
-        }
-
-        let activeIndex = -1;
-        function setActive(i, color) {
-            if (i === activeIndex) return;
-            activeIndex = i;
-            stationEls.forEach((s, idx) => s.classList.toggle('active', idx === i));
-            railFill.style.setProperty('--theme-color', color);
-            train.style.setProperty('--theme-color', color);
-            // keep active station visible inside a scrollable rail
-            const s = stationEls[i];
-            if (s && railWrap.scrollHeight > railWrap.clientHeight) {
-                const sTop = s.offsetTop, sBot = sTop + s.offsetHeight;
-                if (sTop < railWrap.scrollTop) railWrap.scrollTo({ top: sTop - 12, behavior: 'smooth' });
-                else if (sBot > railWrap.scrollTop + railWrap.clientHeight) railWrap.scrollTo({ top: sBot - railWrap.clientHeight + 12, behavior: 'smooth' });
-            }
-        }
-
-        function updateTrain() {
-            if (!nodeCenters.length) return;
-            const vpCenter = window.scrollY + window.innerHeight * 0.5;
-            // section tops in document coords
-            const tops = sections.map(sec => sec.getBoundingClientRect().top + window.scrollY);
-            // find current section index (last whose top <= vpCenter)
-            let i = 0;
-            for (let k = 0; k < sections.length; k++) { if (tops[k] <= vpCenter) i = k; }
-            const sec = sections[i];
-            const secTop = tops[i];
-            const secBottom = (i < sections.length - 1) ? tops[i + 1] : secTop + sec.offsetHeight;
-            const f = Math.max(0, Math.min(1, (vpCenter - secTop) / Math.max(1, (secBottom - secTop))));
-
-            // map section id -> station index
-            const targetIdx = stationEls.findIndex(s => s.dataset.target === sec.id);
-            const color = sec.dataset.color || '#3b82f6';
-
-            // train Y interpolates between this station node and the next
-            let y;
-            if (targetIdx === -1) {
-                // intro / pre-first-station: hold train just above first node
-                y = Math.max(0, nodeCenters[0] - 22 + f * 22);
-                setActive(0, sections.find(s => stationByTarget[s.id])?.dataset.color || color);
-            } else {
-                const nextIdx = Math.min(targetIdx + 1, nodeCenters.length - 1);
-                y = nodeCenters[targetIdx] + (nodeCenters[nextIdx] - nodeCenters[targetIdx]) * f;
-                setActive(targetIdx, color);
-            }
-            train.style.top = y + 'px';
-            railFill.style.height = Math.max(0, y) + 'px';
-            if (sec.dataset.glow) ambientGlow.style.background = sec.dataset.glow;
-        }
-
-        // smooth rAF loop
-        let ticking = false;
-        function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(() => { updateTrain(); ticking = false; }); } }
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', () => { measureNodes(); updateTrain(); });
-
-        // click a station -> scroll to its section
-        stationEls.forEach(s => {
-            s.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.getElementById(s.dataset.target);
-                if (target) window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 24, behavior: 'smooth' });
-            });
-        });
-
-        window.addEventListener('load', () => { measureNodes(); updateTrain(); });
-        document.addEventListener('DOMContentLoaded', () => { measureNodes(); updateTrain(); });
-
-        /* ---------- Optional: Lenis smooth scroll (progressive enhancement) ---------- */
-        (function loadLenis() {
-            const s = document.createElement('script');
-            s.src = 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js';
-            s.onload = () => {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof Lenis === 'undefined') return;
-                const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
-                function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-                requestAnimationFrame(raf);
-                lenis.on('scroll', onScroll);
-            };
-            s.onerror = () => {}; // native scroll already works
-            document.body.appendChild(s);
-        })();
+        activate(0);
+        ScrollTrigger.addEventListener('refresh',measure);
+        setTimeout(()=>ScrollTrigger.refresh(),300);
+    }
+    window.addEventListener('load',boot);
+    window.addEventListener('resize',()=>{ measure(); if(window.ScrollTrigger) ScrollTrigger.refresh(); });
     </script>
 </body>
-
 </html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificates</title>
+
+    <style>
+        :root {
+            color-scheme: dark;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
+            background: #050505;
+        }
+
+        body {
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .page {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .viewer-section {
+            width: 100%;
+            min-height: calc(100vh - 40px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: linear-gradient(180deg, rgba(20, 20, 22, 0.96), rgba(8, 8, 10, 0.98));
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+        }
+
+        .pdf-frame {
+            display: block;
+            width: 100%;
+            height: calc(100vh - 40px);
+            border: 0;
+            background: #0b0b0b;
+        }
+
+        .spacer {
+            height: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .page {
+                padding: 12px;
+            }
+
+            .viewer-section {
+                min-height: calc(100vh - 24px);
+                border-radius: 20px;
+            }
+
+            .pdf-frame {
+                height: calc(100vh - 24px);
+            }
+
+            .spacer {
+                height: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <section class="viewer-section" aria-label="Reviewer certificate">
+            <iframe
+                class="pdf-frame"
+                src="assets/certificates/Certificate_BSPC_Recognised.pdf#view=FitH"
+                title="Reviewer certificate"
+            ></iframe>
+        </section>
+
+        <div class="spacer" aria-hidden="true"></div>
+
+        <section class="viewer-section" aria-label="Certificate bundle">
+            <iframe
+                class="pdf-frame"
+                src="assets/certificates/to_print_certificates.pdf#view=FitH"
+                title="Certificate bundle"
+            ></iframe>
+        </section>
+    </main>
+</body>
+
+</html>

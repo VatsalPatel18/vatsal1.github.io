@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vatsal Patel | Interactive Research Presentation</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #030712;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+
+        /* Ambient Glow Backdrop */
+        .ambient-glow {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            transition: background 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Sidebar */
+        .glass-sidebar {
+            background: rgba(17, 24, 39, 0.4);
+            backdrop-filter: saturate(180%) blur(25px);
+            -webkit-backdrop-filter: saturate(180%) blur(25px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Slide Widescreen Canvas */
+        .slide-canvas {
+            aspect-ratio: 16 / 9;
+            background: rgba(10, 11, 15, 0.85);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Slide Transitions */
+        .slide-frame {
+            display: none;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .slide-frame.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Step-by-step elements */
+        .step {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .step.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Timeline Navigation List */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -17px;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #374151;
+            transition: all 0.3s;
+        }
+
+        .timeline-item.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .timeline-item.active::before {
+            background-color: var(--theme-color, #3b82f6);
+            box-shadow: 0 0 10px var(--theme-color, #3b82f6);
+            transform: scale(1.4);
+        }
+
+        /* Custom scrollbar for slides */
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body class="selection:bg-blue-500/30 selection:text-white flex h-screen w-screen relative overflow-hidden font-sans">
+
+    <!-- Morphing Ambient Background -->
+    <div id="ambientGlow" class="ambient-glow"></div>
+
+    <!-- LEFT SIDEBAR: Timeline Index -->
+    <aside class="w-80 h-full flex flex-col justify-between p-8 z-10 glass-sidebar">
+        <div>
+            <!-- Back to Portfolio -->
+            <a href="index.html" class="flex items-center gap-2 text-gray-500 hover:text-white transition-colors text-xs font-semibold uppercase tracking-wider mb-12 group">
+                <i class="fa-solid fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+                Back to Site
+            </a>
+
+            <!-- Header Info -->
+            <div class="mb-8">
+                <h1 class="text-2xl font-bold tracking-tight text-white">Vatsal Patel</h1>
+                <p class="text-xs text-gray-400 font-medium mt-1 uppercase tracking-wider">Research Presentation</p>
+            </div>
+
+            <!-- Vertical Timeline -->
+            <nav class="relative pl-4 ml-2 border-l border-gray-800 space-y-5">
+                <button onclick="jumpToSlide(0)" class="timeline-item text-left w-full text-sm text-gray-500 hover:text-gray-300 transition-all block relative" data-index="0">
+                    Executive Summary
+                </button>
+                <button onclick="jumpToSlide(1)" class="timeline-item text-left w-full text-sm text-gray-500 hover:text-gray-300 transition-all block relative" data-index="1">
+                    HawkFranklin Research
+                </button>
+                <button onclick="jumpToSlide(2)" class="timeline-item text-left w-full text-sm text-gray-500 hover:text-gray-300 transition-all block relative" data-index="2">
+                    NIBMG & Supercomputing
+                </button>
+                <button onclick="jumpToSlide(3)" class="timeline-item text-left w-full text-sm text-gray-500 hover:text-gray-300 transition-all block relative" data-index="3">
+                    Academic Foundation
+                </button>
+                <button onclick="jumpToSlide(4)" class="timeline-item text-left w-full text-sm text-gray-500 hover:text-gray-300 transition-all block relative" data-index="4">
+                    Digital Pathology AI
+                </button>
+                <button onclick="jumpToSlide(5)" class="timeline-item text-left w-full text-sm text-gray-500 hover:text-gray-300 transition-all block relative" data-index="5">
+                    Multi-Omics GAT
+                </button>
+                <button onclick="jumpToSlide(6)" class="timeline-item text-left w-full text-sm text-gray-500 hover:text-gray-300 transition-all block relative" data-index="6">
+                    Scientific Publications
+                </button>
+                <button onclick="jumpToSlide(7)" class="timeline-item text-left w-full text-sm text-gray-500 hover:text-gray-300 transition-all block relative" data-index="7">
+                    Core Skills & References
+                </button>
+            </nav>
+        </div>
+
+        <!-- Sidebar footer helper -->
+        <div class="text-xs text-gray-600 leading-relaxed font-light">
+            <p><i class="fa-regular fa-keyboard mr-2"></i> Use Left / Right arrows</p>
+            <p><i class="fa-solid fa-arrow-pointer mr-2"></i> Click slide to advance line-by-line</p>
+        </div>
+    </aside>
+
+    <!-- RIGHT CONTAINER: Viewport for slide deck -->
+    <main class="flex-1 h-full flex flex-col items-center justify-center p-4 md:p-6 relative">
+
+        <!-- Slide Canvas (16:9 box container) -->
+        <div id="slideViewport" class="slide-canvas w-full max-w-[1480px] rounded-3xl overflow-hidden flex flex-col justify-between p-8 md:p-12 relative select-none cursor-pointer">
+
+            <!-- SLIDE 1: Executive Summary / Cover -->
+            <div class="slide-frame slide-theme-blue flex-col justify-between" data-theme-glow="radial-gradient(circle at top right, rgba(59, 130, 246, 0.15), transparent 60%), radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.1), transparent 60%)">
+                <div class="flex justify-between items-start h-8">
+                    <span class="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-full text-xs font-bold uppercase tracking-widest">Introduction</span>
+                    <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Slide 01 // 08</span>
+                </div>
+                
+                <div class="my-auto space-y-6 pl-8">
+                    <h2 class="text-5xl md:text-7xl font-extrabold tracking-tight leading-tight text-white">
+                        Vatsal Patel
+                    </h2>
+                    <h3 class="text-2xl md:text-3xl font-medium text-blue-400">
+                        Principal Research Engineer
+                    </h3>
+                    <div class="space-y-4 max-w-4xl text-gray-400 font-light leading-relaxed text-sm md:text-lg">
+                        <p class="step">
+                            Developing translational machine learning architectures in digital pathology, cancer genomics, and medical database RAG agents.
+                        </p>
+                        <p class="step">
+                            Bridging the interface between advanced linear algorithms, multi-omics biomarkers, and real-world clinical workflow optimization.
+                        </p>
+                        <p class="step text-gray-300 font-normal flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                            Click anywhere on the slide or press the Right Arrow key to explore.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-gray-500 border-t border-white/5 pt-4">
+                    <span>vatsal1804@gmail.com</span>
+                    <span>HawkFranklin Research & Ex-NIBMG</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: HawkFranklin Research -->
+            <div class="slide-frame slide-theme-emerald flex-col justify-between" data-theme-glow="radial-gradient(circle at top right, rgba(16, 185, 129, 0.15), transparent 60%), radial-gradient(circle at bottom left, rgba(4, 120, 87, 0.1), transparent 60%)">
+                <!-- Standardized Slide Header (Locked at absolute X, Y coordinates) -->
+                <div class="w-full h-24 flex flex-col justify-between border-b border-white/5 pb-4">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs text-emerald-400 font-bold uppercase tracking-widest">Work Experience</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider text-right">Slide 02 // 08</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-1">
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">HawkFranklin Research</h2>
+                        <span class="text-xs md:text-sm text-emerald-400 font-medium italic">Founder & Principal Research Engineer (May 2025 – Present)</span>
+                    </div>
+                </div>
+
+                <!-- Slide Body Content -->
+                <div class="my-auto grid md:grid-cols-2 gap-12 items-center flex-1 py-6 min-h-0 overflow-hidden">
+                    <div class="space-y-4">
+                        <ul class="space-y-4 text-xs md:text-base text-gray-300 font-light leading-relaxed">
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-square-check text-emerald-500 mt-1 text-sm"></i>
+                                <span><strong>Dermatology AI Solution:</strong> Partnered with Oracle Health & Emirates Health Services to build a skin lesion pre-screening platform.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-square-check text-emerald-500 mt-1 text-sm"></i>
+                                <span><strong>Global Showcase:</strong> Displayed under live, unscripted clinical scenarios at the World Health Expo (WHX) Dubai, Feb 2026.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-square-check text-emerald-500 mt-1 text-sm"></i>
+                                <span><strong>OncoGemma Workstation:</strong> Designed a multimodal AI histopathology dashboard linking Whole Slide Images with tumor diagnostics.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-square-check text-emerald-500 mt-1 text-sm"></i>
+                                <span><strong>Patent Filing:</strong> "System and Methods for Secondary Multiomic Profile Synthesis" (Filed May 2026).</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Multi-Image Visual Gallery -->
+                    <div class="grid grid-cols-2 gap-4 h-full max-h-[360px] items-stretch">
+                        <div class="step relative rounded-2xl overflow-hidden border border-emerald-500/20 shadow-xl group">
+                            <img src="images/whx_expo26/image1_expo.jpg" alt="WHX Expo Presentation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-emerald-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-camera mr-1"></i> Live WHX Demo</span>
+                            </div>
+                        </div>
+                        <div class="step relative rounded-2xl overflow-hidden border border-emerald-500/20 shadow-xl group">
+                            <img src="images/extracted_slides/slide2_img1.png" alt="Clinical AI slide info" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='images/whx_expo26/image2_expo.jpg'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-emerald-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-circle-nodes mr-1"></i> Patient Interface</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-gray-500 border-t border-white/5 pt-4">
+                    <span>Clinical AI & Edge Implementations</span>
+                    <span>Kalyani, India</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 3: NIBMG & Supercomputing -->
+            <div class="slide-frame slide-theme-indigo flex-col justify-between" data-theme-glow="radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 60%), radial-gradient(circle at bottom left, rgba(79, 70, 229, 0.1), transparent 60%)">
+                <!-- Standardized Slide Header (Locked at absolute X, Y coordinates) -->
+                <div class="w-full h-24 flex flex-col justify-between border-b border-white/5 pb-4">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs text-indigo-400 font-bold uppercase tracking-widest">Work Experience</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider text-right">Slide 03 // 08</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-1">
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">NIBMG (Genomics Core)</h2>
+                        <span class="text-xs md:text-sm text-indigo-400 font-medium italic">Bioinformatics Research Engineer (Sep 2021 – Mar 2025)</span>
+                    </div>
+                </div>
+
+                <!-- Slide Body Content -->
+                <div class="my-auto grid md:grid-cols-2 gap-12 items-center flex-1 py-6 min-h-0 overflow-hidden">
+                    <div class="space-y-4">
+                        <ul class="space-y-4 text-xs md:text-base text-gray-300 font-light leading-relaxed">
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-circle-nodes text-indigo-400 mt-1 text-sm"></i>
+                                <span><strong>National Supercomputing Mission (NSM):</strong> Worked on large-scale supercomputing genomics, transcriptome mapping, and drug discovery.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-circle-nodes text-indigo-400 mt-1 text-sm"></i>
+                                <span><strong>GPU Pipeline Engineering:</strong> Built and deployed scalable high-performance GPU pipelines for tissue feature extractions.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-circle-nodes text-indigo-400 mt-1 text-sm"></i>
+                                <span><strong>Histopathology Vision:</strong> Researched deep convolutional autoencoders and Multiple Instance Learning on whole-slide image formats.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Multi-Image Visual Gallery -->
+                    <div class="grid grid-cols-2 gap-4 h-full max-h-[360px] items-stretch">
+                        <div class="step relative rounded-2xl overflow-hidden border border-indigo-500/20 shadow-xl group">
+                            <img src="images/me_presenting_poster.png" alt="Presenting Poster" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-indigo-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-microphone mr-1"></i> Poster Session</span>
+                            </div>
+                        </div>
+                        <div class="step relative rounded-2xl overflow-hidden border border-indigo-500/20 shadow-xl group">
+                            <img src="images/extracted_slides/slide5_img2.png" alt="NIBMG Project Flowchart" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='images/graph_slide2_omics_feature.png'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-indigo-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-gears mr-1"></i> GNN Pipeline</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-gray-500 border-t border-white/5 pt-4">
+                    <span>3.5 Years of Supercomputer-Aided Research</span>
+                    <span>Kalyani, India</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: Academic Foundation -->
+            <div class="slide-frame slide-theme-orange flex-col justify-between" data-theme-glow="radial-gradient(circle at top right, rgba(249, 115, 22, 0.15), transparent 60%), radial-gradient(circle at bottom left, rgba(234, 88, 12, 0.1), transparent 60%)">
+                <!-- Standardized Slide Header (Locked at absolute X, Y coordinates) -->
+                <div class="w-full h-24 flex flex-col justify-between border-b border-white/5 pb-4">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs text-orange-400 font-bold uppercase tracking-widest">Academic Record</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider text-right">Slide 04 // 08</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-1">
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Academic Foundation</h2>
+                        <span class="text-xs md:text-sm text-orange-400 font-medium italic">German M.Sc. AI & Mathematics B.Sc.</span>
+                    </div>
+                </div>
+
+                <!-- Slide Body Content -->
+                <div class="my-auto grid md:grid-cols-2 gap-12 items-center flex-1 py-6 min-h-0 overflow-hidden">
+                    <div class="space-y-4">
+                        <div class="space-y-4 max-h-[340px] overflow-y-auto pr-2 slide-content">
+                            <div class="step bg-orange-950/20 border border-orange-500/20 p-4 rounded-xl">
+                                <span class="text-[10px] text-orange-400 uppercase tracking-wider font-bold">M.Sc. Artificial Intelligence</span>
+                                <h4 class="font-bold text-white mt-0.5">IU International University of Applied Sciences</h4>
+                                <p class="text-xs text-gray-400 font-light">Grade: 1.8/4.0 | Berlin, Germany | Mar 2023 - Feb 2025</p>
+                                <p class="text-xs text-gray-300 mt-2 font-normal"><strong>Thesis (Grade 1.0):</strong> Retrieval Augmented Generation (RAG) with LLMs for Metabolomic Biomarker Research at Berlin Institute of Health.</p>
+                            </div>
+                            <div class="step bg-orange-950/20 border border-orange-500/20 p-4 rounded-xl">
+                                <span class="text-[10px] text-orange-400 uppercase tracking-wider font-bold">B.Sc. Mathematics</span>
+                                <h4 class="font-bold text-white mt-0.5">St. Xavier's College</h4>
+                                <p class="text-xs text-gray-400 font-light">CGPA: 9.31/10 | Mumbai, India | Jun 2018 - Apr 2021</p>
+                                <p class="text-xs text-gray-300 mt-2">Rigorous focus in Linear Algebra, Vector Analysis, Optimization, and Topology.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Multi-Image Visual Gallery -->
+                    <div class="grid grid-cols-2 gap-4 h-full max-h-[360px] items-stretch">
+                        <div class="step relative rounded-2xl overflow-hidden border border-orange-500/20 shadow-xl group">
+                            <img src="images/master_degree_sc.png" alt="M.Sc. Certificate" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-orange-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-graduation-cap mr-1"></i> M.Sc. Degree</span>
+                            </div>
+                        </div>
+                        <div class="step relative rounded-2xl overflow-hidden border border-orange-500/20 shadow-xl group">
+                            <img src="images/extracted_slides/slide4_img2.png" alt="Academics info" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='images/Degree.png'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-orange-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-award mr-1"></i> B.Sc. Degree</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-gray-500 border-t border-white/5 pt-4">
+                    <span>Grade 1.0 Master Thesis (Berlin Institute of Health)</span>
+                    <span>Berlin & Mumbai</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: Digital Pathology AI -->
+            <div class="slide-frame slide-theme-purple flex-col justify-between" data-theme-glow="radial-gradient(circle at top right, rgba(168, 85, 247, 0.15), transparent 60%), radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.1), transparent 60%)">
+                <!-- Standardized Slide Header (Locked at absolute X, Y coordinates) -->
+                <div class="w-full h-24 flex flex-col justify-between border-b border-white/5 pb-4">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs text-purple-400 font-bold uppercase tracking-widest">Research Focus</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider text-right">Slide 05 // 08</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-1">
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Digital Pathology & Multi-Omics</h2>
+                        <span class="text-xs md:text-sm text-purple-400 font-medium italic">High-Risk Prediction (HNSCC Cohort)</span>
+                    </div>
+                </div>
+
+                <!-- Slide Body Content -->
+                <div class="my-auto grid md:grid-cols-2 gap-12 items-center flex-1 py-6 min-h-0 overflow-hidden">
+                    <div class="space-y-4 max-h-[340px] overflow-y-auto pr-2 slide-content">
+                        <ul class="space-y-4 text-xs md:text-base text-gray-300 font-light leading-relaxed">
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-dna text-purple-400 mt-1 text-sm"></i>
+                                <span><strong>High-Risk Prediction:</strong> Classifies high-risk oral cancer patients directly from Whole Slide Images (WSI) with <strong>AUC > 0.85</strong>.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-dna text-purple-400 mt-1 text-sm"></i>
+                                <span><strong>Contrastive Feature Alignment:</strong> Aligned standard pathology visual features directly with Immune-Omics parameters using Cosine Similarity loss.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-dna text-purple-400 mt-1 text-sm"></i>
+                                <span><strong>Multiple Instance Learning:</strong> Trained an Attention-based MIL head (sigmoid activation) to aggregate tile features per WSI.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-dna text-purple-400 mt-1 text-sm"></i>
+                                <span><strong>Clinical Impact:</strong> Drastically reduces NGS cost and testing turnaround times.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Multi-Image Visual Gallery -->
+                    <div class="grid grid-cols-2 gap-4 h-full max-h-[360px] items-stretch">
+                        <div class="step relative rounded-2xl overflow-hidden border border-purple-500/20 shadow-xl group">
+                            <img src="images/histo_slide1_wsi.png" alt="WSI Pathology" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-purple-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-image-portrait mr-1"></i> WSI Dissection</span>
+                            </div>
+                        </div>
+                        <div class="step relative rounded-2xl overflow-hidden border border-purple-500/20 shadow-xl group">
+                            <img src="images/extracted_slides/slide22_img2.png" alt="Evaluation graph" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='images/graph_slide2_omics_feature.png'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-purple-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-chart-line mr-1"></i> Workflow Split</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-gray-500 border-t border-white/5 pt-4">
+                    <span>Under Review for Publication</span>
+                    <span>WSI Image Size: 100k × 80k pixels</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 6: Multi-Omics GAT -->
+            <div class="slide-frame slide-theme-teal flex-col justify-between" data-theme-glow="radial-gradient(circle at top right, rgba(20, 184, 166, 0.15), transparent 60%), radial-gradient(circle at bottom left, rgba(13, 148, 136, 0.1), transparent 60%)">
+                <!-- Standardized Slide Header (Locked at absolute X, Y coordinates) -->
+                <div class="w-full h-24 flex flex-col justify-between border-b border-white/5 pb-4">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs text-teal-400 font-bold uppercase tracking-widest">Research Focus</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider text-right">Slide 06 // 08</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-1">
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Multi-Omics GAT</h2>
+                        <span class="text-xs md:text-sm text-teal-400 font-medium italic">Graph Attention Autoencoders in Cancer Genomics</span>
+                    </div>
+                </div>
+
+                <!-- Slide Body Content -->
+                <div class="my-auto grid md:grid-cols-2 gap-12 items-center flex-1 py-6 min-h-0 overflow-hidden">
+                    <div class="space-y-4">
+                        <ul class="space-y-4 text-xs md:text-base text-gray-300 font-light leading-relaxed">
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-diagram-project text-teal-400 mt-1 text-sm"></i>
+                                <span><strong>Heterogeneous Networks:</strong> Built patient-specific graphs combining genomics, transcriptomics, and methylomics.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-diagram-project text-teal-400 mt-1 text-sm"></i>
+                                <span><strong>Graph Attention Autoencoders:</strong> Extracted low-dimensional embeddings utilizing PyTorch Geometric.</span>
+                            </li>
+                            <li class="step flex items-start gap-3">
+                                <i class="fa-solid fa-diagram-project text-teal-400 mt-1 text-sm"></i>
+                                <span><strong>Poster Presentation:</strong> Showcased research via flash talk and poster sessions at the <strong>Helmholtz AI Conference</strong>, Germany (June 2023).</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Multi-Image Visual Gallery -->
+                    <div class="grid grid-cols-2 gap-4 h-full max-h-[360px] items-stretch">
+                        <div class="step relative rounded-2xl overflow-hidden border border-teal-500/20 shadow-xl group">
+                            <img src="images/graph_slide4_result.png" alt="GAT Result" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-teal-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-network-wired mr-1"></i> Patient Stratification</span>
+                            </div>
+                        </div>
+                        <div class="step relative rounded-2xl overflow-hidden border border-teal-500/20 shadow-xl group">
+                            <img src="images/extracted_slides/slide6_img2.jpg" alt="Helmholtz AI Poster presentation" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='images/graph_slide1_complete_project.png'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-teal-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-person-chalkboard mr-1"></i> Helmholtz AI poster</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-gray-500 border-t border-white/5 pt-4">
+                    <span>Hugging Face Space & Open-Source Codebase Available</span>
+                    <span>Graph Neural Networks in Oncology</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 7: Scientific Publications -->
+            <div class="slide-frame slide-theme-blue flex-col justify-between" data-theme-glow="radial-gradient(circle at top right, rgba(30, 41, 59, 0.3), transparent 60%), radial-gradient(circle at bottom left, rgba(15, 23, 42, 0.4), transparent 60%)">
+                <!-- Standardized Slide Header (Locked at absolute X, Y coordinates) -->
+                <div class="w-full h-24 flex flex-col justify-between border-b border-white/5 pb-4">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs text-blue-400 font-bold uppercase tracking-widest">Publications</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider text-right">Slide 07 // 08</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-1">
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Peer-Reviewed Papers</h2>
+                        <span class="text-xs md:text-sm text-blue-400 font-medium italic">Selected Journals & Abstracts</span>
+                    </div>
+                </div>
+
+                <!-- Slide Body Content -->
+                <div class="my-auto grid md:grid-cols-2 gap-12 items-center flex-1 py-6 min-h-0 overflow-hidden">
+                    <div class="space-y-4 max-h-[340px] overflow-y-auto pr-2 slide-content">
+                        <!-- Paper 1 -->
+                        <div class="step bg-slate-900/40 border border-white/5 p-4 rounded-xl flex flex-col gap-2">
+                            <span class="text-[9px] bg-blue-500/10 border border-blue-500/20 text-blue-400 px-2 py-0.5 rounded uppercase font-bold w-max">First Author // Apr 2026 // CSBJ</span>
+                            <h4 class="font-bold text-white text-xs md:text-sm">MedDiscover: A Domain-Specific RAG Framework for Evidence-Grounded Knowledge Extraction in Metabolomics</h4>
+                            <a href="https://doi.org/10.34133/csbj.0018" target="_blank" class="text-[9px] text-blue-400 flex items-center gap-1 hover:underline"><i class="fa-solid fa-link"></i> DOI: 10.34133/csbj.0018</a>
+                        </div>
+
+                        <!-- Paper 2 -->
+                        <div class="step bg-slate-900/40 border border-white/5 p-4 rounded-xl flex flex-col gap-2">
+                            <span class="text-[9px] bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded uppercase font-bold w-max">Contributing Author // Jan 2025 // BioData Mining</span>
+                            <h4 class="font-bold text-white text-xs md:text-sm">An ensemble machine learning pathogenicity prediction evaluation for cancer driver mutations</h4>
+                            <a href="https://doi.org/10.1186/s13040-024-00420-x" target="_blank" class="text-[9px] text-blue-400 flex items-center gap-1 hover:underline"><i class="fa-solid fa-link"></i> DOI: 10.1186/s13040-024-00420-x</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Multi-Image Visual Gallery -->
+                    <div class="grid grid-cols-2 gap-4 h-full max-h-[360px] items-stretch">
+                        <div class="step relative rounded-2xl overflow-hidden border border-blue-500/20 shadow-xl group">
+                            <img src="images/extracted_slides/slide7_img1.jpg" alt="Publications Graph" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-blue-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-invoice mr-1"></i> BioData Mining</span>
+                            </div>
+                        </div>
+                        <div class="step relative rounded-2xl overflow-hidden border border-blue-500/20 shadow-xl group">
+                            <img src="images/extracted_slides/slide13_img2.png" alt="Pathology diagram" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='images/specialization_3.jpg'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-blue-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-gears mr-1"></i> System Pipeline</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-gray-500 border-t border-white/5 pt-4">
+                    <span>Selected Publications</span>
+                    <span>PubMed & DOI Indexed Journals</span>
+                </div>
+            </div>
+
+            <!-- SLIDE 8: Skills & References -->
+            <div class="slide-frame slide-theme-purple flex-col justify-between" data-theme-glow="radial-gradient(circle at top right, rgba(168, 85, 247, 0.15), transparent 60%), radial-gradient(circle at bottom left, rgba(75, 85, 99, 0.1), transparent 60%)">
+                <!-- Standardized Slide Header (Locked at absolute X, Y coordinates) -->
+                <div class="w-full h-24 flex flex-col justify-between border-b border-white/5 pb-4">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs text-purple-400 font-bold uppercase tracking-widest">Qualifications</span>
+                        <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider text-right">Slide 08 // 08</span>
+                    </div>
+                    <div class="flex items-baseline justify-between mt-1">
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Skills & References</h2>
+                        <span class="text-xs md:text-sm text-purple-400 font-medium italic">Verified Credentials & Endorsements</span>
+                    </div>
+                </div>
+
+                <!-- Slide Body Content -->
+                <div class="my-auto grid md:grid-cols-2 gap-12 items-center flex-1 py-6 min-h-0 overflow-hidden">
+                    <div class="space-y-4 max-h-[340px] overflow-y-auto pr-2 slide-content">
+                        <div class="space-y-2">
+                            <h3 class="text-sm font-semibold text-white">Technical Toolchain</h3>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] font-medium step">Python / Unix</span>
+                                <span class="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] font-medium step">PyTorch / PyG</span>
+                                <span class="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] font-medium step">TensorFlow</span>
+                                <span class="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] font-medium step">Hugging Face</span>
+                                <span class="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] font-medium step">Transformers / CLIP</span>
+                                <span class="px-2 py-0.5 bg-white/5 border border-white/10 rounded text-[10px] font-medium step">Multiple Instance Learning</span>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <h3 class="text-sm font-semibold text-white">Endorsements</h3>
+                            <div class="space-y-2 text-[10px]">
+                                <div class="step p-2.5 bg-white/5 border border-white/10 rounded-lg">
+                                    <h4 class="font-bold text-gray-200">Dr. Anne Schwerk</h4>
+                                    <p class="text-gray-400 font-light">Professor of Artificial Intelligence, IU Germany (anne.schwerk@iu.org)</p>
+                                </div>
+                                <div class="step p-2.5 bg-white/5 border border-white/10 rounded-lg">
+                                    <h4 class="font-bold text-gray-200">Dr. Analabha Basu</h4>
+                                    <p class="text-gray-400 font-light">Associate Professor, NIBMG (ab1@nibmg.ac.in)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Multi-Image Visual Gallery -->
+                    <div class="grid grid-cols-2 gap-4 h-full max-h-[360px] items-stretch">
+                        <div class="step relative rounded-2xl overflow-hidden border border-purple-500/20 shadow-xl group">
+                            <img src="images/specialization_1.jpg" alt="Tensorflow Developer certification" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-purple-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-certificate mr-1"></i> TF Developer</span>
+                            </div>
+                        </div>
+                        <div class="step relative rounded-2xl overflow-hidden border border-purple-500/20 shadow-xl group">
+                            <img src="images/specialization_3.jpg" alt="Math for Machine Learning certification" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='images/specialization_2.jpg'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent flex items-end p-3">
+                                <span class="text-[9px] md:text-[10px] text-purple-300 font-bold uppercase tracking-wider"><i class="fa-solid fa-graduation-cap mr-1"></i> Math for ML</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center text-xs text-gray-500 border-t border-white/5 pt-4">
+                    <span>Certifications: TensorFlow Developer (July 2020)</span>
+                    <span>Mathematics for Machine Learning (Sep 2020)</span>
+                </div>
+            </div>
+
+            <!-- Slide Bottom Bar (Progress & Controls) -->
+            <div class="flex justify-between items-center border-t border-white/10 pt-6 controls relative z-30">
+                <!-- Navigation Buttons -->
+                <div class="flex gap-3">
+                    <button onclick="prev(event)" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button onclick="next(event)" class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Custom Progress Indicators -->
+                <div class="flex-1 px-8 hidden sm:block">
+                    <div class="w-full bg-gray-800 h-1 rounded-full overflow-hidden">
+                        <div id="progressBar" class="bg-blue-500 h-full transition-all duration-300" style="width: 12.5%;"></div>
+                    </div>
+                </div>
+
+                <!-- Slide counter & reset -->
+                <div class="flex items-center gap-4 text-xs font-semibold uppercase tracking-wider text-gray-400">
+                    <span id="slideCounter">01 / 08</span>
+                    <button onclick="resetCurrentSlide(event)" class="text-gray-500 hover:text-white transition-colors" title="Reset Slide Steps">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Slide Deck Logic Script -->
+    <script>
+        const slides = Array.from(document.querySelectorAll('.slide-frame'));
+        const timelineItems = Array.from(document.querySelectorAll('.timeline-item'));
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        const ambientGlow = document.getElementById('ambientGlow');
+        const slideViewport = document.getElementById('slideViewport');
+
+        let currentSlideIndex = 0;
+        let currentStepIndex = -1;
+
+        // Colors mapping for sidebar nodes
+        const slideColors = [
+            '#3b82f6', // blue
+            '#10b981', // emerald
+            '#6366f1', // indigo
+            '#f97316', // orange
+            '#a855f7', // purple
+            '#14b8a6', // teal
+            '#2563eb', // blue-dark
+            '#8b5cf6'  // violet
+        ];
+
+        function getStepsForSlide(slideIndex) {
+            return Array.from(slides[slideIndex].querySelectorAll('.step'));
+        }
+
+        function showSlide(slideIndex, direction = 'forward') {
+            // Validate limits
+            if (slideIndex < 0 || slideIndex >= slides.length) return;
+
+            // Deactivate previous active slides
+            slides.forEach((slide) => {
+                slide.classList.remove('active', 'slide-in-right', 'slide-in-left');
+            });
+
+            // Activate slide frame
+            const activeSlide = slides[slideIndex];
+            activeSlide.classList.add('active');
+            
+            // Add slide transitions
+            if (direction === 'forward') {
+                activeSlide.classList.add('slide-in-right');
+            } else if (direction === 'backward') {
+                activeSlide.classList.add('slide-in-left');
+            }
+
+            // Set slide color themes in background and index nodes
+            const glowValue = activeSlide.getAttribute('data-theme-glow') || 'none';
+            ambientGlow.style.background = glowValue;
+            
+            // Update active state in sidebar index
+            timelineItems.forEach((item, idx) => {
+                item.classList.remove('active');
+                item.style.setProperty('--theme-color', slideColors[slideIndex]);
+                if (idx === slideIndex) {
+                    item.classList.add('active');
+                }
+            });
+
+            currentSlideIndex = slideIndex;
+
+            // Handle steps configuration
+            const steps = getStepsForSlide(slideIndex);
+            if (direction === 'backward') {
+                // If moving backward, start slide with all steps already revealed
+                currentStepIndex = steps.length - 1;
+                steps.forEach(step => step.classList.add('revealed'));
+            } else {
+                // If moving forward, start slide with no steps revealed
+                currentStepIndex = -1;
+                steps.forEach(step => step.classList.remove('revealed'));
+            }
+
+            updateUI();
+        }
+
+        function updateUI() {
+            // Update counter text
+            const displayIndex = String(currentSlideIndex + 1).padStart(2, '0');
+            const totalIndex = String(slides.length).padStart(2, '0');
+            slideCounter.textContent = `${displayIndex} / ${totalIndex}`;
+
+            // Calculate progress value: base progress + step progress
+            const baseProgress = (currentSlideIndex / slides.length) * 100;
+            const steps = getStepsForSlide(currentSlideIndex);
+            
+            let stepOffset = 0;
+            if (steps.length > 0) {
+                stepOffset = ((currentStepIndex + 1) / steps.length) * (100 / slides.length);
+            }
+            
+            const totalProgress = baseProgress + stepOffset;
+            progressBar.style.width = `${Math.max(totalProgress, 2)}%`;
+            progressBar.style.backgroundColor = slideColors[currentSlideIndex];
+        }
+
+        // Action when advancing
+        function next(e) {
+            if (e) e.stopPropagation();
+            const steps = getStepsForSlide(currentSlideIndex);
+            
+            if (currentStepIndex < steps.length - 1) {
+                currentStepIndex++;
+                steps[currentStepIndex].classList.add('revealed');
+                updateUI();
+            } else {
+                // Advance slide
+                if (currentSlideIndex < slides.length - 1) {
+                    showSlide(currentSlideIndex + 1, 'forward');
+                }
+            }
+        }
+
+        // Action when going back
+        function prev(e) {
+            if (e) e.stopPropagation();
+            const steps = getStepsForSlide(currentSlideIndex);
+            
+            if (currentStepIndex >= 0) {
+                steps[currentStepIndex].classList.remove('revealed');
+                currentStepIndex--;
+                updateUI();
+            } else {
+                // Return to previous slide
+                if (currentSlideIndex > 0) {
+                    showSlide(currentSlideIndex - 1, 'backward');
+                }
+            }
+        }
+
+        function resetCurrentSlide(e) {
+            if (e) e.stopPropagation();
+            const steps = getStepsForSlide(currentSlideIndex);
+            currentStepIndex = -1;
+            steps.forEach(step => step.classList.remove('revealed'));
+            updateUI();
+        }
+
+        function jumpToSlide(slideIndex) {
+            if (slideIndex === currentSlideIndex) return;
+            const direction = slideIndex > currentSlideIndex ? 'forward' : 'backward';
+            showSlide(slideIndex, direction);
+        }
+
+        // Mouse click on viewport triggers 'next'
+        slideViewport.addEventListener('click', (e) => {
+            // Don't trigger if clicked on control buttons or anchors or inside tables/thead
+            if (e.target.closest('button') || e.target.closest('a') || e.target.closest('table') || e.target.closest('thead')) {
+                return;
+            }
+            next();
+        });
+
+        // Keyboard arrows navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                next();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                prev();
+            } else if (e.key === 'r' || e.key === 'R') {
+                resetCurrentSlide();
+            }
+        });
+
+        // Initialize presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            showSlide(0, 'forward');
+        });
+    </script>
+</body>
+
+</html>
