@@ -117,9 +117,28 @@
         .step-dot { width: 22px; height: 4px; border-radius: 4px; background: rgba(255,255,255,0.14); transition: all .4s ease; }
         .step-dot.on { background: var(--theme,#3b82f6); box-shadow: 0 0 10px var(--theme,#3b82f6); width: 34px; }
 
+        /* Document step: compact caption on top, large centred media filling the rest */
+        .doc-step { display: flex; flex-direction: column; height: 100%; gap: 1rem; min-height: 0; }
+        .doc-cap { flex: 0 0 auto; }
+        .doc-media { flex: 1 1 auto; min-height: 0; width: 100%; }
+        body.no-pin .doc-step { height: auto; }
+        body.no-pin .doc-media { aspect-ratio: 4 / 3; flex: none; }
+
+        /* Deck step: dense infographic panel that fills the stage and scrolls internally if tall */
+        .deck-step { height: 100%; overflow-y: auto; overflow-x: hidden; padding-right: .4rem; }
+        .deck-step::-webkit-scrollbar { width: 6px; }
+        .deck-step::-webkit-scrollbar-thumb { background: #2a2a33; border-radius: 4px; }
+        body.no-pin .deck-step { height: auto; overflow: visible; padding-right: 0; }
+        /* Pipeline connector for the OncoGemma engine diagram */
+        .onco-arrow { flex-grow: 1; height: 2px; background: rgba(255,255,255,0.15); position: relative; min-width: 12px; }
+        .onco-arrow::after { content: ""; position: absolute; right: 0; top: -4px; width: 0; height: 0;
+            border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid rgba(255,255,255,0.3); }
+
         .media-frame { position: relative; overflow: hidden; border-radius: 1rem;
             border: 1px solid rgba(255,255,255,0.08); background: #0b0c11; cursor: zoom-in; }
         .media-frame img, .media-frame video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .media-frame:has(.step-video) { cursor: default; }
+        .step-video { cursor: default; }
         .media-contain img { object-fit: contain; }
         .media-cap { position: absolute; inset: 0; display: flex; align-items: flex-end; padding: .8rem;
             background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.05) 42%, transparent 68%); pointer-events: none; }
@@ -227,7 +246,7 @@
                 <p class="section-eyebrow text-blue-400 mb-4">Interactive Résumé</p>
                 <h2 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05]">
                     The Journey of a<br>
-                    <span class="text-gradient bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400">Computational Biologist.</span>
+                    <span class="text-gradient bg-gradient-to-r from-blue-400 via-teal-300 to-emerald-400">Mathematician.</span>
                 </h2>
                 <p class="text-gray-400 font-light text-lg leading-relaxed max-w-2xl mt-5">
                     From pure mathematics to cancer genomics, multi-omics, and deployed clinical AI. Each stop on the
@@ -286,38 +305,41 @@
                     </div>
                     <div class="stage">
                         <div class="step-item">
-                            <div class="grid md:grid-cols-2 gap-6 h-full">
-                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/root-images/specialization_3.jpg'],'TensorFlow Developer — DeepLearning.AI')">
+                            <div class="doc-step">
+                                <div class="doc-cap">
+                                    <span class="text-[11px] text-orange-400 font-bold uppercase tracking-widest">July 2020 · 4 Courses · DeepLearning.AI</span>
+                                    <h4 class="text-xl md:text-2xl font-bold text-white mt-1">TensorFlow Developer</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">Building, training &amp; deploying scalable neural networks for vision and sequence data.</p>
+                                </div>
+                                <div class="media-frame media-contain doc-media bg-white" onclick="openModal(['assets/unused/root-images/specialization_3.jpg'],'TensorFlow Developer — DeepLearning.AI')">
                                     <img src="images/opt/spec_3.jpg" alt="TensorFlow Developer certificate" loading="lazy" decoding="async">
-                                </div>
-                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
-                                    <span class="text-[11px] text-orange-400 font-bold uppercase tracking-widest">July 2020 · 4 Courses</span>
-                                    <h4 class="text-2xl font-bold text-white mt-2">TensorFlow Developer</h4>
-                                    <p class="text-gray-300 font-light mt-3">DeepLearning.AI — building, training &amp; deploying scalable neural networks for vision and sequence data.</p>
+                                    <div class="media-cap"><span class="text-[11px] text-orange-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-certificate mr-1"></i> Certificate · Click to enlarge</span></div>
                                 </div>
                             </div>
                         </div>
                         <div class="step-item">
-                            <div class="grid md:grid-cols-2 gap-6 h-full">
-                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/root-images/specialization_2.jpg'],'Machine Learning on Google Cloud')">
+                            <div class="doc-step">
+                                <div class="doc-cap">
+                                    <span class="text-[11px] text-orange-400 font-bold uppercase tracking-widest">July 2020 · 5 Courses · Google Cloud</span>
+                                    <h4 class="text-xl md:text-2xl font-bold text-white mt-1">ML on Google Cloud</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">Production machine-learning pipelines and scalable cloud training end-to-end.</p>
+                                </div>
+                                <div class="media-frame media-contain doc-media bg-white" onclick="openModal(['assets/unused/root-images/specialization_2.jpg'],'Machine Learning on Google Cloud')">
                                     <img src="images/opt/spec_2.jpg" alt="ML on Google Cloud certificate" loading="lazy" decoding="async">
-                                </div>
-                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
-                                    <span class="text-[11px] text-orange-400 font-bold uppercase tracking-widest">July 2020 · 5 Courses</span>
-                                    <h4 class="text-2xl font-bold text-white mt-2">ML on Google Cloud</h4>
-                                    <p class="text-gray-300 font-light mt-3">Production machine-learning pipelines and scalable cloud training end-to-end.</p>
+                                    <div class="media-cap"><span class="text-[11px] text-orange-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-certificate mr-1"></i> Certificate · Click to enlarge</span></div>
                                 </div>
                             </div>
                         </div>
                         <div class="step-item">
-                            <div class="grid md:grid-cols-2 gap-6 h-full">
-                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/root-images/specialization_1.jpg'],'Mathematics for Machine Learning — Imperial College London')">
-                                    <img src="images/opt/spec_1.jpg" alt="Mathematics for ML certificate" loading="lazy" decoding="async">
-                                </div>
-                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                            <div class="doc-step">
+                                <div class="doc-cap">
                                     <span class="text-[11px] text-orange-400 font-bold uppercase tracking-widest">Sep 2020 · 3 Courses · Imperial College London</span>
-                                    <h4 class="text-2xl font-bold text-white mt-2">Mathematics for ML</h4>
-                                    <p class="text-gray-300 font-light mt-3">Linear Algebra, Multivariate Calculus, and PCA — the maths under the models.</p>
+                                    <h4 class="text-xl md:text-2xl font-bold text-white mt-1">Mathematics for ML</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">Linear Algebra, Multivariate Calculus, and PCA — the maths under the models.</p>
+                                </div>
+                                <div class="media-frame media-contain doc-media bg-white" onclick="openModal(['assets/unused/root-images/specialization_1.jpg'],'Mathematics for Machine Learning — Imperial College London')">
+                                    <img src="images/opt/spec_1.jpg" alt="Mathematics for ML certificate" loading="lazy" decoding="async">
+                                    <div class="media-cap"><span class="text-[11px] text-orange-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-certificate mr-1"></i> Certificate · Click to enlarge</span></div>
                                 </div>
                             </div>
                         </div>
@@ -337,26 +359,28 @@
                     </div>
                     <div class="stage">
                         <div class="step-item">
-                            <div class="grid md:grid-cols-2 gap-6 h-full">
-                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
-                                    <span class="text-[11px] text-amber-400 font-bold uppercase tracking-widest">June 2021</span>
-                                    <h4 class="text-2xl font-bold text-white mt-2">Research Paper on Gradient Descent</h4>
-                                    <p class="text-gray-300 font-light mt-3">An analytical study of gradient-based optimization — the mathematical engine behind modern deep learning.</p>
+                            <div class="doc-step">
+                                <div class="doc-cap">
+                                    <span class="text-[11px] text-amber-400 font-bold uppercase tracking-widest">June 2021 · First Author</span>
+                                    <h4 class="text-xl md:text-2xl font-bold text-white mt-1">Research Paper on Gradient Descent</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">An analytical study of gradient-based optimization — the mathematical engine behind modern deep learning.</p>
                                 </div>
-                                <div class="media-frame h-full" onclick="openModal(['images/extracted_slides/slide4_img2.png'],'Research Paper · Gradient Descent')">
+                                <div class="media-frame media-contain doc-media bg-white" onclick="openModal(['images/extracted_slides/slide4_img2.png'],'Research Paper · Gradient Descent')">
                                     <img src="images/opt/paper_grad.jpg" alt="Gradient Descent research" loading="lazy" decoding="async">
+                                    <div class="media-cap"><span class="text-[11px] text-amber-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-lines mr-1"></i> Paper · Click to view</span></div>
                                 </div>
                             </div>
                         </div>
                         <div class="step-item">
-                            <div class="grid md:grid-cols-2 gap-6 h-full">
-                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                            <div class="doc-step">
+                                <div class="doc-cap">
                                     <span class="text-[11px] text-amber-400 font-bold uppercase tracking-widest">Aug 2021 · First Author</span>
-                                    <h4 class="text-2xl font-bold text-white mt-2">Cancer Cell Mapping — Single-cell RNA-seq</h4>
-                                    <p class="text-gray-300 font-light mt-3">A deep-learning model mapping cancer cells to cancer cell lines and cancer types from single-cell RNA-seq pan-cancer data.</p>
+                                    <h4 class="text-xl md:text-2xl font-bold text-white mt-1">Cancer Cell Mapping — Single-cell RNA-seq</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">A deep-learning model mapping cancer cells to cancer cell lines and cancer types from single-cell RNA-seq pan-cancer data.</p>
                                 </div>
-                                <div class="media-frame h-full" onclick="openModal(['images/extracted_slides/slide4_img3.png'],'Cancer Cell Mapping · Single-cell RNA-seq')">
+                                <div class="media-frame media-contain doc-media bg-white" onclick="openModal(['images/extracted_slides/slide4_img3.png'],'Cancer Cell Mapping · Single-cell RNA-seq')">
                                     <img src="images/opt/paper_cellmap.jpg" alt="Cancer cell mapping research" loading="lazy" decoding="async">
+                                    <div class="media-cap"><span class="text-[11px] text-amber-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-lines mr-1"></i> Paper · Click to view</span></div>
                                 </div>
                             </div>
                         </div>
@@ -397,15 +421,15 @@
                             </div>
                         </div>
                         <div class="step-item">
-                            <div class="grid md:grid-cols-2 gap-6 h-full">
-                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['assets/unused/images/nibmg_2025_paper.png'],'BioData Mining — Ensemble ML Pathogenicity (2025)')">
-                                    <img src="images/opt/nibmg_2025_paper.jpg" alt="BioData Mining ensemble paper" loading="lazy" decoding="async">
-                                </div>
-                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
+                            <div class="doc-step">
+                                <div class="doc-cap">
                                     <span class="text-[11px] text-cyan-400 font-bold uppercase tracking-widest">BioData Mining · IF 6.1 · Contributing Author</span>
-                                    <h4 class="text-xl font-bold text-white mt-2 leading-snug">Ensemble ML evaluation of in-silico pathogenicity predictors for cancer driver mutations</h4>
-                                    <p class="text-gray-300 font-light mt-3 text-sm">Random-forest ensemble reaching AUC-ROC 0.89 across 502 HNSC patients &amp; 299 driver genes.</p>
-                                    <a href="https://doi.org/10.1186/s13040-024-00420-x" target="_blank" rel="noopener" class="text-blue-400 hover:underline text-sm mt-3 inline-flex items-center gap-1"><i class="fa-solid fa-link"></i> 10.1186/s13040-024-00420-x</a>
+                                    <h4 class="text-lg md:text-xl font-bold text-white mt-1 leading-snug max-w-3xl">Ensemble ML evaluation of in-silico pathogenicity predictors for cancer driver mutations</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">Random-forest ensemble reaching AUC-ROC 0.89 across 502 HNSC patients &amp; 299 driver genes. <a href="https://doi.org/10.1186/s13040-024-00420-x" target="_blank" rel="noopener" class="text-blue-400 hover:underline inline-flex items-center gap-1 ml-1"><i class="fa-solid fa-link"></i> 10.1186/s13040-024-00420-x</a></p>
+                                </div>
+                                <div class="media-frame media-contain doc-media bg-white" onclick="openModal(['assets/unused/images/nibmg_2025_paper.png'],'BioData Mining — Ensemble ML Pathogenicity (2025)')">
+                                    <img src="images/opt/nibmg_2025_paper.jpg" alt="BioData Mining ensemble paper" loading="lazy" decoding="async">
+                                    <div class="media-cap"><span class="text-[11px] text-cyan-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-lines mr-1"></i> Publication · Click to view</span></div>
                                 </div>
                             </div>
                         </div>
@@ -534,6 +558,12 @@
                                 <span class="px-3 py-1 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-full text-[11px] font-bold uppercase tracking-widest w-max">CSBJ · IF 4.1 · First Author</span>
                                 <h4 class="text-2xl font-bold text-white mt-4 leading-snug max-w-2xl">MedDiscover: A Domain-Specific RAG Framework for Evidence-Grounded Knowledge Extraction in Metabolomics</h4>
                                 <p class="text-gray-300 font-light mt-3">Vatsal Pravinbhai Patel, Elena Jolkver, Anne Schwerk · Published 9 April 2026. Thesis graded 1.0 (top) at IU / Berlin Institute of Health.</p>
+                                <p class="text-gray-400 font-light mt-4 text-sm max-w-2xl">A domain-specific <strong class="text-blue-300">biomedical Retrieval-Augmented Generation (RAG)</strong> method — MedCPT embeddings over metabolic-disorder literature (ICD-10&nbsp;E70–E88), with generation strictly grounded in retrieved context to curb hallucination, benchmarked on a two-tier Gold + Silver QA suite (RAGAS metrics).</p>
+                                <div class="grid grid-cols-3 gap-3 mt-4 max-w-lg">
+                                    <div class="soft rounded-xl p-3 text-center"><div class="text-xl font-bold text-white">0.980</div><div class="text-[10px] text-gray-500 uppercase tracking-wide mt-0.5">Answer Correctness</div></div>
+                                    <div class="soft rounded-xl p-3 text-center"><div class="text-xl font-bold text-white">5.7×10⁻¹¹</div><div class="text-[10px] text-gray-500 uppercase tracking-wide mt-0.5">p vs. baseline</div></div>
+                                    <div class="soft rounded-xl p-3 text-center"><div class="text-xl font-bold text-white">~600</div><div class="text-[10px] text-gray-500 uppercase tracking-wide mt-0.5">Benchmark QA pairs</div></div>
+                                </div>
                                 <a href="https://doi.org/10.34133/csbj.0018" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mt-5 text-blue-400 hover:text-blue-300 text-sm font-medium"><i class="fa-solid fa-link"></i> DOI: 10.34133/csbj.0018</a>
                             </div>
                         </div>
@@ -549,7 +579,7 @@
             </section>
 
             <!-- ========== CHAPTER: HawkFranklin · PelliScope ========== -->
-            <section class="chapter" id="c-hawk-pelli" data-station="c-hawk-pelli" data-color="#e6c15a" style="--steps:3; --theme:#10b981">
+            <section class="chapter" id="c-hawk-pelli" data-station="c-hawk-pelli" data-color="#e6c15a" style="--steps:5; --theme:#10b981">
                 <div class="pin">
                     <div class="chapter-head">
                         <!-- HawkFranklin masthead (gold) -->
@@ -567,35 +597,163 @@
                             </div>
                             <h3 class="text-3xl md:text-4xl font-bold">PelliScope <span class="text-emerald-400 font-light text-xl">· AI Teledermatology</span></h3>
                         </div>
-                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
                     </div>
                     <div class="stage">
-                        <!-- Step 1: pitch + shortlist -->
+                        <!-- Step 1: pitch + shortlist + who it helps -->
                         <div class="step-item">
-                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
-                                <p class="text-gray-200 font-light leading-relaxed text-lg md:text-xl max-w-2xl">
-                                    AI for pre-medical dermatology inquiry and rapid infectious screening — validated at
-                                    <strong class="text-emerald-300">AUC ≈ 0.863</strong>, developed for
-                                    <strong class="text-white">Emirates Health Services (EHS)</strong> in partnership with Oracle Health.
-                                </p>
-                                <div class="mt-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 max-w-2xl">
-                                    <p class="text-emerald-200 text-sm md:text-base font-medium"><i class="fa-solid fa-award mr-2"></i>
-                                    HawkFranklin's dermatology solution was <strong>shortlisted by Emirates Health Services</strong> for showcasing at <strong>WHX Health Dubai (Feb 9–12, 2026)</strong>.</p>
+                            <div class="deck-step">
+                                <div class="card rounded-3xl p-7 md:p-9">
+                                    <p class="text-gray-200 font-light leading-relaxed text-lg md:text-xl max-w-3xl">
+                                        AI for pre-medical dermatology inquiry and rapid infectious screening — validated at
+                                        <strong class="text-emerald-300">AUC ≈ 0.863</strong>, developed for
+                                        <strong class="text-white">Emirates Health Services (EHS)</strong> in partnership with Oracle Health.
+                                    </p>
+                                    <div class="mt-5 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 max-w-3xl">
+                                        <p class="text-emerald-200 text-sm md:text-base font-medium"><i class="fa-solid fa-award mr-2"></i>
+                                        HawkFranklin's dermatology solution was <strong>shortlisted by Emirates Health Services</strong> for showcasing at <strong>WHX Health Dubai (Feb 9–12, 2026)</strong>.</p>
+                                    </div>
+                                    <a href="project_pelliscope.html" class="inline-flex items-center gap-2 mt-5 w-max px-5 py-2 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition-all text-sm font-medium">Explore PelliScope <i class="fa-solid fa-arrow-right -rotate-45"></i></a>
                                 </div>
-                                <a href="project_pelliscope.html" class="inline-flex items-center gap-2 mt-6 w-max px-5 py-2 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition-all text-sm font-medium">Explore PelliScope <i class="fa-solid fa-arrow-right -rotate-45"></i></a>
+                                <div class="grid md:grid-cols-3 gap-4 mt-4">
+                                    <div class="soft rounded-2xl p-5"><h5 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-house-medical text-emerald-400"></i> For people at home</h5><p class="text-xs text-gray-400 mt-2 leading-relaxed">A calmer way to act on a concern instead of waiting, guessing, or abandoning the process halfway through.</p></div>
+                                    <div class="soft rounded-2xl p-5"><h5 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-hospital text-emerald-400"></i> For Hospitals &amp; Intake Teams</h5><p class="text-xs text-gray-400 mt-2 leading-relaxed">Reduces the repetitive back-and-forth that usually happens before a case is ready to review.</p></div>
+                                    <div class="soft rounded-2xl p-5"><h5 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-building-shield text-emerald-400"></i> For Sovereign Clinics</h5><p class="text-xs text-gray-400 mt-2 leading-relaxed">Cases arrive with better structure, a clearer sense of urgency, and a smoother path into the review queue.</p></div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Step 2: EHS letter -->
+                        <!-- Step 2: Kiosk demo video -->
+                        <div class="step-item" data-video>
+                            <div class="doc-step">
+                                <div class="doc-cap">
+                                    <span class="text-[11px] text-emerald-400 font-bold uppercase tracking-widest">WHX Health Dubai 2026 · Kiosk Demo</span>
+                                    <h4 class="text-xl md:text-2xl font-bold text-white mt-1">PelliScope EHS Kiosk in Action</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">The self-service teledermatology kiosk built for Emirates Health Services with Oracle Health — the full patient-to-doctor screening journey, shown live at WHX Health Dubai.</p>
+                                </div>
+                                <div class="media-frame doc-media bg-black">
+                                    <video class="step-video !object-contain" muted loop playsinline controls preload="none" poster="images/opt/pelliscope_kiosk_poster.jpg">
+                                        <source src="assets/media/videos/pelliscope_kiosk_ehs.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Step 3: Why it helps — infographic -->
                         <div class="step-item">
-                            <div class="grid md:grid-cols-2 gap-6 h-full">
-                                <div class="media-frame media-contain h-full bg-white" onclick="openModal(['images/ehs_acknowledgment-1.png'],'Emirates Health Services — Acknowledgment Letter')">
+                            <div class="deck-step">
+                                <p class="section-eyebrow text-emerald-400 mb-3">Why it helps</p>
+                                <div class="grid lg:grid-cols-2 gap-5">
+                                    <!-- Efficient tele-medicine -->
+                                    <div class="soft rounded-2xl p-5">
+                                        <div class="flex justify-between items-start gap-3 mb-4">
+                                            <div><h4 class="font-bold text-white text-base">Efficient Tele-Medicine</h4><p class="text-xs text-gray-500">Workflow comparison</p></div>
+                                            <span class="text-[10px] bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full font-bold whitespace-nowrap">+10 patients / 5hr shift</span>
+                                        </div>
+                                        <div class="mb-5">
+                                            <div class="flex justify-between text-[11px] text-gray-400 mb-1.5 font-semibold"><span>Traditional (No AI)</span><span>10 min / patient</span></div>
+                                            <div class="w-full h-8 rounded-lg overflow-hidden bg-white/5"><div class="h-full bg-slate-500 flex items-center px-3 text-[11px] font-bold text-white" style="width:100%">Consultation (10m)</div></div>
+                                            <div class="text-right text-[11px] text-gray-500 mt-1">6 patients / hour</div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between text-[11px] text-emerald-300 mb-1.5 font-semibold"><span>With PelliScope</span><span>~10 min (parallelized)</span></div>
+                                            <div class="w-full h-8 rounded-lg overflow-hidden flex gap-1">
+                                                <div class="h-full bg-emerald-600 flex items-center justify-center text-[10px] font-bold text-white" style="width:30%">Prelim (3m)</div>
+                                                <div class="h-full bg-emerald-500/40 flex items-center justify-center text-[10px] font-bold text-emerald-100 flex-1">Focused consult (7m)</div>
+                                            </div>
+                                            <div class="flex justify-between items-center mt-1.5 gap-3"><p class="text-[11px] text-gray-500">AI triage saves 3 mins of discovery time per patient.</p><span class="text-[11px] text-emerald-400 font-bold whitespace-nowrap">8 patients / hour</span></div>
+                                        </div>
+                                    </div>
+                                    <!-- Model performance -->
+                                    <div class="soft rounded-2xl p-5">
+                                        <h4 class="font-bold text-white text-base">Model performance (AUC)</h4>
+                                        <p class="text-xs text-gray-500 mb-4">Zero-shot comparison on dermatology benchmarks</p>
+                                        <div class="space-y-2.5">
+                                            <div class="flex items-center gap-3"><span class="text-xs text-gray-400 w-20 shrink-0">Grok-4</span><div class="flex-1 h-2.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full bg-slate-500" style="width:70%"></div></div><strong class="text-xs text-gray-300 w-9 text-right">0.70</strong></div>
+                                            <div class="flex items-center gap-3"><span class="text-xs text-gray-400 w-20 shrink-0">GPT-5</span><div class="flex-1 h-2.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full bg-slate-400" style="width:81%"></div></div><strong class="text-xs text-gray-300 w-9 text-right">0.81</strong></div>
+                                            <div class="flex items-center gap-3"><span class="text-xs text-gray-400 w-20 shrink-0">Gemini 2.5</span><div class="flex-1 h-2.5 rounded-full bg-white/5 overflow-hidden"><div class="h-full bg-slate-400" style="width:82%"></div></div><strong class="text-xs text-gray-300 w-9 text-right">0.82</strong></div>
+                                            <div class="flex items-center gap-3"><span class="text-xs text-emerald-300 font-semibold w-20 shrink-0">PelliScope</span><div class="flex-1 h-3 rounded-full bg-white/5 overflow-hidden"><div class="h-full bg-emerald-500" style="width:86%"></div></div><strong class="text-xs text-emerald-300 w-9 text-right">0.86</strong></div>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 mt-4">
+                                            <span class="text-[10px] bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full font-bold">Technical accuracy: 80.2%</span>
+                                            <span class="text-[10px] soft px-3 py-1 rounded-full text-gray-300">Infectious vs non-infectious flag</span>
+                                        </div>
+                                        <div class="mt-3 text-xs text-gray-400 leading-relaxed"><strong class="text-white">10-condition panel</strong> — Eczema, Allergic Contact Dermatitis, Insect Bite, Urticaria, Psoriasis, Folliculitis, Irritant Contact Dermatitis, Tinea, Herpes Zoster, Drug Rash.</div>
+                                    </div>
+                                </div>
+                                <!-- Unit Economics + Commercial Models -->
+                                <div class="mt-5 pt-5 border-t border-white/10 grid lg:grid-cols-2 gap-5">
+                                    <div>
+                                        <p class="section-eyebrow text-emerald-400 mb-3">Unit Economics</p>
+                                        <div class="space-y-3">
+                                            <div class="soft rounded-2xl p-4">
+                                                <div class="flex justify-between items-start gap-4">
+                                                    <div>
+                                                        <span class="text-[10px] soft px-3 py-1 rounded-full text-gray-300">Infrastructure Cost</span>
+                                                        <div class="text-2xl font-bold text-white mt-2">$2.50</div>
+                                                        <p class="text-[11px] text-gray-500 mt-0.5">Daily compute spend (6 hours)</p>
+                                                    </div>
+                                                    <div class="text-right shrink-0">
+                                                        <div class="text-[10px] uppercase tracking-widest text-gray-500">Machine Specs</div>
+                                                        <strong class="block text-sm text-white mt-1">8 Core CPU</strong>
+                                                        <span class="text-[11px] text-gray-500">16 GB RAM<br>CPU edge inference</span>
+                                                    </div>
+                                                </div>
+                                                <p class="text-[11px] text-gray-500 italic mt-3">"A single machine costing less than a cup of coffee per day drives this entire workflow."</p>
+                                            </div>
+                                            <div class="rounded-2xl p-4 bg-emerald-500/10 border border-emerald-500/25">
+                                                <div class="flex justify-between items-start gap-4">
+                                                    <div>
+                                                        <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-bold">Clinical Revenue Gain</span>
+                                                        <div class="text-2xl font-bold text-emerald-300 mt-2">$800+</div>
+                                                        <p class="text-[11px] text-emerald-200/70 mt-0.5">Daily additional revenue</p>
+                                                    </div>
+                                                    <div class="flex flex-col items-end gap-1.5 text-right shrink-0">
+                                                        <span class="text-[10px] soft px-3 py-1 rounded-full text-gray-300">US &amp; UAE Ready</span>
+                                                        <span class="text-sm font-bold text-white">10+ add. patients</span>
+                                                        <span class="text-[11px] text-gray-500">@ $80 avg. consult fee</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p class="section-eyebrow text-emerald-400 mb-1">Commercial Models</p>
+                                        <p class="text-xs text-gray-500 mb-3">Choose a light-touch API path or a personal clinic setup, depending on how much of the experience you want to own.</p>
+                                        <div class="grid sm:grid-cols-2 gap-3">
+                                            <div class="soft rounded-2xl p-4">
+                                                <h5 class="font-bold text-white text-sm">API call based licensing</h5>
+                                                <div class="text-lg font-bold text-emerald-300 mt-1">$0.03 <span class="text-xs text-gray-400 font-normal">/ query</span></div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed">Built for self-screening inquiries at scale and headless embedding inside existing patient flows.</p>
+                                            </div>
+                                            <div class="soft rounded-2xl p-4 border border-emerald-500/30">
+                                                <h5 class="font-bold text-white text-sm">Clinic personal setup</h5>
+                                                <div class="text-lg font-bold text-emerald-300 mt-1">$20 <span class="text-xs text-gray-400 font-normal">/ month</span></div>
+                                                <p class="text-[11px] text-gray-500 mt-2 leading-relaxed">Per instance, with the experience open to re-branding.</p>
+                                                <ul class="mt-2 space-y-1 text-[11px] text-gray-400">
+                                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[9px]"></i> Telemedicine-style UI included</li>
+                                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[9px]"></i> White-label for private networks</li>
+                                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-[9px]"></i> Flexible clinic-facing rollout</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 mt-3">
+                                            <span class="text-[10px] soft px-3 py-1 rounded-full text-gray-400"><i class="fa-solid fa-file-alt text-emerald-400 mr-1"></i> Research manuscript available on request</span>
+                                            <span class="text-[10px] soft px-3 py-1 rounded-full text-gray-400"><i class="fa-solid fa-lock text-emerald-400 mr-1"></i> Provisional patent filed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Step 4: EHS letter -->
+                        <div class="step-item">
+                            <div class="doc-step">
+                                <div class="doc-cap">
+                                    <span class="text-[11px] text-emerald-400 font-bold uppercase tracking-widest">EHS UAE · Deployment Partner</span>
+                                    <h4 class="text-xl md:text-2xl font-bold text-white mt-1">Recognised by Emirates Health Services</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">An official acknowledgment from EHS — the UAE's national health authority — for the PelliScope dermatology solution ahead of the WHX Dubai showcase.</p>
+                                </div>
+                                <div class="media-frame media-contain doc-media bg-white" onclick="openModal(['images/ehs_acknowledgment-1.png'],'Emirates Health Services — Acknowledgment Letter')">
                                     <img src="images/opt/ehs_letter.jpg" alt="EHS acknowledgment letter" loading="lazy" decoding="async">
                                     <div class="media-cap"><span class="text-[11px] text-emerald-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-file-contract mr-1"></i> EHS letter · Click to view</span></div>
-                                </div>
-                                <div class="card rounded-3xl p-8 flex flex-col justify-center">
-                                    <span class="text-[11px] text-emerald-400 font-bold uppercase tracking-widest">EHS UAE · Deployment Partner</span>
-                                    <h4 class="text-2xl font-bold text-white mt-2">Recognised by Emirates Health Services</h4>
-                                    <p class="text-gray-300 font-light mt-3">An official acknowledgment from EHS — the UAE's national health authority — for the PelliScope dermatology solution ahead of the WHX Dubai showcase.</p>
                                 </div>
                             </div>
                         </div>
@@ -614,43 +772,298 @@
             </section>
 
             <!-- ========== CHAPTER: HawkFranklin · OncoGemma ========== -->
-            <section class="chapter" id="c-hawk-onco" data-station="c-hawk-pelli" data-color="#a855f7" style="--steps:2; --theme:#a855f7">
+            <section class="chapter" id="c-hawk-onco" data-station="c-hawk-pelli" data-color="#a855f7" style="--steps:6; --theme:#a855f7">
                 <div class="pin">
                     <div class="chapter-head">
                         <div class="flex items-center gap-3 mb-3">
                             <img src="assets/media/icons/opt/hawkfranklin_logo.png" alt="HawkFranklin" class="w-11 h-11 object-contain" loading="lazy">
                             <div>
                                 <p class="section-eyebrow gold-text text-gradient">HawkFranklin Research</p>
-                                <p class="text-[11px] text-gray-500 font-medium">Flagship Pathology Workstation</p>
+                                <p class="text-[11px] text-gray-500 font-medium">Flagship Pathology Workstation · Precision Pathology Co-Pilot</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3 mt-4">
                             <img src="assets/media/icons/opt/oncogemma_logo.png" alt="OncoGemma" class="w-11 h-11 object-contain">
                             <img src="assets/media/icons/opt/oncogemma_text.png" alt="OncoGemma" class="h-7 object-contain">
                         </div>
-                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span></div>
+                        <div class="step-dots"><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span><span class="step-dot"></span></div>
                     </div>
                     <div class="stage">
+
+                        <!-- Step 1: The Product -->
                         <div class="step-item">
-                            <div class="card rounded-3xl p-8 md:p-10 flex-1 flex flex-col justify-center">
-                                <p class="text-gray-200 font-light leading-relaxed text-lg md:text-xl max-w-2xl">
-                                    <strong class="text-purple-300">OncoGemma</strong> — an advanced pathology workstation integrating
-                                    high-resolution Whole-Slide Imaging with multimodal AI for cancer subtype prediction and
-                                    mutational-biomarker identification, paired with my Graph Attention Autoencoder for risk stratification.
-                                </p>
-                                <a href="project_oncogemma.html" class="inline-flex items-center gap-2 mt-6 w-max px-5 py-2 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/30 hover:bg-purple-500 hover:text-white transition-all text-sm font-medium">Explore OncoGemma <i class="fa-solid fa-arrow-right -rotate-45"></i></a>
+                            <div class="deck-step">
+                                <p class="section-eyebrow text-purple-400 mb-3">01 · The Product</p>
+                                <div class="grid lg:grid-cols-12 gap-5">
+                                    <div class="lg:col-span-5 flex flex-col justify-center">
+                                        <h4 class="text-xl md:text-2xl font-bold text-white leading-tight mb-4">Multimodal AI for <span class="text-purple-300">End-to-End Oncology</span></h4>
+                                        <div class="soft rounded-2xl p-5">
+                                            <p class="text-[11px] font-bold text-purple-300 uppercase tracking-widest mb-4">Core Pillars</p>
+                                            <ul class="space-y-4">
+                                                <li class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-300 shrink-0"><i class="fa-solid fa-microscope"></i></div>
+                                                    <div><h5 class="font-bold text-white text-sm">Diagnosis</h5><p class="text-xs text-gray-400">Molecular Subtype Prediction (Breast, Lung, Oral)</p></div>
+                                                </li>
+                                                <li class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-xl bg-sky-500/15 border border-sky-500/30 flex items-center justify-center text-sky-300 shrink-0"><i class="fa-solid fa-chart-line"></i></div>
+                                                    <div><h5 class="font-bold text-white text-sm">Prognosis</h5><p class="text-xs text-gray-400">Mutational Biomarker Risk &amp; Survival Analysis</p></div>
+                                                </li>
+                                                <li class="flex items-center gap-3">
+                                                    <div class="w-10 h-10 rounded-xl bg-pink-500/15 border border-pink-500/30 flex items-center justify-center text-pink-300 shrink-0"><i class="fa-solid fa-prescription-bottle-medical"></i></div>
+                                                    <div><h5 class="font-bold text-white text-sm">Treatment Plan</h5><p class="text-xs text-gray-400">Chemotoxicity Probability &amp; Safety Assessment</p></div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="lg:col-span-7 flex items-center">
+                                        <div class="card rounded-2xl p-5 w-full">
+                                            <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-3">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="w-8 h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-[11px] font-bold">PT</div>
+                                                    <div><h5 class="font-semibold text-white text-sm">Patient #TCGA-BR-8829</h5><p class="text-[10px] text-gray-500">Invasive Ductal Carcinoma</p></div>
+                                                </div>
+                                                <span class="text-[10px] bg-purple-500/15 text-purple-300 border border-purple-500/30 px-3 py-1 rounded-full font-bold tracking-wide flex items-center gap-2"><i class="fa-solid fa-robot"></i> AI ANALYSIS READY</span>
+                                            </div>
+                                            <div class="flex gap-4 mb-4">
+                                                <div class="w-2/3 h-40 rounded-lg overflow-hidden relative border border-white/10 cursor-zoom-in" onclick="openModal(['images/onco/pathology_slide_snapshot.png'],'OncoGemma — H&amp;E Slide Analysis')">
+                                                    <img src="images/onco/pathology_slide_snapshot.png" alt="H&amp;E slide snapshot" class="w-full h-full object-cover" loading="lazy" decoding="async">
+                                                    <div class="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded">H&amp;E Slide</div>
+                                                </div>
+                                                <div class="w-1/3 flex flex-col gap-2">
+                                                    <div class="rounded-lg bg-red-500/10 border border-red-500/20 p-3 flex-1 flex flex-col justify-center">
+                                                        <p class="text-[10px] text-red-400 font-bold uppercase mb-1">Survival Risk</p>
+                                                        <p class="text-2xl font-bold text-red-400 leading-none">High</p>
+                                                        <p class="text-[10px] text-red-400/70 mt-1">0.87 (P&lt;0.001)</p>
+                                                    </div>
+                                                    <div class="rounded-lg bg-sky-500/10 border border-sky-500/20 p-3 flex-1 flex flex-col justify-center">
+                                                        <p class="text-[10px] text-sky-400 font-bold uppercase mb-1">Key Mutation</p>
+                                                        <p class="text-lg font-bold text-sky-300 leading-none">TP53+</p>
+                                                        <p class="text-[10px] text-sky-400/70 mt-1">Confidence 94%</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="space-y-3">
+                                                <div>
+                                                    <div class="flex justify-between text-xs mb-1"><span class="text-gray-300">Subtype: Luminal B</span><span class="font-bold text-purple-300">92%</span></div>
+                                                    <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden"><div class="bg-purple-500 h-full" style="width:92%"></div></div>
+                                                </div>
+                                                <div>
+                                                    <div class="flex justify-between text-xs mb-1"><span class="text-gray-300">Chemotoxicity Risk (Anthracycline)</span><span class="font-bold text-orange-400">Moderate</span></div>
+                                                    <div class="w-full bg-white/10 rounded-full h-1.5 overflow-hidden"><div class="bg-orange-400 h-full" style="width:45%"></div></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-5 pt-4 border-t border-white/10 grid md:grid-cols-3 gap-5">
+                                    <div class="flex gap-3"><i class="fa-solid fa-database text-2xl text-purple-400 mt-0.5"></i><div><h5 class="font-bold text-white text-sm">Massive Scale Training</h5><p class="text-xs text-gray-400 mt-0.5">Trained on <strong class="text-gray-200">TCGA (2.5PB)</strong> &amp; validated on CPTAC.</p></div></div>
+                                    <div class="flex gap-3"><i class="fa-solid fa-ribbon text-2xl text-sky-400 mt-0.5"></i><div><h5 class="font-bold text-white text-sm">3 Major Cancer Types</h5><p class="text-xs text-gray-400 mt-0.5">Specialized for <strong class="text-gray-200">Breast, Lung, and Oral</strong> cancers.</p></div></div>
+                                    <div class="flex gap-3"><i class="fa-solid fa-flask-vial text-2xl text-pink-400 mt-0.5"></i><div><h5 class="font-bold text-white text-sm">WSI &amp; Molecular Insights</h5><p class="text-xs text-gray-400 mt-0.5">Predicts subtypes &amp; mutations from standard H&amp;E slides.</p></div></div>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Step 2: Live demo -->
                         <div class="step-item" data-video>
-                            <div class="media-frame h-full bg-black">
-                                <video id="oncoVideo" muted loop playsinline preload="none" poster="images/opt/histo_wsi.jpg" class="!object-contain">
-                                    <source src="assets/media/videos/oncogemma-demo1_crop.mp4" type="video/mp4">
-                                </video>
-                                <div class="media-cap"><span class="text-[11px] text-purple-200 font-bold uppercase tracking-wider"><i class="fa-solid fa-play mr-1"></i> OncoGemma — live demo</span></div>
+                            <div class="doc-step">
+                                <div class="doc-cap">
+                                    <span class="text-[11px] text-purple-400 font-bold uppercase tracking-widest">Flagship · Live Demo</span>
+                                    <h4 class="text-xl md:text-2xl font-bold text-white mt-1">Pathology Workstation in Action</h4>
+                                    <p class="text-gray-400 font-light mt-1 text-sm md:text-base max-w-3xl">OncoGemma integrates high-resolution Whole-Slide Imaging with multimodal AI for cancer subtype prediction and mutational-biomarker identification — paired with my Graph Attention Autoencoder for risk stratification.
+                                        <a href="project_oncogemma.html" class="text-purple-300 hover:underline inline-flex items-center gap-1 ml-1 whitespace-nowrap">Explore OncoGemma <i class="fa-solid fa-arrow-right -rotate-45"></i></a></p>
+                                </div>
+                                <div class="media-frame doc-media bg-black">
+                                    <video id="oncoVideo" class="step-video !object-contain" muted loop playsinline controls preload="none" poster="images/opt/histo_wsi.jpg">
+                                        <source src="assets/media/videos/oncogemma-demo1_crop.mp4" type="video/mp4">
+                                    </video>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Step 3: Resource Optimization -->
+                        <div class="step-item">
+                            <div class="deck-step">
+                                <p class="section-eyebrow text-purple-400 mb-3">02 · Resource Optimization</p>
+                                <div class="grid lg:grid-cols-12 gap-5">
+                                    <div class="lg:col-span-7">
+                                        <div class="soft rounded-2xl p-5 h-full">
+                                            <div class="flex items-center justify-between mb-5 gap-3">
+                                                <h4 class="font-bold text-white text-base flex items-center gap-2"><i class="fa-solid fa-arrows-rotate text-gray-500"></i> Workflow Acceleration</h4>
+                                                <span class="text-[10px] bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full font-bold uppercase tracking-wide whitespace-nowrap">Save 2–3 Days / Patient</span>
+                                            </div>
+                                            <div class="mb-6">
+                                                <div class="flex justify-between text-[11px] text-gray-400 mb-2 uppercase tracking-wide font-semibold"><span>Standard NGS Workflow</span><span>3–7 Days</span></div>
+                                                <div class="w-full h-9 rounded-lg overflow-hidden flex text-[10px] font-bold">
+                                                    <div class="h-full bg-slate-600 flex items-center justify-center text-slate-200" style="width:20%">Biopsy</div>
+                                                    <div class="h-full bg-slate-500 flex items-center justify-center text-white" style="width:30%">Transport</div>
+                                                    <div class="h-full bg-slate-400 flex items-center justify-center text-slate-900" style="width:50%">Sequencing &amp; Analysis</div>
+                                                </div>
+                                                <div class="mt-2 text-right"><span class="text-xs font-bold text-red-400">Cost: $500 – $3000+</span></div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between text-[11px] text-purple-300 mb-2 uppercase tracking-wide font-semibold"><span>With OncoGemma (H&amp;E Only)</span><span>&lt; 10 Minutes</span></div>
+                                                <div class="w-full h-9 rounded-lg overflow-hidden flex gap-1 text-[10px] font-bold">
+                                                    <div class="h-full bg-slate-600 flex items-center justify-center text-slate-200 rounded-l-lg" style="width:20%">Biopsy</div>
+                                                    <div class="h-full bg-purple-600 flex items-center justify-center text-white flex-1 rounded-r-lg">AI Prediction &amp; Report</div>
+                                                </div>
+                                                <div class="mt-2 flex justify-between items-center gap-3"><p class="text-[11px] text-gray-500">Predicts biomarkers directly from standard tissue slides.</p><span class="text-sm font-bold text-emerald-400 whitespace-nowrap">Savings: $100 – $1000 / case</span></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="lg:col-span-5">
+                                        <div class="card rounded-2xl p-6 h-full border-t-2 border-purple-500 flex flex-col">
+                                            <div class="border-b border-white/10 pb-5 mb-5 flex items-start justify-between">
+                                                <div>
+                                                    <div class="flex items-center gap-2 text-gray-500 mb-1"><i class="fa-solid fa-server"></i><span class="text-[10px] uppercase tracking-widest font-bold">Operational Cost</span></div>
+                                                    <div class="flex items-baseline gap-2"><h3 class="text-3xl font-bold text-white">$10<span class="text-base text-gray-500">/hr</span></h3><span class="text-[10px] bg-sky-600 px-2 py-0.5 rounded text-white">GPU</span></div>
+                                                    <p class="text-[11px] text-gray-500 mt-1">High-Speed Inference</p>
+                                                </div>
+                                                <div class="text-right"><div class="text-xl font-bold text-gray-300">$5<span class="text-xs text-gray-500">/hr</span></div><div class="text-[10px] text-gray-500">CPU-Only Mode</div></div>
+                                            </div>
+                                            <div class="rounded-xl bg-white/5 border border-white/10 p-4 text-center">
+                                                <div class="flex items-center justify-center gap-2 text-sky-400 mb-1"><i class="fa-solid fa-bolt"></i><span class="text-[10px] uppercase tracking-widest font-bold">Throughput</span></div>
+                                                <h3 class="text-4xl font-bold text-white">30s</h3>
+                                                <p class="text-xs text-gray-400 mt-1">Per Whole-Slide Image (16GB GPU)</p>
+                                            </div>
+                                            <p class="text-[11px] text-gray-500 leading-relaxed text-center italic mt-auto pt-4">"Democratizing precision oncology by removing the barrier of expensive genomic sequencing infrastructure."</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: The Engine -->
+                        <div class="step-item">
+                            <div class="deck-step">
+                                <div class="flex justify-between items-end mb-3 gap-3">
+                                    <p class="section-eyebrow text-purple-400">04 · Proprietary Technology</p>
+                                    <div class="hidden md:flex gap-2">
+                                        <span class="bg-purple-500/10 text-purple-300 text-[11px] px-2 py-1 rounded border border-purple-500/30">Graph Neural Networks</span>
+                                        <span class="bg-sky-500/10 text-sky-300 text-[11px] px-2 py-1 rounded border border-sky-500/30">Attention Mechanism</span>
+                                    </div>
+                                </div>
+                                <div class="soft rounded-2xl p-6 relative overflow-hidden">
+                                    <div class="relative z-10 flex items-center justify-between gap-3">
+                                        <div class="w-1/5 flex flex-col items-center text-center">
+                                            <div class="bg-white/5 border border-white/10 p-3 rounded-xl mb-2"><i class="fa-solid fa-file-medical text-2xl text-gray-400"></i></div>
+                                            <h5 class="font-bold text-white text-xs">WSI Input</h5><p class="text-[10px] text-gray-500 mt-0.5">Gigapixel Slide</p>
+                                        </div>
+                                        <div class="onco-arrow"></div>
+                                        <div class="w-1/5 flex flex-col items-center text-center">
+                                            <div class="bg-white/5 border border-white/10 p-3 rounded-xl mb-2"><i class="fa-solid fa-table-cells text-2xl text-purple-400"></i></div>
+                                            <h5 class="font-bold text-white text-xs">Patch Encoding</h5><p class="text-[10px] text-gray-500 mt-0.5">Tiling &amp; Features</p>
+                                        </div>
+                                        <div class="onco-arrow"></div>
+                                        <div class="w-1/4 bg-purple-500/10 rounded-xl border-2 border-purple-500 p-3 flex flex-col items-center text-center relative">
+                                            <div class="absolute -top-2.5 bg-purple-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">CORE IP</div>
+                                            <i class="fa-solid fa-circle-nodes text-2xl text-purple-300 mb-1 mt-1"></i>
+                                            <h5 class="font-bold text-purple-200 text-xs">Graph Attention Autoencoder</h5><p class="text-[10px] text-purple-300/80 mt-0.5">Learns spatial cell &amp; morphology relationships</p>
+                                        </div>
+                                        <div class="onco-arrow"></div>
+                                        <div class="w-1/5 flex flex-col items-center text-center">
+                                            <div class="bg-white/5 border border-white/10 rounded-lg p-2.5 w-full mb-2">
+                                                <div class="flex justify-between items-center text-[10px] mb-1"><span class="font-bold text-gray-300">AUC</span><span class="font-bold text-sky-300">~0.91</span></div>
+                                                <div class="w-full bg-white/10 h-1.5 rounded-full overflow-hidden"><div class="bg-sky-400 h-full" style="width:91%"></div></div>
+                                            </div>
+                                            <h5 class="font-bold text-white text-xs">Multi-Output</h5><p class="text-[10px] text-gray-500 mt-0.5">Subtype · Risk · Mutation</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid md:grid-cols-2 gap-5 mt-5">
+                                    <div class="flex flex-col gap-4">
+                                        <div>
+                                            <h4 class="font-bold text-white text-base mb-1">Data Foundation</h4>
+                                            <p class="text-sm text-gray-400 leading-relaxed">Rigorously trained on the gold-standard <strong class="text-purple-300">TCGA</strong> dataset and validated against <strong class="text-purple-300">CPTAC</strong> to ensure generalizability across diverse cohorts.</p>
+                                        </div>
+                                        <div class="soft rounded-xl p-4 space-y-3">
+                                            <div class="flex items-start gap-3"><div class="mt-0.5 w-6 h-6 rounded-full bg-sky-500/15 flex items-center justify-center text-sky-300 shrink-0"><i class="fa-solid fa-server text-[10px]"></i></div><div><span class="block text-sm font-bold text-white">Privacy-First Architecture</span><span class="text-xs text-gray-400">Deployable on-premise. Patient data never leaves the hospital firewall.</span></div></div>
+                                            <div class="flex items-start gap-3"><div class="mt-0.5 w-6 h-6 rounded-full bg-purple-500/15 flex items-center justify-center text-purple-300 shrink-0"><i class="fa-solid fa-layer-group text-[10px]"></i></div><div><span class="block text-sm font-bold text-white">Multimodal Fusion</span><span class="text-xs text-gray-400">Integrating histology with clinical notes via OncoLLM agent.</span></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="soft rounded-xl p-5 flex flex-col justify-center items-center text-center">
+                                        <div class="w-28 h-28 relative flex items-center justify-center mb-3">
+                                            <svg class="w-full h-full -rotate-90" viewBox="0 0 112 112"><circle cx="56" cy="56" r="48" stroke="rgba(255,255,255,0.08)" stroke-width="10" fill="none"/><circle cx="56" cy="56" r="48" stroke="#a855f7" stroke-width="10" fill="none" stroke-dasharray="301" stroke-dashoffset="30" stroke-linecap="round"/></svg>
+                                            <div class="absolute flex flex-col items-center"><span class="text-2xl font-bold text-white">0.91</span><span class="text-[10px] text-gray-500 uppercase">AUC Score</span></div>
+                                        </div>
+                                        <h5 class="font-semibold text-white text-sm">Hypothetical Performance</h5>
+                                        <p class="text-[11px] text-gray-500 mt-1 max-w-[85%] leading-tight">High accuracy identifying aggressive subtypes across Breast &amp; Lung cohorts.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Team -->
+                        <div class="step-item">
+                            <div class="deck-step">
+                                <p class="section-eyebrow text-purple-400 mb-4">05 · OncoGemma Team</p>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    <div class="soft rounded-2xl p-4 flex flex-col items-center text-center">
+                                        <img src="images/team/vatsal.jpg" alt="Vatsal Patel" class="w-20 h-20 rounded-full mb-3 border-2 border-purple-500/30 object-cover" loading="lazy" decoding="async">
+                                        <h5 class="font-bold text-white text-sm">Vatsal Patel</h5><p class="text-purple-300 text-xs font-semibold mt-0.5">Founder &amp; Research Engineer</p><p class="text-[11px] text-gray-500 mt-1">M.Sc Artificial Intelligence (IU Berlin)</p>
+                                    </div>
+                                    <div class="soft rounded-2xl p-4 flex flex-col items-center text-center">
+                                        <img src="images/team/abhijeet.jpg" alt="Dr. Abhijeet Patel" class="w-20 h-20 rounded-full mb-3 border-2 border-purple-500/30 object-cover" loading="lazy" decoding="async">
+                                        <h5 class="font-bold text-white text-sm">Dr. Abhijeet Patel</h5><p class="text-purple-300 text-xs font-semibold mt-0.5">Clinical Research Physician</p><p class="text-[11px] text-gray-500 mt-1">Bachelor of Medicine &amp; Surgery</p>
+                                    </div>
+                                    <div class="soft rounded-2xl p-4 flex flex-col items-center text-center">
+                                        <img src="images/team/yash.png" alt="Dr. Yash Patel" class="w-20 h-20 rounded-full mb-3 border-2 border-purple-500/30 object-cover" loading="lazy" decoding="async">
+                                        <h5 class="font-bold text-white text-sm">Dr. Yash Patel</h5><p class="text-purple-300 text-xs font-semibold mt-0.5">Clinical Research Physician</p><p class="text-[11px] text-gray-500 mt-1">Bachelor of Medicine &amp; Surgery</p>
+                                    </div>
+                                    <div class="soft rounded-2xl p-4 flex flex-col items-center text-center">
+                                        <img src="images/team/nishi.png" alt="Dr. Nishi Seth" class="w-20 h-20 rounded-full mb-3 border-2 border-purple-500/30 object-cover" loading="lazy" decoding="async">
+                                        <h5 class="font-bold text-white text-sm">Dr. Nishi Seth</h5><p class="text-purple-300 text-xs font-semibold mt-0.5">Consultant Dermatologist</p><p class="text-[11px] text-gray-500 mt-1">M.D Dermatology</p>
+                                    </div>
+                                    <div class="soft rounded-2xl p-4 flex flex-col items-center text-center">
+                                        <img src="images/team/saurav.jpeg" alt="Saurav Roy" class="w-20 h-20 rounded-full mb-3 border-2 border-purple-500/30 object-cover" loading="lazy" decoding="async">
+                                        <h5 class="font-bold text-white text-sm">Saurav Roy</h5><p class="text-purple-300 text-xs font-semibold mt-0.5">Operations Head</p><p class="text-[11px] text-gray-500 mt-1">M.Tech Biotechnology</p>
+                                    </div>
+                                    <div class="soft rounded-2xl p-4 flex flex-col items-center text-center">
+                                        <img src="images/team/ananya.jpg" alt="Ananya Pal" class="w-20 h-20 rounded-full mb-3 border-2 border-purple-500/30 object-cover" loading="lazy" decoding="async">
+                                        <h5 class="font-bold text-white text-sm">Ananya Pal</h5><p class="text-purple-300 text-xs font-semibold mt-0.5">Finance &amp; Accounting Head</p><p class="text-[11px] text-gray-500 mt-1">B.S Economics</p>
+                                    </div>
+                                </div>
+                                <p class="text-[11px] text-gray-600 mt-4 flex items-center gap-4 flex-wrap"><span><i class="fa-solid fa-file-alt text-purple-400 mr-1"></i> Research Manuscript Available on Request</span><span><i class="fa-solid fa-lock text-purple-400 mr-1"></i> Provisional Patent Filed</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Step 6: Vision & Portfolio / Revenue Model -->
+                        <div class="step-item">
+                            <div class="deck-step">
+                                <p class="section-eyebrow text-purple-400 mb-4">06 · Vision &amp; Portfolio</p>
+                                <div class="grid md:grid-cols-2 gap-5">
+                                    <div>
+                                        <h4 class="font-bold text-white text-lg mb-3">Operational Revenue Model</h4>
+                                        <div class="space-y-3">
+                                            <div class="soft rounded-xl p-4 flex items-start gap-3">
+                                                <div class="bg-sky-500/15 p-2.5 rounded-lg text-sky-300 shrink-0"><i class="fa-solid fa-handshake"></i></div>
+                                                <div><h5 class="font-semibold text-sky-300">Path A: HFR-Initiated Products</h5><p class="text-xs text-gray-400 mt-1">We identify a market gap, build a validated product (like OncoGemma), then seek commercial partners to scale it.</p></div>
+                                            </div>
+                                            <div class="soft rounded-xl p-4 flex items-start gap-3">
+                                                <div class="bg-sky-500/15 p-2.5 rounded-lg text-sky-300 shrink-0"><i class="fa-solid fa-lightbulb"></i></div>
+                                                <div><h5 class="font-semibold text-sky-300">Path B: Partner-Initiated R&amp;D</h5><p class="text-xs text-gray-400 mt-1">You bring a defined challenge. We build the dedicated AI solution — acting as your external deep-tech R&amp;D team.</p></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-white text-lg mb-3">Our Philosophy</h4>
+                                        <p class="text-sm text-gray-400 leading-relaxed mb-4">HawkFranklin's long-term vision is to innovate science with commercial rigor. Our team spans physicists, chemists, biologists, and AI engineers building breakthroughs across quantum computing, finance, and healthcare.</p>
+                                        <blockquote class="border-l-4 border-purple-500 pl-4 py-2 bg-purple-500/5 rounded-r-lg"><p class="text-sm font-medium text-purple-200 italic">"We are a resilient, self-funded team. We will succeed with or without external funding — this is an opportunity to join a team that is already moving forward."</p></blockquote>
+                                    </div>
+                                </div>
+                                <div class="soft rounded-2xl p-5 mt-5">
+                                    <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest text-center mb-4">Broader Biomedical Portfolio</p>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                        <div class="card rounded-xl p-4 text-center"><i class="fa-solid fa-microscope text-2xl text-purple-400 mb-2"></i><h5 class="font-bold text-white text-sm">OncoGemma</h5><p class="text-[11px] text-gray-500 mt-1">AI agents for digital pathology analysis</p></div>
+                                        <div class="card rounded-xl p-4 text-center"><i class="fa-solid fa-ribbon text-2xl text-purple-400 mb-2"></i><h5 class="font-bold text-white text-sm">C-Risq</h5><p class="text-[11px] text-gray-500 mt-1">Multi-omics for cancer risk stratification</p></div>
+                                        <div class="card rounded-xl p-4 text-center"><i class="fa-solid fa-flask-vial text-2xl text-purple-400 mb-2"></i><h5 class="font-bold text-white text-sm">MedDiscover</h5><p class="text-[11px] text-gray-500 mt-1">RAG copilot for biomedical Q&amp;A</p></div>
+                                        <div class="card rounded-xl p-4 text-center"><i class="fa-solid fa-brain text-2xl text-purple-400 mb-2"></i><h5 class="font-bold text-white text-sm">Clinical FM</h5><p class="text-[11px] text-gray-500 mt-1">Foundation models for tabular EHR data</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll</div>
+                    <div class="scroll-hint"><i class="fa-solid fa-chevron-down"></i> Scroll · 6 frames</div>
                 </div>
             </section>
 
@@ -834,10 +1247,11 @@
             const dots=Array.from(ch.querySelectorAll('.step-dot'));
             const sIdx=stationIndex[ch.dataset.station];
             const color=ch.dataset.color;
-            setStep(items,dots,0);
+            let curIdx=-1; // guard: only re-run setStep on an actual step change so a manual video-pause isn't overridden every scroll frame
+            setStep(items,dots,0); curIdx=0;
             ScrollTrigger.create({ trigger:ch, start:'top top', end:'bottom bottom', pin:ch.querySelector('.pin'), pinSpacing:true, scrub:true, anticipatePin:1,
                 onToggle:self=>{ if(self.isActive) activate(sIdx,color); },
-                onUpdate:self=>{ const idx=Math.min(items.length-1,Math.floor(self.progress*items.length)); setStep(items,dots,idx); } });
+                onUpdate:self=>{ const idx=Math.min(items.length-1,Math.floor(self.progress*items.length)); if(idx!==curIdx){ curIdx=idx; setStep(items,dots,idx); } } });
         });
         // recognition reveals
         const ro=new IntersectionObserver(en=>en.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target);} }),{threshold:.12});
