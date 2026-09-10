@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PhD Ideas and Potential Directions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f8fafc;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+        .page-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 2rem;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #2563eb, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-dot {
+            transition: all 0.3s ease;
+        }
+        .nav-dot:hover {
+            transform: scale(1.5);
+        }
+    </style>
+</head>
+<body class="text-slate-800 relative">
+
+    <!-- Floating Navigation -->
+    <nav class="fixed right-6 top-1/2 transform -translate-y-1/2 flex flex-col gap-4 z-50 hidden md:flex">
+        <a href="#intro" class="nav-dot w-3 h-3 rounded-full bg-slate-300 hover:bg-blue-600" title="Intro"></a>
+        <a href="#direction1" class="nav-dot w-3 h-3 rounded-full bg-slate-300 hover:bg-blue-600" title="Direction 1"></a>
+        <a href="#direction2" class="nav-dot w-3 h-3 rounded-full bg-slate-300 hover:bg-blue-600" title="Direction 2"></a>
+        <a href="#direction3" class="nav-dot w-3 h-3 rounded-full bg-slate-300 hover:bg-blue-600" title="Direction 3"></a>
+        <a href="#objectives" class="nav-dot w-3 h-3 rounded-full bg-slate-300 hover:bg-blue-600" title="Objectives"></a>
+        <a href="#conclusion" class="nav-dot w-3 h-3 rounded-full bg-slate-300 hover:bg-blue-600" title="Conclusion"></a>
+    </nav>
+
+    <!-- Page 1: Introduction -->
+    <section id="intro" class="page-section bg-gradient-to-br from-slate-50 to-blue-50">
+        <div class="max-w-5xl mx-auto w-full">
+            <h1 class="text-5xl font-bold mb-6 text-slate-900">PhD Ideas and Potential Directions</h1>
+            <p class="text-xl text-slate-600 mb-10 max-w-3xl">An exploratory discussion integrating clinical dialogue modeling, uncertainty quantification, and multi-modal edge computing.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 rounded-2xl">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-2xl">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Vatsal Patel's Background</h3>
+                    <ul class="space-y-3 text-slate-600">
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>M.Sc. Graduate (Feb 2025):</strong> IU International University of Applied Sciences</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>Published Thesis:</strong> "RAG-LLM for Metabolomics"</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>Industry Experience:</strong> Founder, HawkFranklin Research</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-2"></i><strong>Technical Focus:</strong> Edge computing, LiteRT/LiteRT-LM models for Android/Apple platforms.</li>
+                    </ul>
+                </div>
+                
+                <div class="glass-card p-8 rounded-2xl border-t-4 border-t-blue-500">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center mb-6 text-2xl">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold mb-4">Synergy & Alignment</h3>
+                    <p class="text-slate-600 mb-4">Bridging my experience in Edge AI and Medical LLMs with Prof. Löser's expertise in Clinical Text Mining and Robust Predictions.</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="px-3 py-1 bg-slate-100 rounded-full text-sm font-medium text-slate-600">Clinical NLP</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded-full text-sm font-medium text-slate-600">Conformal Prediction</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded-full text-sm font-medium text-slate-600">Edge VLMs</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded-full text-sm font-medium text-slate-600">Quantization</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 2: Direction 1 (Prof. Anne's Idea) -->
+    <section id="direction1" class="page-section bg-white">
+        <div class="max-w-5xl mx-auto w-full">
+            <div class="mb-4 text-blue-600 font-semibold tracking-wider uppercase text-sm">Direction 1</div>
+            <h2 class="text-4xl font-bold mb-8 text-slate-900">Real-Time Clinical Dialogue to MIMIC Translation</h2>
+            
+            <div class="glass-card p-8 rounded-2xl shadow-lg border border-slate-100 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 transform translate-x-1/2 -translate-y-1/2"></div>
+                
+                <p class="text-lg text-slate-700 mb-6 italic border-l-4 border-blue-400 pl-4">
+                    Based on Prof. Anne's suggestion and building upon the "S-proto" and "Where does it hurt?" (ECAI) frameworks.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="p-6 bg-slate-50 rounded-xl">
+                        <i class="fas fa-microphone-alt text-3xl text-blue-500 mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">1. Real-Time Capture</h4>
+                        <p class="text-sm text-slate-600">Speech recognition running locally on a doctor's MacBook captures the physician-patient dialogue.</p>
+                    </div>
+                    <div class="p-6 bg-slate-50 rounded-xl">
+                        <i class="fas fa-exchange-alt text-3xl text-indigo-500 mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">2. Live Translation</h4>
+                        <p class="text-sm text-slate-600">The system translates SOAP-based dialogue intents into structured MIMIC admission formats instantly.</p>
+                    </div>
+                    <div class="p-6 bg-slate-50 rounded-xl">
+                        <i class="fas fa-question-circle text-3xl text-purple-500 mb-4"></i>
+                        <h4 class="font-bold text-lg mb-2">3. Uncertainty Flagging</h4>
+                        <p class="text-sm text-slate-600">Models return responses with calculated uncertainties, highlighting exactly where the physician needs to ask follow-up questions.</p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 bg-blue-50 p-4 rounded-lg flex items-start gap-4">
+                    <i class="fas fa-lightbulb text-yellow-500 mt-1"></i>
+                    <p class="text-sm text-slate-700"><strong>The Goal:</strong> Create a deployable clinical process improvement tool. A working prototype demonstrating this pipeline would serve as an incredible proof-of-concept before expanding into a full paper.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 3: Direction 2 (Prof. Löser's Work Extension) -->
+    <section id="direction2" class="page-section bg-slate-50">
+        <div class="max-w-5xl mx-auto w-full">
+            <div class="mb-4 text-indigo-600 font-semibold tracking-wider uppercase text-sm">Direction 2</div>
+            <h2 class="text-4xl font-bold mb-8 text-slate-900">Robust Predictions in Dynamic Medical Dialogues</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div>
+                    <p class="text-lg text-slate-600 mb-6">
+                        Merging Prof. Löser's recent works: <strong>"Where does it hurt?"</strong> (Intent Trajectories) and <strong>"Robust Conformal Prediction for Infrequent Classes"</strong> (DGCP).
+                    </p>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center flex-shrink-0 text-indigo-600">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">The Challenge</h4>
+                                <p class="text-sm text-slate-600 mt-1">Medical dialogues often branch into rare diagnoses (the "long tail"). Standard LLMs suffer from miscalibration in these low-data regimes, risking patient safety.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-white shadow flex items-center justify-center flex-shrink-0 text-indigo-600">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-slate-800">The Proposed Solution</h4>
+                                <p class="text-sm text-slate-600 mt-1">Apply Dynamically Grouped Conformal Prediction (DGCP) to real-time dialogue state tracking. If a conversation shifts towards a rare medical intent, the model dynamically groups it with semantic taxonomies (like ICD-10) to guarantee statistical coverage.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white p-6 rounded-2xl shadow-xl border border-slate-100">
+                    <h4 class="text-center font-bold text-slate-800 mb-6 border-b pb-4">Real-Time Uncertainty Flow</h4>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-green-50 border border-green-200 rounded text-sm text-center">
+                            <strong>Turn 1-5 (Common):</strong> Acute Symptoms<br>
+                            <span class="text-xs text-green-600">High Confidence / Standard CP</span>
+                        </div>
+                        <div class="flex justify-center"><i class="fas fa-arrow-down text-slate-300"></i></div>
+                        <div class="p-3 bg-yellow-50 border border-yellow-200 rounded text-sm text-center">
+                            <strong>Turn 6-8 (Rare):</strong> Niche Objective Exam<br>
+                            <span class="text-xs text-yellow-600">Low Data &rarr; Trigger DGCP Grouping</span>
+                        </div>
+                        <div class="flex justify-center"><i class="fas fa-arrow-down text-slate-300"></i></div>
+                        <div class="p-3 bg-blue-50 border border-blue-200 rounded text-sm text-center">
+                            <strong>System Output:</strong> <br>
+                            "I am 90% confident the intent is within [Grouped Diagnosis A, B, C]. Ask question X to narrow down."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 4: Direction 3 (Vatsal's Core Idea) -->
+    <section id="direction3" class="page-section bg-slate-900 text-white">
+        <div class="max-w-5xl mx-auto w-full">
+            <div class="mb-4 text-sky-400 font-semibold tracking-wider uppercase text-sm">Direction 3 (Core Proposal)</div>
+            <h2 class="text-4xl font-bold mb-6">Off-Grid & Austere Environment Medical VLMs</h2>
+            <p class="text-xl text-slate-300 mb-10">Deploying highly-quantized, multi-modal Edge AI for extreme zero-connectivity point-of-care scenarios.</p>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+                <div class="bg-slate-800 p-6 rounded-xl text-center border border-slate-700 hover:border-sky-400 transition-colors">
+                    <i class="fas fa-mountain text-3xl text-emerald-400 mb-3"></i>
+                    <h4 class="font-semibold text-sm">Wilderness/Hiking</h4>
+                    <p class="text-xs text-slate-400 mt-2">Zero internet, urgent trauma relief guidance.</p>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl text-center border border-slate-700 hover:border-sky-400 transition-colors">
+                    <i class="fas fa-user-astronaut text-3xl text-purple-400 mb-3"></i>
+                    <h4 class="font-semibold text-sm">Space Exploration</h4>
+                    <p class="text-xs text-slate-400 mt-2">High-latency/disconnected astronaut medical support.</p>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl text-center border border-slate-700 hover:border-sky-400 transition-colors">
+                    <i class="fas fa-shield-alt text-3xl text-red-400 mb-3"></i>
+                    <h4 class="font-semibold text-sm">Conflict Zones</h4>
+                    <p class="text-xs text-slate-400 mt-2">Internet bans (e.g., Ukraine), local civilian triage.</p>
+                </div>
+                <div class="bg-slate-800 p-6 rounded-xl text-center border border-slate-700 hover:border-sky-400 transition-colors">
+                    <i class="fas fa-ambulance text-3xl text-yellow-400 mb-3"></i>
+                    <h4 class="font-semibold text-sm">Emergency Transit</h4>
+                    <p class="text-xs text-slate-400 mt-2">Ambulances/runways needing immediate offline intelligence.</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
+                <h3 class="text-2xl font-semibold mb-4 text-sky-300">The "Why"</h3>
+                <p class="text-slate-300 leading-relaxed">
+                    Given the current geopolitical climate and the rise of consumer edge hardware, there is a massive gap in <strong>fully localized, multi-modal medical AI</strong>. Prof. Löser's work proves that robust medical NLP can run on a doctor's MacBook. This project pushes that boundary: running a 1B–3B parameter Vision-Language Model (VLM) natively on consumer mobile devices (Android/Apple via LiteRT) to guide non-professionals through multi-turn, sequential triage and monitoring until professional help arrives.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 5: Direction 3 Deep Dive (Objectives) -->
+    <section id="objectives" class="page-section bg-white">
+        <div class="max-w-5xl mx-auto w-full">
+            <h2 class="text-4xl font-bold mb-10 text-slate-900">Project Execution: The 3 Core Objectives</h2>
+            
+            <div class="space-y-8">
+                <!-- Objective 1 -->
+                <div class="flex flex-col md:flex-row gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl font-bold shadow-lg shadow-blue-200">
+                        1
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Performance & Quantization Limits</h3>
+                        <p class="text-slate-600 mb-3">
+                            Researching the information retention and predictive performance of extreme low-resource hardware (consumer Samsung/Apple phones).
+                        </p>
+                        <div class="flex gap-2">
+                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded text-xs font-semibold">LiteRT / LiteRT-LM</span>
+                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded text-xs font-semibold">1B - 3B Parameters</span>
+                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded text-xs font-semibold">INT4/INT8 Quantization</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Objective 2 -->
+                <div class="flex flex-col md:flex-row gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl font-bold shadow-lg shadow-indigo-200">
+                        2
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-2">The "ARME" Dataset Curation</h3>
+                        <p class="text-slate-600 mb-3">
+                            Current medical benchmarks do not cover these 5 niche situations. We will curate the <strong>Austere & Remote Medical Environments (ARME)</strong> benchmark to test VLM reasoning in crisis scenarios.
+                        </p>
+                        <div class="flex gap-2">
+                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded text-xs font-semibold">Crisis Reasoning</span>
+                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded text-xs font-semibold">Novel Benchmark</span>
+                            <span class="bg-indigo-100 text-indigo-700 px-3 py-1 rounded text-xs font-semibold">First-Aid Trajectories</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Objective 3 -->
+                <div class="flex flex-col md:flex-row gap-6 bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="w-16 h-16 bg-purple-600 text-white rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl font-bold shadow-lg shadow-purple-200">
+                        3
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-2">Multi-Modal Edge Pipeline Execution</h3>
+                        <p class="text-slate-600 mb-3">
+                            It's not just the VLM; it's the entire pipeline on the edge. Tokenization of Text, Image, Audio, and Video passed down to the encoder, processing multi-turn instructions for sequential patient monitoring.
+                        </p>
+                        <div class="flex gap-2">
+                            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded text-xs font-semibold">Multi-Modal Tokenization</span>
+                            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded text-xs font-semibold">Sequential Monitoring</span>
+                            <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded text-xs font-semibold">On-Device Inference</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Page 6: Conclusion / Next Steps -->
+    <section id="conclusion" class="page-section bg-gradient-to-t from-blue-50 to-white">
+        <div class="max-w-5xl mx-auto w-full text-center">
+            <h2 class="text-4xl font-bold mb-6 text-slate-900">Discussion & Next Steps</h2>
+            <p class="text-xl text-slate-600 mb-12 max-w-2xl mx-auto">Evaluating mutual interests and aligning on the path forward under the HTW Berlin / BHT promotion guidelines.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="text-blue-500 mb-4 text-3xl"><i class="fas fa-comments"></i></div>
+                    <h4 class="font-bold text-lg mb-2 text-slate-800">Topic Alignment</h4>
+                    <p class="text-slate-600 text-sm">Which of these directions (Clinical Dialogue Translation vs. Edge VLMs) aligns best with the lab's current funding, hardware resources, and data availability?</p>
+                </div>
+                
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="text-indigo-500 mb-4 text-3xl"><i class="fas fa-file-signature"></i></div>
+                    <h4 class="font-bold text-lg mb-2 text-slate-800">Promotion Guidelines</h4>
+                    <p class="text-slate-600 text-sm">Reviewing the "Promotionsordnung" (Machine Learning & Life Sciences) to ensure the chosen topic meets the criteria for Dr. rer. nat. or Dr.-Ing.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="text-purple-500 mb-4 text-3xl"><i class="fas fa-handshake"></i></div>
+                    <h4 class="font-bold text-lg mb-2 text-slate-800">Supervision Setup</h4>
+                    <p class="text-slate-600 text-sm">Formalizing the co-supervision structure between Prof. Anne Schwerk and Prof. Alexander Löser, and discussing remote vs. in-person (Berlin) formats.</p>
+                </div>
+            </div>
+
+            <div class="mt-16 text-slate-400 text-sm">
+                Prepared by Vatsal Patel • March 2026
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

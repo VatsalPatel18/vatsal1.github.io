@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedDiscover | Domain-Specific RAG for Metabolomics</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter for that clean Apple look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Alpine.js for lightweight interactivity (if needed) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        apple: {
+                            dark: '#000000',
+                            gray: '#1d1d1f',
+                            lightGray: '#f5f5f7',
+                            blue: '#2997ff',
+                            purple: '#bf48ff',
+                            emerald: '#00d27a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #f5f5f7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Hide scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        /* Glassmorphism effects */
+        .glass {
+            background: rgba(29, 29, 31, 0.6);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(35, 35, 37, 0.8) 0%, rgba(15, 15, 17, 0.9) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ambient Glow effects */
+        .glow-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Interactive tags */
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .skill-tag:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #2997ff;
+        }
+
+        /* Custom Iframe Styling */
+        .hf-iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 750px;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            background: #0b0f19;
+            /* Dark fallback */
+        }
+
+        .hf-iframe-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Pipeline Flow Animation */
+        .flow-line {
+            background: linear-gradient(90deg, transparent, rgba(41, 151, 255, 0.8), transparent);
+            background-size: 200% 100%;
+            animation: flowMove 2s infinite linear;
+        }
+
+        @keyframes flowMove {
+            0% {
+                background-position: 100% 0;
+            }
+
+            100% {
+                background-position: -100% 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="selection:bg-apple-blue selection:text-white relative">
+
+    <!-- Ambient Background Glows -->
+    <div class="glow-orb w-[600px] h-[600px] bg-blue-900 top-[-100px] left-[-200px]"></div>
+    <div class="glow-orb w-[500px] h-[500px] bg-purple-900 bottom-[10%] right-[-100px]"></div>
+
+    <div class="max-w-[1600px] mx-auto min-h-screen flex flex-col lg:flex-row relative">
+
+        <!-- ========================================== -->
+        <!-- LEFT PANEL: STATIC / STICKY INFO           -->
+        <!-- ========================================== -->
+        <aside
+            class="w-full lg:w-[35%] xl:w-[30%] lg:h-screen lg:sticky top-0 p-6 md:p-10 flex flex-col justify-between z-10">
+
+            <div class="glass p-8 rounded-[2.5rem] h-full flex flex-col justify-between relative overflow-hidden">
+                <!-- Inner ambient glow -->
+                <div
+                    class="absolute top-0 right-0 w-48 h-48 bg-apple-purple rounded-full blur-[100px] opacity-20 hover:opacity-40 transition-opacity duration-700">
+                </div>
+
+                <div>
+                    <!-- Project Icon / Logo -->
+                    <div
+                        class="w-20 h-20 rounded-2xl bg-gradient-to-br from-gray-800 to-black flex items-center justify-center mb-8 border border-white/10 shadow-xl relative overflow-hidden group">
+                        <div
+                            class="absolute inset-0 bg-blue-500/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 rounded-2xl">
+                        </div>
+                        <i
+                            class="fa-solid fa-microscope text-3xl text-gradient bg-gradient-to-br from-blue-400 to-purple-400 relative z-10 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+
+                    <h1 class="text-4xl font-bold tracking-tight mb-2">MedDiscover</h1>
+                    <h2 class="text-lg text-gray-400 font-medium mb-4 leading-snug">
+                        Domain-Specific RAG for <br>
+                        <span
+                            class="text-gradient bg-gradient-to-r from-blue-400 to-purple-400 font-bold tracking-tight">Evidence-Grounded
+                            Metabolomics</span>
+                    </h2>
+
+                    <p class="text-gray-300 leading-relaxed mb-6 font-light text-sm">
+                        An open-source Retrieval-Augmented Generation framework built to navigate the complexities of
+                        metabolic-disorder literature. Grounded in research, validated with precision.
+                    </p>
+
+                    <div class="flex flex-wrap gap-2 mb-8 relative z-10">
+                        <span class="skill-tag">LLMs</span>
+                        <span class="skill-tag">RAG</span>
+                        <span class="skill-tag">Metabolomics</span>
+                        <span class="skill-tag">MedCPT</span>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <nav class="space-y-4 relative z-10">
+                        <a href="#overview"
+                            class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-slate-500 group-hover:text-white transition-all border border-white/10">
+                                <i class="fa-solid fa-layer-group text-xs"></i>
+                            </div>
+                            <span class="font-medium text-sm">Project Overview</span>
+                        </a>
+                        <a href="#app-demo"
+                            class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all border border-white/10">
+                                <i class="fa-solid fa-play text-xs transform translate-x-[1px]"></i>
+                            </div>
+                            <span class="font-medium text-sm">Live Application</span>
+                        </a>
+                        <a href="#research"
+                            class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-all border border-white/10">
+                                <i class="fa-solid fa-shield-halved text-xs"></i>
+                            </div>
+                            <span class="font-medium text-sm">Pipeline Architecture</span>
+                        </a>
+                        <a href="#benchmarks"
+                            class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-all border border-white/10">
+                                <i class="fa-solid fa-chart-line text-xs"></i>
+                            </div>
+                            <span class="font-medium text-sm">Benchmarks & Results</span>
+                        </a>
+                        <a href="#team"
+                            class="flex items-center gap-4 text-gray-300 hover:text-white transition-colors group">
+                            <div
+                                class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white transition-all border border-white/10">
+                                <i class="fa-solid fa-users text-xs"></i>
+                            </div>
+                            <span class="font-medium text-sm">The Team</span>
+                        </a>
+                    </nav>
+                </div>
+
+                <div class="mt-10 pt-6 border-t border-white/10 relative z-10">
+                    <p class="text-xs text-gray-500 mb-4 font-medium tracking-wide uppercase">Repository & Resources</p>
+                    <div class="flex gap-3">
+                        <a href="https://github.com/VatsalPatel18/MedDiscover" target="_blank"
+                            class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-white hover:text-black transition-all shadow-[0_4px_14px_0_rgb(0,0,0,39%)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.23)]">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="https://huggingface.co/spaces/VatsalPatel18/MedDisover-space" target="_blank"
+                            class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-amber-400 hover:text-black hover:border-amber-400 transition-all shadow-[0_4px_14px_0_rgb(0,0,0,39%)]">
+                            <i class="fa-solid fa-cube"></i>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-300 hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all shadow-[0_4px_14px_0_rgb(0,0,0,39%)]">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ========================================== -->
+        <!-- RIGHT PANEL: DYNAMIC SCROLLING CONTENT     -->
+        <!-- ========================================== -->
+        <main class="w-full lg:w-[65%] xl:w-[70%] p-6 md:p-10 pb-32 space-y-24 overflow-y-auto">
+
+            <!-- SECTION: OVERVIEW -->
+            <section id="overview" class="mt-6 lg:mt-0">
+                <div class="reveal">
+                    <h3 class="text-xs font-bold tracking-widest text-[#2997ff] uppercase mb-2">CSBJ Journal Publication
+                    </h3>
+                    <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-6">Extraction without Hallucination.
+                    </h2>
+                    <p class="text-lg text-gray-400 font-light max-w-3xl leading-relaxed mb-8">
+                        General-purpose LLMs struggle with biomedical hallucination and dynamic knowledge integration.
+                        <strong class="text-white font-medium">MedDiscover</strong> introduces a two-tier RAG benchmark
+                        (Gold expert-curated & Silver synthetic) specifically instantiated for metabolomics, providing
+                        transparent, reproducible evaluation of retrieval augmentation.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#"
+                            class="bg-white text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-gray-200 transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-book"></i> Read Manuscript
+                        </a>
+                        <a href="#app-demo"
+                            class="bg-[#1d1d1f] border border-white/10 text-white px-6 py-3 rounded-full text-sm font-semibold hover:bg-white/10 transition-colors flex items-center gap-2">
+                            <i class="fa-solid fa-external-link-alt"></i> View Interactive Space
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: LIVE APP DEMO -->
+            <section id="app-demo" class="space-y-6 pt-10 border-t border-white/10">
+                <div class="reveal">
+                    <h3 class="text-xs font-bold tracking-widest text-blue-400 uppercase mb-2">Interactive Interface
+                    </h3>
+                    <h2 class="text-3xl font-bold">Try MedDiscover Live</h2>
+                    <p class="text-gray-400 mt-2 font-light text-sm max-w-2xl">
+                        Experience our domain-specific retrieval architecture powered by MedCPT embeddings. Upload a
+                        metabolomics document or test our pre-indexed metabolic-disorder corpus right from your browser
+                        via ZeroGPU.
+                    </p>
+                </div>
+
+                <!-- Hugging Face Space Embed -->
+                <div class="glass-card p-2 md:p-4 rounded-[2rem] reveal">
+                    <div class="bg-[#0b0f19] rounded-2xl overflow-hidden border border-white/5 relative">
+                        <!-- Top mock window bar -->
+                        <div
+                            class="h-10 bg-black/40 border-b border-white/5 flex items-center px-4 gap-2 relative z-20">
+                            <div class="w-3 h-3 rounded-full bg-red-500/80 border border-red-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/80 border border-yellow-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/80 border border-green-500/50"></div>
+                            <div
+                                class="mx-auto text-xs text-gray-500 font-medium flex items-center gap-2 bg-white/5 px-3 py-1 rounded-md border border-white/5">
+                                <i class="fa-solid fa-lock text-[10px]"></i>
+                                huggingface.co/spaces/VatsalPatel18/MedDisover-space
+                            </div>
+                        </div>
+
+                        <!-- The Iframe -->
+                        <div class="hf-iframe-wrapper">
+                            <iframe src="https://vatsalpatel18-meddisover-space.hf.space" frameborder="0"
+                                allow="accelerometer; ambient-light-sensor; autoplay; battery; camera; document-domain; encrypted-media; fullscreen; geolocation; gyroscope; layout-animations; legacy-image-formats; magnetometer; microphone; midi; oversized-images; payment; picture-in-picture; publickey-credentials-get; sync-xhr; usb; vr ; wake-lock; xr-spatial-tracking"
+                                sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-downloads"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: RESEARCH OVERVIEW & ARCHITECTURE -->
+            <section id="research" class="space-y-6 pt-10 border-t border-white/10">
+                <div class="reveal">
+                    <h3 class="text-xs font-bold tracking-widest text-purple-400 uppercase mb-2">Methodology</h3>
+                    <h2 class="text-3xl font-bold">Pipeline Architecture</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Abstract/Problem Card -->
+                    <div class="glass-card rounded-[2rem] p-8 md:col-span-2 reveal relative overflow-hidden group">
+                        <div
+                            class="absolute -right-10 -top-10 opacity-10 text-[10rem] text-purple-500 transform group-hover:scale-110 transition-transform duration-700">
+                            <i class="fa-solid fa-quote-right"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                            <i class="fa-solid fa-circle-info text-purple-400"></i> The Challenge in Metabolomics
+                        </h3>
+                        <p class="text-gray-300 font-light leading-relaxed text-sm">
+                            General-purpose Large Language Models (LLMs) like GPT-4 face substantial limitations in
+                            specialized biomedical subfields. They struggle with hallucinations and complex
+                            terminologies. <strong>MedDiscover</strong> addresses this by introducing a domain-specific
+                            RAG evaluation benchmark tailored for metabolomics and metabolic-disorder literature (ICD-10
+                            E70–E88). We focus on reproducible assessment of retrieval augmentation, embedding choices,
+                            and decoder sensitivity.
+                        </p>
+                    </div>
+
+                    <!-- Dataset Tiers -->
+                    <div
+                        class="glass-card rounded-[2rem] p-8 reveal flex flex-col justify-between hover:border-yellow-500/30 transition-colors group">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-yellow-500/10 text-yellow-500 flex items-center justify-center text-xl mb-6 border border-yellow-500/20 group-hover:bg-yellow-500/20 transition-colors">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-white mb-2">Gold Dataset</h4>
+                            <p class="text-gray-400 text-sm font-light mb-4">
+                                10 high-impact papers focusing on Gaucher disease, NAFLD, and Type 1 diabetes. Contains
+                                <strong>30 expert-curated</strong> QA pairs with human-traceable reference answers to
+                                rigorously test clinical correctness.
+                            </p>
+                            <span
+                                class="inline-block px-2 py-1 bg-yellow-500/10 text-yellow-400 text-[10px] uppercase font-bold tracking-wider rounded border border-yellow-500/20">Human
+                                Validated</span>
+                        </div>
+                    </div>
+
+                    <div
+                        class="glass-card rounded-[2rem] p-8 reveal flex flex-col justify-between hover:border-gray-400/30 transition-colors group">
+                        <div>
+                            <div
+                                class="w-12 h-12 rounded-xl bg-gray-500/10 text-gray-300 flex items-center justify-center text-xl mb-6 border border-gray-500/20 group-hover:bg-gray-500/20 transition-colors">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                            <h4 class="text-lg font-bold text-white mb-2">Silver Benchmark</h4>
+                            <p class="text-gray-400 text-sm font-light mb-4">
+                                A scaled stress-test spanning <strong>100 papers</strong> with ~600 synthetic,
+                                retrievability-filtered QA pairs (300 Ada, 300 MedCPT). Used to evaluate retrieval
+                                robustness at scale.
+                            </p>
+                            <span
+                                class="inline-block px-2 py-1 bg-gray-500/10 text-gray-300 text-[10px] uppercase font-bold tracking-wider rounded border border-gray-500/20">Automated
+                                At Scale</span>
+                        </div>
+                    </div>
+
+                    <!-- CSS RAG Flow Architecture -->
+                    <div class="glass-card rounded-[2rem] p-6 md:p-8 reveal md:col-span-2">
+                        <h4 class="text-lg font-bold text-white mb-8 text-center">MedDiscover Semantic Retrieval Flow
+                        </h4>
+
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-4 w-full relative">
+
+                            <!-- Connecting Line Background -->
+                            <div
+                                class="hidden md:block absolute top-[50%] left-[10%] right-[10%] h-[2px] bg-white/10 z-0">
+                                <div class="h-full flow-line w-full opacity-50"></div>
+                            </div>
+
+                            <!-- Step 1 -->
+                            <div
+                                class="relative z-10 flex flex-col items-center bg-[#1d1d1f] border border-white/10 p-5 rounded-2xl w-full md:w-1/3 text-center shadow-xl">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center mb-4 border border-blue-500/30">
+                                    <i class="fa-solid fa-file-text"></i>
+                                </div>
+                                <h5 class="text-white font-semibold text-sm mb-2">Domain Indexing</h5>
+                                <p class="text-[11px] text-gray-400 leading-relaxed">Medical texts (ICD-10 E70–E88) are
+                                    optimally chunked (500 tokens) and embedded using <strong>MedCPT</strong>.</p>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div
+                                class="relative z-10 flex flex-col items-center bg-[#1d1d1f] border border-white/10 p-5 rounded-2xl w-full md:w-1/3 text-center shadow-xl">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center mb-4 border border-purple-500/30">
+                                    <i class="fa-solid fa-database"></i>
+                                </div>
+                                <h5 class="text-white font-semibold text-sm mb-2">FAISS Vector Search</h5>
+                                <p class="text-[11px] text-gray-400 leading-relaxed">Fast nearest-neighbor retrieval
+                                    isolates the Top-K most semantically relevant biomedical contexts.</p>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div
+                                class="relative z-10 flex flex-col items-center bg-[#1d1d1f] border border-white/10 p-5 rounded-2xl w-full md:w-1/3 text-center shadow-xl">
+                                <div
+                                    class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 border border-emerald-500/30">
+                                    <i class="fa-solid fa-microchip"></i>
+                                </div>
+                                <h5 class="text-white font-semibold text-sm mb-2">Grounded Generation</h5>
+                                <p class="text-[11px] text-gray-400 leading-relaxed">GPT-4o or HF Space synthesizes the
+                                    answer, strictly bound to contexts to prevent hallucination.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION: BENCHMARKS & RESULTS -->
+            <section id="benchmarks" class="space-y-6 pt-10 border-t border-white/10">
+                <div class="reveal">
+                    <h3 class="text-xs font-bold tracking-widest text-emerald-400 uppercase mb-2">Performance Metrics
+                    </h3>
+                    <h2 class="text-3xl font-bold">Benchmark Results</h2>
+                    <p class="text-gray-400 mt-2 font-light text-sm max-w-2xl">
+                        Results from the Silver benchmark comparing OpenAI's general-purpose <strong>Ada-002</strong>
+                        embeddings against the domain-specific <strong>MedCPT</strong> models, utilizing a GPT-4o
+                        decoder.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <!-- Stat 1 -->
+                    <div
+                        class="glass-card p-6 rounded-[1.5rem] reveal text-center flex flex-col justify-center border-emerald-500/20 hover:border-emerald-500/50">
+                        <div class="text-4xl font-bold text-white mb-2 drop-shadow-[0_0_15px_rgba(0,210,122,0.4)]">0.980
+                        </div>
+                        <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">MedCPT Correctness
+                        </div>
+                    </div>
+                    <!-- Stat 2 -->
+                    <div class="glass-card p-6 rounded-[1.5rem] reveal text-center flex flex-col justify-center">
+                        <div class="text-3xl font-bold text-gray-300 mb-2">0.968</div>
+                        <div class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Ada-002 Correctness
+                        </div>
+                    </div>
+                    <!-- Stat 3 -->
+                    <div class="glass-card p-6 rounded-[1.5rem] reveal text-center flex flex-col justify-center">
+                        <div class="text-2xl font-bold text-blue-400 mb-2 font-mono">5.72e-11</div>
+                        <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">P-Value (Correctness)
+                        </div>
+                    </div>
+                    <!-- Stat 4 -->
+                    <div class="glass-card p-6 rounded-[1.5rem] reveal text-center flex flex-col justify-center">
+                        <div
+                            class="text-2xl font-bold text-gray-300 mb-2 font-mono drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                            0.303</div>
+                        <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Cliff's &delta;
+                            Effect Size</div>
+                    </div>
+                </div>
+
+                <!-- Detailed Table View -->
+                <div class="glass-card rounded-[2rem] overflow-hidden reveal">
+                    <div
+                        class="p-6 md:p-8 bg-black/40 border-b border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <div>
+                            <h3 class="font-bold text-white text-lg">Silver Benchmark Statistics (RAGAS Metrics)</h3>
+                            <p class="text-xs text-gray-400 mt-1">Means with bootstrap 95% confidence intervals across
+                                ~600 synthetic queries.</p>
+                        </div>
+                        <div
+                            class="bg-blue-500/10 border border-blue-500/20 px-3 py-1.5 rounded-lg text-xs text-blue-400 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line"></i> Statistically Significant
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-gray-300">
+                            <thead
+                                class="text-xs text-gray-500 uppercase bg-black/60 border-b border-white/5 tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-5 font-semibold">Metric</th>
+                                    <th class="px-6 py-5 font-semibold">Ada-002 [95% CI]</th>
+                                    <th class="px-6 py-5 font-semibold text-white">MedCPT [95% CI]</th>
+                                    <th class="px-6 py-5 font-semibold text-right">P-Value</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 font-light">
+                                <tr class="hover:bg-white/[0.03] transition-colors bg-white/[0.01]">
+                                    <td class="px-6 py-5 font-medium text-white flex items-center gap-2"><i
+                                            class="fa-solid fa-check-circle text-emerald-500"></i> Answer Correctness
+                                    </td>
+                                    <td class="px-6 py-5">0.968 <span class="text-gray-500 text-xs ml-1">[0.960,
+                                            0.976]</span></td>
+                                    <td class="px-6 py-5 text-emerald-400 font-medium bg-emerald-500/[0.03]">0.980 <span
+                                            class="text-emerald-500/50 text-xs ml-1">[0.974, 0.985]</span></td>
+                                    <td class="px-6 py-5 text-right text-emerald-400 font-mono font-medium">
+                                        5.72&times;10<sup>-11</sup></td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.03] transition-colors">
+                                    <td class="px-6 py-5 text-gray-400">Faithfulness</td>
+                                    <td class="px-6 py-5 text-gray-400">0.703 <span
+                                            class="text-gray-500 text-xs ml-1">[0.667, 0.740]</span></td>
+                                    <td class="px-6 py-5 text-gray-400">0.687 <span
+                                            class="text-gray-500 text-xs ml-1">[0.650, 0.725]</span></td>
+                                    <td class="px-6 py-5 text-right text-gray-600 font-mono">0.85</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.03] transition-colors">
+                                    <td class="px-6 py-5 text-gray-400">Context Recall</td>
+                                    <td class="px-6 py-5 text-gray-400">0.743 <span
+                                            class="text-gray-500 text-xs ml-1">[0.702, 0.779]</span></td>
+                                    <td class="px-6 py-5 text-gray-400">0.722 <span
+                                            class="text-gray-500 text-xs ml-1">[0.682, 0.762]</span></td>
+                                    <td class="px-6 py-5 text-right text-gray-600 font-mono">0.50</td>
+                                </tr>
+                                <tr class="hover:bg-white/[0.03] transition-colors">
+                                    <td class="px-6 py-5 text-gray-400">Context Precision</td>
+                                    <td class="px-6 py-5 text-gray-400">0.923 <span
+                                            class="text-gray-500 text-xs ml-1">[0.890, 0.953]</span></td>
+                                    <td class="px-6 py-5 text-gray-400">0.908 <span
+                                            class="text-gray-500 text-xs ml-1">[0.875, 0.937]</span></td>
+                                    <td class="px-6 py-5 text-right text-gray-600 font-mono">0.49</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: THE TEAM -->
+            <section id="team" class="space-y-6 pt-10 border-t border-white/10">
+                <div class="reveal">
+                    <h3 class="text-xs font-bold tracking-widest text-orange-400 uppercase mb-2">Contributors</h3>
+                    <h2 class="text-3xl font-bold">Research Team</h2>
+                    <p class="text-gray-400 mt-2 font-light text-sm max-w-2xl">
+                        Researchers driving the intersection of Artificial Intelligence and Computational Structural
+                        Biotechnology.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Author 1 -->
+                    <div
+                        class="glass-card rounded-[2rem] p-6 flex flex-col justify-between reveal group relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-16 h-16 rounded-full bg-blue-900/50 border-2 border-white/10 overflow-hidden mb-6 shadow-lg group-hover:border-blue-500/50 transition-colors">
+                                <img src="images/Vatsal_Patel.jpg" alt="Vatsal Patel"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <h4 class="text-white font-bold text-lg leading-tight mb-1">Vatsal Patel</h4>
+                            <p class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-4">Lead Author
+                            </p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">Principal Research Engineer
+                                crafting evidence-grounded extraction systems and RAG pipelines.</p>
+                        </div>
+                    </div>
+
+                    <!-- Author 2 -->
+                    <div class="glass-card rounded-[2rem] p-6 flex flex-col justify-between reveal group relative overflow-hidden"
+                        style="transition-delay: 100ms;">
+                        <div
+                            class="absolute inset-0 bg-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-16 h-16 rounded-full bg-slate-800 border-2 border-white/10 overflow-hidden mb-6 shadow-lg group-hover:border-purple-500/50 transition-colors flex items-center justify-center">
+                                <span class="text-gray-400 font-bold text-xl">EJ</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg leading-tight mb-1">Elena Jolkver</h4>
+                            <p class="text-purple-400 text-[10px] font-bold uppercase tracking-widest mb-4">Co-Author
+                            </p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">Research collaboration focusing
+                                on biomedical NLP evaluation and robust benchmarking metrics.</p>
+                        </div>
+                    </div>
+
+                    <!-- Author 3 -->
+                    <div class="glass-card rounded-[2rem] p-6 flex flex-col justify-between reveal group relative overflow-hidden"
+                        style="transition-delay: 200ms;">
+                        <div
+                            class="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="relative z-10">
+                            <div
+                                class="w-16 h-16 rounded-full bg-slate-800 border-2 border-white/10 overflow-hidden mb-6 shadow-lg group-hover:border-emerald-500/50 transition-colors flex items-center justify-center">
+                                <span class="text-gray-400 font-bold text-xl">AS</span>
+                            </div>
+                            <h4 class="text-white font-bold text-lg leading-tight mb-1">Anne Schwerk</h4>
+                            <p class="text-emerald-400 text-[10px] font-bold uppercase tracking-widest mb-4">Co-Author
+                            </p>
+                            <p class="text-gray-400 text-sm font-light leading-relaxed">Academic mentorship with vast
+                                expertise in multi-omics and precision medicine applications.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="glass-card p-6 mt-6 rounded-[2rem] text-center reveal border border-white/5 flex items-center justify-center gap-4">
+                    <i class="fa-solid fa-graduation-cap text-gray-500 text-2xl"></i>
+                    <p class="text-sm text-gray-400 font-light text-left">
+                        IU Internationale Hochschule GmbH, Germany <br>
+                        <span class="text-white font-medium text-xs">Computational and Structural Biotechnology Journal
+                            (CSBJ)</span>
+                    </p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+
+            const revealOnScroll = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        // Optional: stop observing once revealed to only animate once
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1, // Trigger when 10% of element is visible
+                rootMargin: "0px 0px -50px 0px"
+            });
+
+            reveals.forEach(reveal => {
+                revealOnScroll.observe(reveal);
+            });
+        });
+    </script>
+</body>
+
+</html>
